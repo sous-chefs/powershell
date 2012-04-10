@@ -1,6 +1,6 @@
 #
 # Author:: Seth Chisamore (<schisamo@opscode.com>)
-# Copyright:: Copyright (c) 2011 Opscode, Inc.
+# Copyright:: Copyright (c) 2011-2012 Opscode, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,18 +18,40 @@
 
 action :run do
   begin
+    # render a tempfile
     script_file.puts(@new_resource.code)
     script_file.close
-    # always set the ExecutionPolicy flag
-    # see http://technet.microsoft.com/en-us/library/ee176961.aspx
-    # Powershell will hang if stdin is redirected
-    # http://connect.microsoft.com/PowerShell/feedback/details/572313/powershell-exe-can-hang-if-stdin-is-redirected
-    flags = "#{@new_resource.flags} -ExecutionPolicy RemoteSigned -inputformat none -Command".strip
 
-    # cwd hax...shell_out on windows needs to support proper 'cwd'
-    # follow CHEF-2357 for more
-    cwd = @new_resource.cwd ? "cd #{@new_resource.cwd} & " : ""
-    command = "#{cwd}#{@new_resource.interpreter} #{flags} \"#{build_powershell_scriptblock}\""
+    # default flags
+    flags = [
+      # always set the ExecutionPolicy flag
+      # see http://technet.microsoft.com/en-us/library/ee176961.aspx
+      "-ExecutionPolicy RemoteSigned",
+      # Powershell will hang if STDIN is redirected
+      # http://connect.microsoft.com/PowerShell/feedback/details/572313/powershell-exe-can-hang-if-stdin-is-redirected
+      "-InputFormat none"
+    ]
+
+    # user-provided flags
+    unless @new_resource.flags.nil? || @new_resource.flags.empty?
+      flags << @new_resource.flags.strip
+    end
+
+    cwd = ensure_windows_friendly_path(@new_resource.cwd)
+    prefix = @new_resource.interpreter
+    command = ensure_windows_friendly_path(script_file.path)
+
+    # Chef::Resource::Execute in Chef >= 0.10.8 has first-class Win32 support
+    if Gem::Version.create(Chef::VERSION) >= Gem::Version.create("0.10.8")
+      execute.cwd(cwd)
+      execute.environment(@new_resource.environment)
+    else
+      # we have to fake `cwd` and `environment` on older versions of Chef
+      prefix = "cd #{@new_resource.cwd} & #{prefix}" if @new_resource.cwd
+      command = create_env_wrapper(command, @new_resource.environment)
+    end
+
+    command = "#{prefix} #{flags.join(' ')} -Command \"#{command}\""
 
     execute.command(command)
     execute.creates(@new_resource.creates)
@@ -59,16 +81,16 @@ end
 
 # take advantage of PowerShell scriptblocks
 # to pass scoped environment variables to the
-# command
-def build_powershell_scriptblock
-  # environment var hax...shell_out on windows needs to support proper 'environment'
-  # follow CHEF-2358 for more
-  env_string = if @new_resource.environment
-    @new_resource.environment.inject("") {|a, (k,v)| a << "$#{k} = '#{v}'; "; a}
+# command.  This is mainly only useful for versions
+# of Chef < 0.10.8 when Chef::Resource::Execute
+# did not support the 'environment' attribute.
+def create_env_wrapper(command, environment)
+  if environment
+    env_string = environment.map{ |k,v| "$env:#{k}='#{v}'" }.join('; ')
+    "& { #{env_string}; #{command} }"
   else
-    ""
+    command
   end
-  "& { #{env_string}#{ensure_windows_friendly_path(script_file.path)} }"
 end
 
 def ensure_windows_friendly_path(path)
