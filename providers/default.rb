@@ -26,12 +26,18 @@ action :run do
 
     # default flags
     flags = [
+      # Hides the copyright banner at startup.
+      "-NoLogo",
+      # Does not present an interactive prompt to the user.
+      "-NonInteractive",
+      # Does not load the Windows PowerShell profile.
+      "-NoProfile",
       # always set the ExecutionPolicy flag
       # see http://technet.microsoft.com/en-us/library/ee176961.aspx
       "-ExecutionPolicy RemoteSigned",
       # Powershell will hang if STDIN is redirected
       # http://connect.microsoft.com/PowerShell/feedback/details/572313/powershell-exe-can-hang-if-stdin-is-redirected
-      "-InputFormat none"
+      "-InputFormat None"
     ]
 
     # user-provided flags
