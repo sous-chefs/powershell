@@ -23,9 +23,9 @@ attribute :command, :kind_of => String, :name_attribute => true
 attribute :creates, :kind_of => String
 attribute :cwd, :kind_of => String
 attribute :environment, :kind_of => Hash
-attribute :user, :kind_of => [ String, Integer ]#, :regex => Chef::Config[:user_valid_regex]
-attribute :group, :kind_of => [ String, Integer ]#, :regex => Chef::Config[:group_valid_regex]
-attribute :returns, :kind_of => [ Integer, Array ], :default => [0,42]
+attribute :user, :kind_of => [ String, Integer ]
+attribute :group, :kind_of => [ String, Integer ]
+attribute :returns, :kind_of => [ Integer, Array ]
 attribute :timeout, :kind_of => Integer
 
 # Chef::Resource::Script

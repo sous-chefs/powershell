@@ -18,7 +18,9 @@
 
 action :run do
   begin
-    # render a tempfile
+    # force our script to terminate and return an error code on failure
+    # http://blogs.msdn.com/b/powershell/archive/2006/04/25/583241.aspx
+    script_file.puts("$ErrorActionPreference = 'Stop'")
     script_file.puts(@new_resource.code)
     script_file.close
 
