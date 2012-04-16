@@ -1,7 +1,8 @@
 Description
 ===========
 
-Installs and configures PowerShell 2.0.  Also includes a resource/provider for executing scripts using the PowerShell interpreter.
+Installs and configures PowerShell 2.0.  Also includes a resource/provider for
+executing scripts using the PowerShell interpreter.
 
 Requirements
 ============
@@ -23,7 +24,11 @@ Resource/Provider
 
 `powershell`
 ------------
-Execute a script using the powershell interpreter (much like the script resources for bash, csh, perl, python and ruby). A temporary file is created and executed like other script resources, rather than run inline. By their nature, Script resources are not idempotent, as they are completely up to the user's imagination. Use the `not_if` or `only_if` meta parameters to guard the resource for idempotence.
+Execute a script using the powershell interpreter (much like the script resources
+for bash, csh, perl, python and ruby). A temporary file is created and executed
+like other script resources, rather than run inline. By their nature, Script
+resources are not idempotent, as they are completely up to the user's imagination.
+Use the `not_if` or `only_if` meta parameters to guard the resource for idempotence.
 
 ### Actions
 
@@ -39,6 +44,8 @@ Execute a script using the powershell interpreter (much like the script resource
 - environment: A hash of environment variables to set before running this command.
 - user: A user name or user ID that we should change to before running this command.
 - group: A group name or group ID that we should change to before running this command.
+- returns: The return value of the command (may be an array of accepted values) - this resource raises an exception if the return value(s) do not match.
+- timeout: How many seconds to let the command run before timing it out.
 
 ### Examples
 
@@ -79,7 +86,7 @@ Execute a script using the powershell interpreter (much like the script resource
 
     # cwd to a winodws env variable
     powershell "cwd-to-win-env-var" do
-      cwd "%TEMP%"
+      cwd ENV['TEMP']
       code <<-EOH
       $stream = [System.IO.StreamWriter] "./temp-write-from-chef.txt"
       $stream.WriteLine("chef on windows rox yo!")
@@ -93,7 +100,7 @@ Execute a script using the powershell interpreter (much like the script resource
       environment ({'foo' => 'BAZ'})
       code <<-EOH
       $stream = [System.IO.StreamWriter] "./test-read-env-var.txt"
-      $stream.WriteLine("FOO is $foo")
+      $stream.WriteLine("FOO is $env:foo")
       $stream.close()
       EOH
     end
@@ -106,27 +113,31 @@ default
 
 Include the default recipe in a run list, to ensure PowerShell 2.0 is installed.
 
-On the following versions of Windows the PowerShell 2.0 package will be downloaded from Microsoft and installed:
+On the following versions of Windows the PowerShell 2.0 package will be
+downloaded from Microsoft and installed:
 
 * Windows XP
 * Windows Server 2003
 * Windows Server 2008 R1
 * Windows Vista
 
-On the following versions of Windows, PowerShell 2.0 is present and must just be enabled:
+On the following versions of Windows, PowerShell 2.0 is present and must just be
+enabled:
 
 * Windows 7
 * Windows Server 2008 R2
 * Windows Server 2008 R2 Core
 
-**PLEASE NOTE** - The installation may require a restart of the node being configured before PowerShell (or the powershell script resource) can be used (yeah Windows!).
+**PLEASE NOTE** - The installation may require a restart of the node being
+configured before PowerShell (or the powershell script resource) can be used
+(yeah Windows!).
 
 License and Author
 ==================
 
 Author:: Seth Chisamore (<schisamo@opscode.com>)
 
-Copyright:: 2011, Opscode, Inc
+Copyright:: 2011-2012, Opscode, Inc
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
