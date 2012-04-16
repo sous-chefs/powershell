@@ -1,3 +1,10 @@
+## v1.0.6:
+
+* Refactor the powershell resource from a core-Chef monkey-patch into a proper LWRP.
+* Take advantage of native Win32 support for `cwd` and `environment` in Chef 0.10.8+.
+* [COOK-630] force powershell scripts to terminate immediately and return an error code on failure
+* ensure more sane default options are set on PowerShell process
+
 ## v1.0.4:
 
 * [COOK-988] - Powershell never exists on the powershell resource
