@@ -68,6 +68,8 @@ action :run do
     execute.timeout(@new_resource.timeout)
     execute.returns(@new_resource.returns)
     execute.run_action(:run)
+
+    @new_resource.updated_by_last_action(true)
   ensure
     unlink_script_file
   end
