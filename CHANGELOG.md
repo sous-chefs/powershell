@@ -1,3 +1,7 @@
+## v1.0.8:
+
+* [COOK-1834] - fix broken notifies
+
 ## v1.0.6:
 
 * Refactor the powershell resource from a core-Chef monkey-patch into a proper LWRP.
