@@ -4,43 +4,11 @@ class Chef
       include Chef::Mixin::ShellOut
 
       def powershell_out(script, options)
-        flags = [
-          # Hides the copyright banner at startup.
-          "-NoLogo",
-          # Does not present an interactive prompt to the user.
-          "-NonInteractive",
-          # Does not load the Windows PowerShell profile.
-          "-NoProfile",
-          # always set the ExecutionPolicy flag
-          # see http://technet.microsoft.com/en-us/library/ee176961.aspx
-          "-ExecutionPolicy RemoteSigned",
-          # Powershell will hang if STDIN is redirected
-          # http://connect.microsoft.com/PowerShell/feedback/details/572313/powershell-exe-can-hang-if-stdin-is-redirected
-          "-InputFormat None"
-        ]
-
-        command = "#{locate_sysnative_cmd("windowspowershell\\v1.0\\powershell.exe")} #{flags.join(' ')} -Command \"#{script}\""
-        shell_out(command, options)
+        shell_out(build_command(script), options)
       end
 
       def powershell_out!(script, options)
-        flags = [
-          # Hides the copyright banner at startup.
-          "-NoLogo",
-          # Does not present an interactive prompt to the user.
-          "-NonInteractive",
-          # Does not load the Windows PowerShell profile.
-          "-NoProfile",
-          # always set the ExecutionPolicy flag
-          # see http://technet.microsoft.com/en-us/library/ee176961.aspx
-          "-ExecutionPolicy RemoteSigned",
-          # Powershell will hang if STDIN is redirected
-          # http://connect.microsoft.com/PowerShell/feedback/details/572313/powershell-exe-can-hang-if-stdin-is-redirected
-          "-InputFormat None"
-        ]
-
-        command = "#{locate_sysnative_cmd("windowspowershell\\v1.0\\powershell.exe")} #{flags.join(' ')} -Command \"#{script}\""
-        shell_out!(command, options)
+        shell_out!(build_command(script), options)
       end
 
       private
@@ -56,6 +24,26 @@ class Chef
         else
           cmd
         end
+      end
+
+      def build_command(script)
+        flags = [
+          # Hides the copyright banner at startup.
+          "-NoLogo",
+          # Does not present an interactive prompt to the user.
+          "-NonInteractive",
+          # Does not load the Windows PowerShell profile.
+          "-NoProfile",
+          # always set the ExecutionPolicy flag
+          # see http://technet.microsoft.com/en-us/library/ee176961.aspx
+          "-ExecutionPolicy RemoteSigned",
+          # Powershell will hang if STDIN is redirected
+          # http://connect.microsoft.com/PowerShell/feedback/details/572313/powershell-exe-can-hang-if-stdin-is-redirected
+          "-InputFormat None"
+        ]
+
+        command = "#{locate_sysnative_cmd("windowspowershell\\v1.0\\powershell.exe")} #{flags.join(' ')} -Command \"#{script}\""
+        command
       end
     end
   end
