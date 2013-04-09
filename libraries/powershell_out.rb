@@ -3,27 +3,56 @@ class Chef
     module PowershellOut
       include Chef::Mixin::ShellOut
 
-      def powershell_out(script, options)
-        shell_out(build_command(script), options)
+      begin
+        include Chef::Mixin::WindowsArchitectureHelper
+      rescue
+        # nothing to do, as the include will happen when windows_architecture_helper.rb
+        # is loaded.  This is for ease of removal of that library when either
+        # powershell_out is core chef or powershell cookbook depends upon version
+        # of chef that has Chef::Mixin::WindowsArchitectureHelper in core chef
       end
 
-      def powershell_out!(script, options)
-        shell_out!(build_command(script), options)
+      def powershell_out(*command_args)
+        script = command_args.first
+        options = command_args.last.is_a?(Hash) ? command_args.last : nil
+
+        run_command(script, options)
+      end
+
+      def powershell_out!(*command_args)
+        cmd = powershell_out(*command_args)
+        cmd.error!
+        cmd
       end
 
       private
-      # account for Window's wacky File System Redirector
-      # http://msdn.microsoft.com/en-us/library/aa384187(v=vs.85).aspx
-      # especially important for 32-bit processes (like Ruby) on a 
-      # 64-bit instance of Windows.
-      def locate_sysnative_cmd(cmd)
-        if ::File.exists?("#{ENV['WINDIR']}\\sysnative\\#{cmd}")
-          "#{ENV['WINDIR']}\\sysnative\\#{cmd}"
-        elsif ::File.exists?("#{ENV['WINDIR']}\\system32\\#{cmd}")
-          "#{ENV['WINDIR']}\\system32\\#{cmd}"
+      def run_command(script, options)
+        if options && options[:architecture]
+          architecture = options[:architecture]
+          options.delete(:architecture)
         else
-          cmd
+          architecture = node_windows_architecture(node)
         end
+
+        disable_redirection = wow64_architecture_override_required?(node, architecture)
+
+        if disable_redirection
+          original_redirection_state = disable_wow64_file_redirection(node)
+        end
+
+        command = build_command(script)
+
+        if options
+          cmd = shell_out(command, options)
+        else
+          cmd = shell_out(command)
+        end
+
+        if disable_redirection
+          restore_wow64_file_redirection(node, original_redirection_state)
+        end
+
+        cmd
       end
 
       def build_command(script)
@@ -42,7 +71,7 @@ class Chef
           "-InputFormat None"
         ]
 
-        command = "#{locate_sysnative_cmd("windowspowershell\\v1.0\\powershell.exe")} #{flags.join(' ')} -Command \"#{script}\""
+        command = "powershell.exe #{flags.join(' ')} -Command \"#{script}\""
         command
       end
     end
