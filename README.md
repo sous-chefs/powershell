@@ -105,6 +105,31 @@ Use the `not_if` or `only_if` meta parameters to guard the resource for idempote
       EOH
     end
 
+Mixin
+=================
+
+`Chef::Mixin::PowershellOut`
+----------------------------
+Mixin to execute powershell commands during compile time.  Most useful if needing powershell to drive LWRP behavior
+
+### Parameters
+
+- script: The powershell code to execute
+- options: The options hash to drive execution behavior.  Same options available as in shell_out, with the addition of :architecture, which allows you to override the default architecture.  Essentially allows you to run 32-bit powershell in 64-bit windows.
+
+### Example
+
+The following illustrates using options to require 32-bit AND run as a different user
+
+    # check if a user is a member of local admins
+    :include Chef::Mixin::PowershellOut
+    script =<<-EOF
+      $user = [Security.Principal.WindowsIdentity]::GetCurrent()
+      (New-Object Security.Principal.WindowsPrincipal $user).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
+    EOF
+    cmd = powershell_out(script, {architecture: :i386, user: "vagrant", password: "vagrant"})
+    Chef::Log.info(cmd.stdout)
+
 Usage
 =====
 
