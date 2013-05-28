@@ -13,7 +13,7 @@ rescue
       module WindowsArchitectureHelper
 
         def node_windows_architecture(node)
-          node[:kernel][:machine].to_sym
+          node['kernel']['machine'].to_sym
         end
 
         def wow64_architecture_override_required?(node, desired_architecture)

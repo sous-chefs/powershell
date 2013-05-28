@@ -66,7 +66,7 @@ when "windows"
       end
 
     else
-      Chef::Log.warn("PowerShell 2.0 is not supported on this version of Windows: #{node.platform_version}")
+      Chef::Log.warn("PowerShell 2.0 is not supported on this version of Windows: #{node['platform_version']}")
     end
   else
     Chef::Log.info("PowerShell 2.0 is already installed/enabled.")
