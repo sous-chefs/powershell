@@ -1,3 +1,14 @@
+## v1.1.0:
+
+### Bug
+
+- [COOK-2974]: powershell cookbook has foodcritic failures
+
+### Improvement
+
+- [COOK-2586]: Create a `powershell_out` mixin to be able to use in
+  LWRPs for calling powershell
+
 ## v1.0.8:
 
 * [COOK-1834] - fix broken notifies
