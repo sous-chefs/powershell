@@ -122,7 +122,7 @@ Mixin to execute powershell commands during compile time.  Most useful if needin
 The following illustrates using options to require 32-bit AND run as a different user
 
     # check if a user is a member of local admins
-    :include Chef::Mixin::PowershellOut
+    include Chef::Mixin::PowershellOut
     script =<<-EOF
       $user = [Security.Principal.WindowsIdentity]::GetCurrent()
       (New-Object Security.Principal.WindowsPrincipal $user).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
