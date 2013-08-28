@@ -3,6 +3,11 @@ powershell Cookbook CHANGELOG
 This file is used to list changes made in each version of the powershell cookbook.
 
 
+v1.1.2
+------
+### Bug
+- **[COOK-3000](https://tickets.opscode.com/browse/COOK-3000)** - Fix typo that prevented module loading
+
 v1.1.0
 ------
 ### Bug
