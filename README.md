@@ -1,40 +1,28 @@
-Description
-===========
+powershell cookbook
+===================
+Installs and configures PowerShell 2.0.  Also includes a resource/provider for executing scripts using the PowerShell interpreter.
 
-Installs and configures PowerShell 2.0.  Also includes a resource/provider for
-executing scripts using the PowerShell interpreter.
 
 Requirements
-============
+------------
+### Platforms
+- Windows XP
+- Windows Server 2003 (R1, R2)
+- Windows Vista
+- Windows 7
+- Windows Server 2008 (R1, R2)
 
-Platform
---------
-
-* Windows XP
-* Windows Server 2003 (R1, R2)
-* Windows Vista
-* Windows 7
-* Windows Server 2008 (R1, R2)
-
-Attributes
-==========
 
 Resource/Provider
-=================
+-----------------
+### `powershell`
+Execute a script using the powershell interpreter (much like the script resources for bash, csh, perl, python and ruby). A temporary file is created and executed like other script resources, rather than run inline. By their nature, Script resources are not idempotent, as they are completely up to the user's imagination. Use the `not_if` or `only_if` meta parameters to guard the resource for idempotence.
 
-`powershell`
-------------
-Execute a script using the powershell interpreter (much like the script resources
-for bash, csh, perl, python and ruby). A temporary file is created and executed
-like other script resources, rather than run inline. By their nature, Script
-resources are not idempotent, as they are completely up to the user's imagination.
-Use the `not_if` or `only_if` meta parameters to guard the resource for idempotence.
-
-### Actions
+#### Actions
 
 - :run: run the script
 
-### Attribute Parameters
+#### Attribute Parameters
 
 - command: name attribute. Name of the command to execute.
 - code: quoted string of code to execute.
@@ -47,121 +35,126 @@ Use the `not_if` or `only_if` meta parameters to guard the resource for idempote
 - returns: The return value of the command (may be an array of accepted values) - this resource raises an exception if the return value(s) do not match.
 - timeout: How many seconds to let the command run before timing it out.
 
-### Examples
+#### Examples
 
-    # change the computer's hostname
-    powershell "rename hostname" do
-      code <<-EOH
-      $computer_name = Get-Content env:computername
-      $new_name = 'test-hostname'
-      $sysInfo = Get-WmiObject -Class Win32_ComputerSystem
-      $sysInfo.Rename($new_name)
-      EOH
-    end
+```ruby
+# change the computer's hostname
+powershell "rename hostname" do
+  code <<-EOH
+  $computer_name = Get-Content env:computername
+  $new_name = 'test-hostname'
+  $sysInfo = Get-WmiObject -Class Win32_ComputerSystem
+  $sysInfo.Rename($new_name)
+  EOH
+end
+```
 
+```ruby
+# write out to an interpolated path
+powershell "write-to-interpolated-path" do
+  code <<-EOH
+  $stream = [System.IO.StreamWriter] "#{Chef::Config[:file_cache_path]}/powershell-test.txt"
+  $stream.WriteLine("In #{Chef::Config[:file_cache_path]}...word.")
+  $stream.close()
+  EOH
+end
+```
 
-    # write out to an interpolated path
-    powershell "write-to-interpolated-path" do
-      code <<-EOH
-      $stream = [System.IO.StreamWriter] "#{Chef::Config[:file_cache_path]}/powershell-test.txt"
-      $stream.WriteLine("In #{Chef::Config[:file_cache_path]}...word.")
-      $stream.close()
-      EOH
-    end
+```ruby
+# use the change working directory attribute
+powershell "cwd-then-write" do
+  cwd Chef::Config[:file_cache_path]
+  code <<-EOH
+  $stream = [System.IO.StreamWriter] "C:/powershell-test2.txt"
+  $pwd = pwd
+  $stream.WriteLine("This is the contents of: $pwd")
+  $dirs = dir
+  foreach ($dir in $dirs) {
+    $stream.WriteLine($dir.fullname)
+  }
+  $stream.close()
+  EOH
+end
+```
 
-    # use the change working directory attribute
-    powershell "cwd-then-write" do
-      cwd Chef::Config[:file_cache_path]
-      code <<-EOH
-      $stream = [System.IO.StreamWriter] "C:/powershell-test2.txt"
-      $pwd = pwd
-      $stream.WriteLine("This is the contents of: $pwd")
-      $dirs = dir
-      foreach ($dir in $dirs) {
-        $stream.WriteLine($dir.fullname)
-      }
-      $stream.close()
-      EOH
-    end
+```ruby
+# cwd to a winodws env variable
+powershell "cwd-to-win-env-var" do
+  cwd ENV['TEMP']
+  code <<-EOH
+  $stream = [System.IO.StreamWriter] "./temp-write-from-chef.txt"
+  $stream.WriteLine("chef on windows rox yo!")
+  $stream.close()
+  EOH
+end
+```
 
-    # cwd to a winodws env variable
-    powershell "cwd-to-win-env-var" do
-      cwd ENV['TEMP']
-      code <<-EOH
-      $stream = [System.IO.StreamWriter] "./temp-write-from-chef.txt"
-      $stream.WriteLine("chef on windows rox yo!")
-      $stream.close()
-      EOH
-    end
+```ruby
+# pass an env var to script
+powershell "read-env-var" do
+  cwd Chef::Config[:file_cache_path]
+  environment ({'foo' => 'BAZ'})
+  code <<-EOH
+  $stream = [System.IO.StreamWriter] "./test-read-env-var.txt"
+  $stream.WriteLine("FOO is $env:foo")
+  $stream.close()
+  EOH
+end
+```
 
-    # pass an env var to script
-    powershell "read-env-var" do
-      cwd Chef::Config[:file_cache_path]
-      environment ({'foo' => 'BAZ'})
-      code <<-EOH
-      $stream = [System.IO.StreamWriter] "./test-read-env-var.txt"
-      $stream.WriteLine("FOO is $env:foo")
-      $stream.close()
-      EOH
-    end
 
 Mixin
-=================
-
-`Chef::Mixin::PowershellOut`
-----------------------------
+-----
+### `Chef::Mixin::PowershellOut`
 Mixin to execute powershell commands during compile time.  Most useful if needing powershell to drive LWRP behavior
 
-### Parameters
+#### Parameters
 
 - script: The powershell code to execute
 - options: The options hash to drive execution behavior.  Same options available as in shell_out, with the addition of :architecture, which allows you to override the default architecture.  Essentially allows you to run 32-bit powershell in 64-bit windows.
 
-### Example
+#### Example
 
 The following illustrates using options to require 32-bit AND run as a different user
 
-    # check if a user is a member of local admins
-    include Chef::Mixin::PowershellOut
-    script =<<-EOF
-      $user = [Security.Principal.WindowsIdentity]::GetCurrent()
-      (New-Object Security.Principal.WindowsPrincipal $user).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
-    EOF
-    cmd = powershell_out(script, {architecture: :i386, user: "vagrant", password: "vagrant"})
-    Chef::Log.info(cmd.stdout)
+```ruby
+# check if a user is a member of local admins
+include Chef::Mixin::PowershellOut
+script =<<-EOF
+  $user = [Security.Principal.WindowsIdentity]::GetCurrent()
+  (New-Object Security.Principal.WindowsPrincipal $user).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
+EOF
+cmd = powershell_out(script, {architecture: :i386, user: "vagrant", password: "vagrant"})
+Chef::Log.info(cmd.stdout)
+```
+
 
 Usage
-=====
-
-default
--------
-
+-----
+### default
 Include the default recipe in a run list, to ensure PowerShell 2.0 is installed.
 
-On the following versions of Windows the PowerShell 2.0 package will be
-downloaded from Microsoft and installed:
+On the following versions of Windows the PowerShell 2.0 package will be downloaded from Microsoft and installed:
 
-* Windows XP
-* Windows Server 2003
-* Windows Server 2008 R1
-* Windows Vista
+- Windows XP
+- Windows Server 2003
+- Windows Server 2008 R1
+- Windows Vista
 
-On the following versions of Windows, PowerShell 2.0 is present and must just be
-enabled:
+On the following versions of Windows, PowerShell 2.0 is present and must just be enabled:
 
-* Windows 7
-* Windows Server 2008 R2
-* Windows Server 2008 R2 Core
+- Windows 7
+- Windows Server 2008 R2
+- Windows Server 2008 R2 Core
 
-**PLEASE NOTE** - The installation may require a restart of the node being
-configured before PowerShell (or the powershell script resource) can be used
-(yeah Windows!).
+**PLEASE NOTE** - The installation may require a restart of the node being configured before PowerShell (or the powershell script resource) can be used (yeah Windows!).
 
-License and Author
-==================
 
-Author:: Seth Chisamore (<schisamo@opscode.com>)
+License & Authors
+-----------------
+- Author:: Seth Chisamore (<schisamo@opscode.com>)
 
+```text
 Copyright:: 2011-2012, Opscode, Inc
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -175,3 +168,4 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+```
