@@ -81,4 +81,6 @@ end
 # Making sure this library is available to Chef::Mixin::PowershellOut
 # Required for clients that don't have Chef::Mixin::WindowsArchitectureHelper in
 # core chef.
-Chef::Mixin::PowershellOut.send(:include, Chef::Mixin::WindowsArchitectureHelper)
+if ::Chef::Platform.windows?
+  Chef::Mixin::PowershellOut.send(:include, Chef::Mixin::WindowsArchitectureHelper)
+end
