@@ -3,6 +3,11 @@ powershell Cookbook CHANGELOG
 This file is used to list changes made in each version of the powershell cookbook.
 
 
+v2.0.0 (2014-01-03)
+-------------------
+[COOK-4168] Circular dep on powershell - moving powershell libraries into windows. removing dependency on powershell
+
+
 v1.1.2
 ------
 ### Bug
