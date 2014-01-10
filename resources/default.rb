@@ -23,9 +23,9 @@ attribute :command, :kind_of => String, :name_attribute => true
 attribute :creates, :kind_of => String
 attribute :cwd, :kind_of => String
 attribute :environment, :kind_of => Hash
-attribute :user, :kind_of => [ String, Integer ]
-attribute :group, :kind_of => [ String, Integer ]
-attribute :returns, :kind_of => [ Integer, Array ]
+attribute :user, :kind_of => [String, Integer]
+attribute :group, :kind_of => [String, Integer]
+attribute :returns, :kind_of => [Integer, Array]
 attribute :timeout, :kind_of => Integer
 
 # Chef::Resource::Script
@@ -44,6 +44,6 @@ def interpreter
   elsif ::File.exist?("#{ENV['WINDIR']}\\system32\\WindowsPowershell\\v1.0\\powershell.exe")
     "#{ENV['WINDIR']}\\system32\\WindowsPowershell\\v1.0\\powershell.exe"
   else
-    "powershell.exe"
+    'powershell.exe'
   end
 end
