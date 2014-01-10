@@ -63,6 +63,7 @@ Not every version of Windows supports every version of Powershell. The following
 
 PowerShell also requires the appropriate version of the Microsoft .NET Framework to be installed, if the operating system does not ship with that version. The following community cookbooks are used to install the correct version of the .NET Framework:
 
+* ms_dotnet2
 * ms_dotnet4
 * ms_dotnet45
 

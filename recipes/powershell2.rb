@@ -59,30 +59,7 @@ when 'windows'
   elsif windows_version.windows_server_2008? || windows_version.windows_server_2003_r2? ||
         windows_version.windows_server_2003? || windows_version.windows_xp?
 
-    if windows_version.windows_server_2008?
-      # Windows PowerShell 2.0 requires version 2.0 of the common language runtime (CLR).
-      # CLR 2.0 is included with the Microsoft .NET Framework versions 2.0, 3.0, or 3.5 with Service Pack 1.
-      windows_feature 'NET-Framework-Core' do
-        action :install
-      end
-    else
-      # XP, 2003 and 2003R2 don't have DISM or servermanagercmd, so download .NET 2.0 manually
-      if node['kernel']['machine'] == 'x86_64'
-        dot_net_2_url = 'http://download.microsoft.com/download/c/6/e/c6e88215-0178-4c6c-b5f3-158ff77b1f38/NetFx20SP2_x64.exe'
-        dot_net_2_checksum = '430315c97c57ac158e7311bbdbb7130de3e88dcf5c450a25117c74403e558fbe'
-      else
-        dot_net_2_url = 'http://download.microsoft.com/download/c/6/e/c6e88215-0178-4c6c-b5f3-158ff77b1f38/NetFx20SP2_x86.exe'
-        dot_net_2_checksum = '6e3f363366e7d0219b7cb269625a75d410a5c80d763cc3d73cf20841084e851f'
-      end
-
-      windows_package 'Microsoft .NET Framework 2.0 Service Pack 2' do
-        source dot_net_2_url
-        checksum dot_net_2_checksum
-        installer_type :custom
-        options '/quiet /norestart'
-        action :install
-      end
-    end
+    include_recipe 'ms_dotnet2'
 
     windows_package 'Windows Management Framework Core' do
       source node['powershell']['powershell2']['url']
