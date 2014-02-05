@@ -35,6 +35,7 @@ attribute :flags, :kind_of => String
 def initialize(*args)
   super
   @action = :run
+  Chef::Log.warn("Please use the powershell_script resource in Chef Client 11.6+") if Gem::Requirement.new("> 11.5").satisfied_by?(Gem::Version.new(::Chef::VERSION))
 end
 
 def interpreter
