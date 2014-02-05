@@ -3,6 +3,12 @@ powershell Cookbook CHANGELOG
 This file is used to list changes made in each version of the powershell cookbook.
 
 
+v3.0.0 (2014-02-05)
+-------------------
+* [COOK-4130] - Refactor Powershell cookbook to allow installing PowerShell 3.0 and 4.0
+* [COOK-4132] - Warn user if they are still using these LWRPs in Chef 11.6.x
+
+
 v2.0.0 (2014-01-03)
 -------------------
 [COOK-4168] Circular dep on powershell - moving powershell libraries into windows. removing dependency on powershell
