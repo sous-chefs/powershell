@@ -27,17 +27,17 @@ action :run do
     # default flags
     flags = [
       # Hides the copyright banner at startup.
-      "-NoLogo",
+      '-NoLogo',
       # Does not present an interactive prompt to the user.
-      "-NonInteractive",
+      '-NonInteractive',
       # Does not load the Windows PowerShell profile.
-      "-NoProfile",
+      '-NoProfile',
       # always set the ExecutionPolicy flag
       # see http://technet.microsoft.com/en-us/library/ee176961.aspx
-      "-ExecutionPolicy RemoteSigned",
+      '-ExecutionPolicy RemoteSigned',
       # Powershell will hang if STDIN is redirected
       # http://connect.microsoft.com/PowerShell/feedback/details/572313/powershell-exe-can-hang-if-stdin-is-redirected
-      "-InputFormat None"
+      '-InputFormat None'
     ]
 
     # user-provided flags
@@ -50,7 +50,7 @@ action :run do
     command = ensure_windows_friendly_path(script_file.path)
 
     # Chef::Resource::Execute in Chef >= 0.10.8 has first-class Win32 support
-    if Gem::Version.create(Chef::VERSION) >= Gem::Version.create("0.10.8")
+    if Gem::Version.create(Chef::VERSION) >= Gem::Version.create('0.10.8')
       execute.cwd(cwd)
       execute.environment(@new_resource.environment)
     else
@@ -96,7 +96,7 @@ end
 # did not support the 'environment' attribute.
 def create_env_wrapper(command, environment)
   if environment
-    env_string = environment.map{ |k,v| "$env:#{k}='#{v}'" }.join('; ')
+    env_string = environment.map { |k, v| "$env:#{k}='#{v}'" }.join('; ')
     "& { #{env_string}; #{command} }"
   else
     command

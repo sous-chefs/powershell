@@ -1,22 +1,80 @@
-powershell cookbook
+Powershell Cookbook
 ===================
-Installs and configures PowerShell 2.0.  Also includes a resource/provider for executing scripts using the PowerShell interpreter.
 
+Installs and configures PowerShell 2.0, 3.0 or 4.0.
+
+For users of Chef 10 without the `powershell_script` built-in resource, this cookbook also includes a resource/provider for executing scripts using the PowerShell interpreter.
 
 Requirements
 ------------
-### Platforms
-- Windows XP
-- Windows Server 2003 (R1, R2)
-- Windows Vista
-- Windows 7
-- Windows Server 2008 (R1, R2)
 
+### Platforms
+
+Not every version of Windows supports every version of Powershell. The following table illustrates Powershell support across the Windows family. **Included** means that the base installation of the operating system includes the indicated version of Powershell.
+
+<table>
+  <tr>
+    <th>Windows Version</th>
+    <th>PowerShell 2.0</th>
+    <th>PowerShell 3.0</th>
+    <th>PowerShell 4.0</th>
+  </tr>
+  <tr>
+    <td>Windows XP</td>
+    <td>Supported</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Windows Server 2003 / 2003 R2</td>
+    <td>Supported</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Windows Server 2008 / Vista</td>
+    <td>Supported</td>
+    <td>Supported</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Windows Server 2008 R2</td>
+    <td>Supported</td>
+    <td>Included</td>
+    <td>Supported</td>
+  </tr>
+  <tr>
+    <td>Windows Server 2012 / Windows 8</td>
+    <td>Supported</td>
+    <td>Included</td>
+    <td>Supported</td>
+  </tr>
+  <tr>
+    <td>Windows Server 2012R2 / Windows 8.1</td>
+    <td></td>
+    <td></td>
+    <td>Included</td>
+  </tr> 
+</table>
+
+### Cookbooks
+
+* windows
+
+PowerShell also requires the appropriate version of the Microsoft .NET Framework to be installed, if the operating system does not ship with that version. The following community cookbooks are used to install the correct version of the .NET Framework:
+
+* ms_dotnet2
+* ms_dotnet4
+* ms_dotnet45
 
 Resource/Provider
 -----------------
+
+**Note**: In Chef 11, use the built-in [powershell_script](http://docs.opscode.com/resource_powershell_script.html) resource.
+
 ### `powershell`
-Execute a script using the powershell interpreter (much like the script resources for bash, csh, perl, python and ruby). A temporary file is created and executed like other script resources, rather than run inline. By their nature, Script resources are not idempotent, as they are completely up to the user's imagination. Use the `not_if` or `only_if` meta parameters to guard the resource for idempotence.
+
+Execute a script using the PowerShell interpreter (much like the script resources for bash, csh, perl, python and ruby). A temporary file is created and executed like other script resources, rather than run inline. By their nature, Script resources are not idempotent, as they are completely up to the user's imagination. Use the `not_if` or `only_if` meta parameters to guard the resource for idempotence.
 
 #### Actions
 
@@ -24,16 +82,16 @@ Execute a script using the powershell interpreter (much like the script resource
 
 #### Attribute Parameters
 
-- command: name attribute. Name of the command to execute.
-- code: quoted string of code to execute.
-- creates: a file this command creates - if the file exists, the command will not be run.
-- cwd: current working directory to run the command from.
-- flags: command line flags to pass to the interpreter when invoking.
-- environment: A hash of environment variables to set before running this command.
-- user: A user name or user ID that we should change to before running this command.
-- group: A group name or group ID that we should change to before running this command.
-- returns: The return value of the command (may be an array of accepted values) - this resource raises an exception if the return value(s) do not match.
-- timeout: How many seconds to let the command run before timing it out.
+- `command`: name attribute. Name of the command to execute.
+- `code`: quoted string of code to execute.
+- `creates`: a file this command creates - if the file exists, the command will not be run.
+- `cwd`: current working directory to run the command from.
+- `flags`: command line flags to pass to the interpreter when invoking.
+- `environment`: A hash of environment variables to set before running this command.
+- `user`: A user name or user ID that we should change to before running this command.
+- `group`: A group name or group ID that we should change to before running this command.
+- `returns`: The return value of the command (may be an array of accepted values). This resource raises an exception if the return value(s) do not match.
+- `timeout`: How many seconds to let the command run before timing it out.
 
 #### Examples
 
@@ -106,7 +164,8 @@ end
 Mixin
 -----
 ### `Chef::Mixin::PowershellOut`
-Mixin to execute powershell commands during compile time.  Most useful if needing powershell to drive LWRP behavior
+
+Mixin to execute powershell commands during compile time.  Most useful if needing powershell to drive LWRP behavior.
 
 #### Parameters
 
@@ -128,17 +187,24 @@ cmd = powershell_out(script, {architecture: :i386, user: "vagrant", password: "v
 Chef::Log.info(cmd.stdout)
 ```
 
-
 Usage
 -----
+
+**Note**: The installation may require a restart of the node being configured before PowerShell can be used.
+
 ### default
-Include the default recipe in a run list, to ensure PowerShell 2.0 is installed.
+
+The default recipe does nothing.
+
+### powershell2
+
+Include the `powershell2` recipe in a run list, to ensure PowerShell 2.0 is installed.
 
 On the following versions of Windows the PowerShell 2.0 package will be downloaded from Microsoft and installed:
 
 - Windows XP
 - Windows Server 2003
-- Windows Server 2008 R1
+- Windows Server 2008
 - Windows Vista
 
 On the following versions of Windows, PowerShell 2.0 is present and must just be enabled:
@@ -147,15 +213,30 @@ On the following versions of Windows, PowerShell 2.0 is present and must just be
 - Windows Server 2008 R2
 - Windows Server 2008 R2 Core
 
-**PLEASE NOTE** - The installation may require a restart of the node being configured before PowerShell (or the powershell script resource) can be used (yeah Windows!).
+### powershell3
 
+Include the `powershell3` recipe in a run list, to install PowerShell 3.0 is installed on applicable platforms. If a platform is not supported or if it already includes PowerShell 3.0, an exception will be raised.
+
+### powershell4
+
+Include the `powershell4` recipe in a run list, to install PowerShell 4.0 is installed on applicable platforms. If a platform is not supported or if it already includes PowerShell 4.0, an exception will be raised.
+
+References
+----------
+
+* Installing [Windows Management Framework 2.0](http://support.microsoft.com/kb/968929)
+* Installing [Windows Management Framework 3.0](http://www.microsoft.com/en-us/download/details.aspx?id=34595)
+* Installing [Windows Management Framework 4.0](http://www.microsoft.com/en-us/download/details.aspx?id=40855)
 
 License & Authors
 -----------------
-- Author:: Seth Chisamore (<schisamo@opscode.com>)
+
+- Author:: Seth Chisamore (<schisamo@getchef.com>)
+- Author:: Julian Dunn (<jdunn@getchef.com>)
 
 ```text
-Copyright:: 2011-2012, Opscode, Inc
+
+Copyright:: 2011-2014, Chef Software, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
