@@ -40,9 +40,14 @@ when 'windows'
       installer_type :custom
       options '/quiet /norestart'
       action :install
-      not_if { registry_data_exists?('HKLM\SOFTWARE\Microsoft\PowerShell\3\PowerShellEngine', { :name => 'PowerShellVersion', :type => :string, :data => '4.0' }) }
-    end
-
+      not_if do
+        begin
+          registry_data_exists?('HKLM\SOFTWARE\Microsoft\PowerShell\3\PowerShellEngine', { :name => 'PowerShellVersion', :type => :string, :data => '4.0' }) 
+        rescue Chef::Exceptions::Win32RegKeyMissing
+          false
+        end
+      end
+    end 
   else
     Chef::Log.warn("PowerShell 4.0 is not supported or already installed on this version of Windows: #{node['platform_version']}")
   end
