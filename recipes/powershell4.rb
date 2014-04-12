@@ -47,8 +47,7 @@ when 'windows'
           false
         end
       end
-    end
-    
+    end 
   else
     Chef::Log.warn("PowerShell 4.0 is not supported or already installed on this version of Windows: #{node['platform_version']}")
   end
