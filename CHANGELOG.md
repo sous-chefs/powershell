@@ -3,6 +3,11 @@ powershell Cookbook CHANGELOG
 This file is used to list changes made in each version of the powershell cookbook.
 
 
+v3.0.2 (2014-04-23)
+-------------------
+- [COOK-4480] - Fix download URL for Windows6.0-KB968930-x86.msu
+
+
 v3.0.0 (2014-02-05)
 -------------------
 * [COOK-4130] - Refactor Powershell cookbook to allow installing PowerShell 3.0 and 4.0
