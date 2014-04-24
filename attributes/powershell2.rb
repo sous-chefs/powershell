@@ -38,7 +38,7 @@ if node['platform_family'] == 'windows'
   when '6.0'
     case node['kernel']['machine']
     when 'i386'
-      default['powershell']['powershell2']['url'] = 'http://download.microsoft.com/download/2/8/6/28686477-3242-4E96-9009-30B16BED89AF/Windows6.0-KB968930-x86.msu'
+      default['powershell']['powershell2']['url'] = 'http://download.microsoft.com/download/A/7/5/A75BC017-63CE-47D6-8FA4-AFB5C21BAC54/Windows6.0-KB968930-x86.msu'
       default['powershell']['powershell2']['checksum'] = '1c1fee616014da6e52aa7a117b9bcc3a79ac3d838d686b8afe4f723630225fa2'
     when 'x86_64'
       default['powershell']['powershell2']['url'] = 'http://download.microsoft.com/download/2/8/6/28686477-3242-4E96-9009-30B16BED89AF/Windows6.0-KB968930-x64.msu'
