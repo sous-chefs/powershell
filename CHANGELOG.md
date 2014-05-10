@@ -2,22 +2,23 @@ powershell Cookbook CHANGELOG
 =============================
 This file is used to list changes made in each version of the powershell cookbook.
 
+v3.0.4 (2014-05-09)
+-------------------
+- [COOK-4634] - Implement Powershell 5.0 (preview)
+- [COOK-4638] - PowerShell 4.0 install failing on clean Windows 2008 R2 install.
 
 v3.0.2 (2014-04-23)
 -------------------
 - [COOK-4480] - Fix download URL for Windows6.0-KB968930-x86.msu
-
 
 v3.0.0 (2014-02-05)
 -------------------
 * [COOK-4130] - Refactor Powershell cookbook to allow installing PowerShell 3.0 and 4.0
 * [COOK-4132] - Warn user if they are still using these LWRPs in Chef 11.6.x
 
-
 v2.0.0 (2014-01-03)
 -------------------
 [COOK-4168] Circular dep on powershell - moving powershell libraries into windows. removing dependency on powershell
-
 
 v1.1.2
 ------
