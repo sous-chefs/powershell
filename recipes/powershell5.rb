@@ -21,6 +21,8 @@
 # PowerShell 5.0 Preview Download Page
 # http://www.microsoft.com/en-us/download/details.aspx?id=42316
 
+include_recipe 'powershell::powershell2'
+
 case node['platform']
 when 'windows'
 
