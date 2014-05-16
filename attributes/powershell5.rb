@@ -23,11 +23,11 @@ if node['platform_family'] == 'windows'
   when '6.3'
     case node['kernel']['machine']
     when 'i386'
-      default['powershell']['powershell5']['url'] = 'http://download.microsoft.com/download/3/7/0/3703817C-26C8-4D6D-9CF0-548E589EFCD8/Windows8.1-KB2894868-x86.msu'
-      default['powershell']['powershell5']['checksum'] = 'ca8526023e0090b442d07b093484cab6aede9110679e99fbd7b6f764985cae77'
+      default['powershell']['powershell5']['url'] = 'http://download.microsoft.com/download/5/5/2/55277C4B-75D1-40FB-B99C-4EAFA249F645/WindowsBlue-KB2894868-x86.msu'
+      default['powershell']['powershell5']['checksum'] = 'd552a5747b2e11bc782e2b13d85468da14384b4a608b9cb44f40cc6c85ad2f76'
     when 'x86_64'
-      default['powershell']['powershell5']['url'] = 'http://download.microsoft.com/download/3/7/0/3703817C-26C8-4D6D-9CF0-548E589EFCD8/Windows8.1-KB2894868-x64.msu'
-      default['powershell']['powershell5']['checksum'] = '116f49e5bead7aa9fe71b37db3b0cc25a57091bf4a38840a735619d2819e292f'
+      default['powershell']['powershell5']['url'] = 'http://download.microsoft.com/download/5/5/2/55277C4B-75D1-40FB-B99C-4EAFA249F645/WindowsBlue-KB2894868-x64.msu'
+      default['powershell']['powershell5']['checksum'] = 'fae8c9c62b834770df385e0634592d62992b2ee8ad4cd31b7ba52248911b2a07'
     end
   end
 end
