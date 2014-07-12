@@ -2,6 +2,11 @@ powershell Cookbook CHANGELOG
 =============================
 This file is used to list changes made in each version of the powershell cookbook.
 
+v3.0.5 (2014-07-11)
+-------------------
+- Use attributes for bits_4 rather than hardcoding (@jmauro)
+- Update to Powershell 5.0 May 2014 preview
+
 v3.0.4 (2014-05-09)
 -------------------
 - [COOK-4634] - Implement Powershell 5.0 (preview)
