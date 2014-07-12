@@ -218,7 +218,7 @@ References
 * Installing [Windows Management Framework 2.0](http://support.microsoft.com/kb/968929)
 * Installing [Windows Management Framework 3.0](http://www.microsoft.com/en-us/download/details.aspx?id=34595)
 * Installing [Windows Management Framework 4.0](http://www.microsoft.com/en-us/download/details.aspx?id=40855)
-* Installing [Windows Management Framework 5.0](http://www.microsoft.com/en-us/download/details.aspx?id=42316)
+* Installing [Windows Management Framework 5.0](http://www.microsoft.com/en-us/download/details.aspx?id=42936)
 
 License & Authors
 -----------------
