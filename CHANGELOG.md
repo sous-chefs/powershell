@@ -2,6 +2,10 @@ powershell Cookbook CHANGELOG
 =============================
 This file is used to list changes made in each version of the powershell cookbook.
 
+v3.0.7 (2014-07-16)
+-------------------
+- Truly fix broken cookbook upload
+
 v3.0.6 (2014-07-15)
 -------------------
 - Fixes a broken cookbook upload
