@@ -34,8 +34,8 @@ when 'windows'
       include_recipe 'powershell::powershell2'
 
       windows_package 'Windows Management Framework Bits' do
-        source default['powershell']['bits_4']['url']
-        checksum default['powershell']['bits_4']['checksum']
+        source node['powershell']['bits_4']['url']
+        checksum node['powershell']['bits_4']['checksum']
         installer_type :custom
         options '/quiet /norestart'
         action :install
