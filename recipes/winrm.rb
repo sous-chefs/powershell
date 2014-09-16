@@ -25,8 +25,8 @@ when 'windows'
   # Alternative way to check winrm config to the one below is - Use command Get-DSCResource
     powershell "enable winrm" do
       code <<-EOH
-      $result = winrm get winrm/config
-      if ($result -match "Error")
+      winrm get winrm/config/listener?Address=*+Transport=HTTP
+      if ($LASTEXITCODE -eq 1)
       {
         winrm quickconfig -q
         winrm set winrm/config/winrs @{MaxMemoryPerShellMB="300"}
@@ -37,7 +37,6 @@ when 'windows'
       }
       EOH
     end
-
 else
   Chef::Log.warn('WinRM can only be enabled on the Windows platform.')
 end
