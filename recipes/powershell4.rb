@@ -39,7 +39,7 @@ when 'windows'
       checksum node['powershell']['powershell4']['checksum']
       installer_type :custom
 
-      case ['powershell']['installation_reboot_mode']
+      case node['powershell']['installation_reboot_mode']
         when "no_reboot" || "delayed_reboot"
           options '/quiet /norestart'
         when "immediate_reboot"
