@@ -26,9 +26,7 @@ when 'windows'
   shell_out = Mixlib::ShellOut.new(winrm_cmd)
   shell_out.run_command
 
-  if shell_out.exitstatus == 1
-    include_recipe 'powershell::winrm'
-  end
+  include_recipe 'powershell::winrm' if shell_out.exitstatus == 1
 
   dsc_script 'test dsc' do
     code <<-EOH
