@@ -21,22 +21,13 @@
 case node['platform']
 when 'windows'
 
-  # Check if winrm is already configured. if not then configure
-  # Alternative way to check winrm config to the one below is - Use command Get-DSCResource
-    powershell "enable winrm" do
-      code <<-EOH
-      winrm get winrm/config/listener?Address=*+Transport=HTTP
-      if ($LASTEXITCODE -eq 1)
-      {
-        winrm quickconfig -q
-        winrm set winrm/config/winrs @{MaxMemoryPerShellMB="300"}
-        winrm set winrm/config @{MaxTimeoutms="1800000"}
-        winrm set winrm/config/service @{AllowUnencrypted="false"}
-        winrm set winrm/config/service/auth @{Basic="true"}
-        netsh advfirewall firewall set rule name="Windows Remote Management (HTTP-In)" profile=public protocol=tcp localport=5985 remoteip=localsubnet new remoteip=any
-      }
-      EOH
-    end
+  # Configure winrm
+  # use attributes to add other configuration
+  powershell 'enable winrm' do
+    code <<-EOH
+      winrm quickconfig -q
+    EOH
+  end
 else
   Chef::Log.warn('WinRM can only be enabled on the Windows platform.')
 end

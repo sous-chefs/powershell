@@ -21,5 +21,5 @@ if node['platform_family'] == 'windows'
   # INSTALLATION_REBOOT_MODE = "no_reboot". It skips reboot required after powershell installation.
   # INSTALLATION_REBOOT_MODE = "immediate_reboot". Used for immediate node reboot after powershell installation.
   # INSTALLATION_REBOOT_MODE = "delayed_reboot". Used for node reboot after chef-client run.
-  default['powershell']['installation_reboot_mode'] = ENV['INSTALLATION_REBOOT_MODE'] || "no_reboot"
+  default['powershell']['installation_reboot_mode'] = ENV['INSTALLATION_REBOOT_MODE'] || 'no_reboot'
 end

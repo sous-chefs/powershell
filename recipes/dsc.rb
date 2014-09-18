@@ -17,11 +17,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 case node['platform']
 when 'windows'
-  include_recipe "powershell::powershell4"
-  include_recipe "powershell::winrm"
- 
+  include_recipe 'powershell::powershell4'
+
+  winrm_cmd = 'powershell.exe winrm get winrm/config/listener?Address=*+Transport=HTTP'
+  shell_out = Mixlib::ShellOut.new(winrm_cmd)
+  shell_out.run_command
+
+  if shell_out.exitstatus == 1
+    include_recipe 'powershell::winrm'
+  end
+
   dsc_script 'test dsc' do
     code <<-EOH
 Environment 'testdsc'
@@ -30,7 +38,7 @@ Environment 'testdsc'
   Value = 'Test Success'
 }
 EOH
-  end  
+  end
 else
   Chef::Log.warn('DSC can only be run on the Windows platform.')
 end
