@@ -16,8 +16,10 @@
 # limitations under the License.
 #
 
-action :install do
-  raise ArgumentError, "Argument role is required for user creation" unless @new_resource.module_path
+actions :install
 
-  # Todo
-end
+default_action :install
+# attribute :module_name, :kind_of => String, :required => true, :name_attribute => true
+attribute :module_name, :kind_of => String, :name_attribute => true
+attribute :module_path, :kind_of => String
+attribute :download_from, :kind_of => String
