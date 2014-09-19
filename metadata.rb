@@ -11,6 +11,8 @@ recipe 'powershell::powershell2', 'Installs PowerShell 2.0'
 recipe 'powershell::powershell3', 'Installs PowerShell 3.0'
 recipe 'powershell::powershell4', 'Installs PowerShell 4.0'
 recipe 'powershell::powershell5', 'Installs PowerShell 5.0'
+recipe 'powershell::winrm', 'Configures WinRM'
+recipe 'powershell::dsc', 'Desired State Configuration'
 
 supports 'windows'
 depends 'windows', '>= 1.2.8'
