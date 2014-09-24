@@ -17,6 +17,8 @@
 #
 
 require_relative 'powershell_module_resource'
+require 'tmpdir'
+require 'net/http'
 
 class PowershellModuleProvider < Chef::Provider
   def initialize(powershell_module, run_context)
@@ -34,6 +36,8 @@ class PowershellModuleProvider < Chef::Provider
   def load_current_resource
   end
 
+  private
+
   def install_module
     fail ArgumentError, "Required attribute 'module_path' or 'download_from' for module installation" unless @new_resource.module_path || @new_resource.download_from
 
@@ -50,7 +54,70 @@ class PowershellModuleProvider < Chef::Provider
     end
 
     if @new_resource.download_from
-      # Todo: 
+      # download module to temp location
+      download_file = download_module()
+
+      # extract downloaded file to $psmodulepath
+      ensure_rubyzip_gem_installed
+      unzip_module(download_file)
+
+      # remove temp
+      FileUtils.rm_rf(File.dirname(download_file))
     end
+  end
+
+  def ensure_rubyzip_gem_installed
+    begin
+      require 'zip'
+    rescue LoadError
+      Chef::Log.info("Missing gem 'rubyzip'...installing now.")
+      chef_gem "rubyzip" do
+        version node['windows']['rubyzipversion']
+      end
+      require 'zip'
+    end
+  end
+
+  def unzip_module(download_file)
+    ps_module_path = "#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/"
+    Zip::File.open(download_file) do |zip|
+      zip.each do |entry|
+        path = ::File.join(ps_module_path, entry.name)
+        FileUtils.mkdir_p(::File.dirname(path))
+        if ::File.exists?(path)
+          FileUtils.rm(path)
+        end
+        zip.extract(entry, path)
+      end
+    end
+  end
+
+  def download_module
+    target = Dir.mktmpdir + @new_resource.module_name
+    download_url = @new_resource.download_from
+    uri = URI(download_url)
+    Net::HTTP.start(uri.host) do |http|
+      begin
+          file = open(target, 'wb')
+          http.request_get(uri.request_uri) do |response|
+            case response
+            when Net::HTTPSuccess then
+              file = open(target, 'wb')
+              response.read_body do |segment|
+                file.write(segment)
+              end
+            when Net::HTTPRedirection then
+              location = response['location']
+              puts "WARNING: Redirected throw #{location}"
+              download_chef(location, target)
+            else
+              puts "ERROR: Download failed. Http response code: #{response.code}"
+            end
+          end
+      ensure
+        file.close if file
+      end
+    end
+    target
   end
 end
