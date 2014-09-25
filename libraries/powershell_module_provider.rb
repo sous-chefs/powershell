@@ -43,9 +43,8 @@ class PowershellModuleProvider < Chef::Provider
 
     fail ArgumentError, "Required attribute 'module_name' for module installation" unless @new_resource.module_name
 
-    ps_module_path = FileUtils::mkdir_p("#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/#{@new_resource.module_name}").first
-
     if @new_resource.module_path
+      ps_module_path = FileUtils::mkdir_p("#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/#{@new_resource.module_name}").first
       @new_resource.module_path(@new_resource.module_path.gsub(/\\/,"/"))
       module_dir = Dir["#{@new_resource.module_path}/*.psd1","#{@new_resource.module_path}/*.psm1","#{@new_resource.module_path}/*.dll"]
       module_dir.each do |filename|
@@ -62,7 +61,7 @@ class PowershellModuleProvider < Chef::Provider
       unzip_module(download_file)
 
       # remove temp
-      FileUtils.rm_rf(File.dirname(download_file))
+      FileUtils.rm_rf(::File.dirname(download_file))
     end
   end
 
@@ -92,9 +91,9 @@ class PowershellModuleProvider < Chef::Provider
     end
   end
 
-  def download_module
-    target = Dir.mktmpdir + @new_resource.module_name
-    download_url = @new_resource.download_from
+  def download_module(download_url=nil, target=nil)
+    target = Dir.mktmpdir + @new_resource.module_name if target.nil?
+    download_url = @new_resource.download_from if download_url.nil?
     uri = URI(download_url)
     Net::HTTP.start(uri.host) do |http|
       begin
@@ -109,7 +108,7 @@ class PowershellModuleProvider < Chef::Provider
             when Net::HTTPRedirection then
               location = response['location']
               puts "WARNING: Redirected throw #{location}"
-              download_chef(location, target)
+              download_module(location, target)
             else
               puts "ERROR: Download failed. Http response code: #{response.code}"
             end
