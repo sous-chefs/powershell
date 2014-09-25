@@ -33,6 +33,12 @@ class PowershellModuleProvider < Chef::Provider
     end
   end
 
+  def action_uninstall
+    converge_by("Powershell Module '#{@powershell_module.module_name}'") do
+      uninstall_module
+    end
+  end
+
   def load_current_resource
   end
 
@@ -62,6 +68,17 @@ class PowershellModuleProvider < Chef::Provider
 
       # remove temp
       FileUtils.rm_rf(::File.dirname(download_file))
+    end
+  end
+
+  def uninstall_module
+    fail ArgumentError, "Required attribute 'module_name' for module installation" unless @new_resource.module_name
+    module_dir = "#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/#{@new_resource.module_name}"
+    if Dir.exists?(module_dir)
+      FileUtils.rm_rf(module_dir)
+      Chef::Log.info("Powershell Module '#{@powershell_module.module_name}' uninstallation completed successfully")
+    else
+      Chef::Log.info("Unable to locate module '#{@new_resource.module_name}'")
     end
   end
 

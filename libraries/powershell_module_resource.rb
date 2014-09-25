@@ -29,6 +29,7 @@ class PowershellModule < Chef::Resource::Package
     @module_path = nil
     @download_from = nil
     @allowed_actions.push(:install)
+    @allowed_actions.push(:uninstall)
     @action = :install
     provider(PowershellModuleProvider)
   end
