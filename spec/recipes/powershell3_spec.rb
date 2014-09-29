@@ -9,35 +9,32 @@ describe 'powershell::powershell3' do
       end.converge(described_recipe)
   end
 
-  # To do
-  # context "when windows_version is windows_server_2008" do
-  #   before do
-  #     @windows_version = double(:windows_server_2008? => true, :windows_server_2008_r2? => false, :windows_7? => false)
-  #     allow(Chef::ReservedNames::Win32::Version).to receive(:new).and_return(@windows_version)
-  #   end
+  context "when windows_version is windows_server_2008_r2" do
+    before do
+      @windows_version = double(:windows_server_2008? => false, :windows_server_2008_r2? => true, :windows_7? => false)
+      allow(Chef::ReservedNames::Win32::Version).to receive(:new).and_return(@windows_version)
+      registry = double
+      allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
+      allow(registry).to receive(:data_exists?).and_return(true)
+    end
 
-  #   it "installs windows package windows managemet framework bits and windows management framework core 3.0" do
-  #     #expect(chef_run).to receive(:include_recipe).with('powershell::powershell2')
-  #     #Chef::Recipe.any_instance.stub(:include_recipe).with('powershell::powershell2').and_return(true)
-  #     allow(chef_run).to receive(:include_recipe).with('powershell::powershell2').and_return(true)
-
-  #     #expect(chef_run).to install_windows_package('Windows Management Framework Core').with(source: "https://powershelltest.com", checksum: "12345", installer_type: :custom, options: '/quiet/norestart')
-  #     Chef::Recipe.any_instance.stub(:include_recipe).with('powershell::powershell2').and_return(true)
-  #     #expect(chef_run).to include_recipe('ms_dotnet4')
-  #     #expect(chef_run).to install_windows_package('Windows Management Framework Core').with(source: "https://powershelltest.com", checksum: "12345", installer_type: :custom, options: '/quiet/norestart')
-  #   end
-  # end
+    it "only include ms_dotnet4 when powershell 3 is installed" do
+      expect(chef_run).to include_recipe('ms_dotnet4')
+    end
+  end  
 
   context "when windows_version is windows_server_2008_r2" do
     before do
       @windows_version = double(:windows_server_2008? => false, :windows_server_2008_r2? => true, :windows_7? => false)
       allow(Chef::ReservedNames::Win32::Version).to receive(:new).and_return(@windows_version)
+      registry = double
+      allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
+      allow(registry).to receive(:data_exists?).and_return(false)
     end
 
-    it "installs windows package windows management framework core 3.0" do
+    it "installs windows package windows management framework core 3.0 when powershell 3 doesn't exist" do
       expect(chef_run).to include_recipe('ms_dotnet4')
-      # To do
-      #expect(chef_run).to install_windows_package('Windows Management Framework Core').with(source: "https://powershelltest.com", checksum: "12345", installer_type: :custom, options: '/quiet/norestart')
+      expect(chef_run).to install_windows_package('Windows Management Framework Core 3.0').with(source: "https://powershelltest.com", checksum: "12345", installer_type: :custom, options: '/quiet /norestart')
     end
   end  
 
@@ -45,12 +42,29 @@ describe 'powershell::powershell3' do
     before do
       @windows_version = double(:windows_server_2008? => false, :windows_server_2008_r2? => false, :windows_7? => true)
       allow(Chef::ReservedNames::Win32::Version).to receive(:new).and_return(@windows_version)
+      registry = double
+      allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
+      allow(registry).to receive(:data_exists?).and_return(true)
     end
 
-    it "installs windows package windows management framework core 3.0" do
+    it "only include ms_dotnet4 when powershell 3 is installed" do
       expect(chef_run).to include_recipe('ms_dotnet4')
-      # To do
-      #expect(chef_run).to install_windows_package('Windows Management Framework Core').with(source: "https://powershelltest.com", checksum: "12345", installer_type: :custom, options: '/quiet/norestart')
+    end
+  end
+
+  context "when windows_version is windows_7" do
+    before do
+      @windows_version = double(:windows_server_2008? => false, :windows_server_2008_r2? => false, :windows_7? => true)
+      allow(Chef::ReservedNames::Win32::Version).to receive(:new).and_return(@windows_version)
+      registry = double
+      allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
+      allow(registry).to receive(:data_exists?).and_return(false)
+    end
+
+    it "installs windows package windows management framework core 3.0 when powershell 3 doesn't exist" do
+      expect(chef_run).to include_recipe('ms_dotnet4')
+      expect(chef_run).to install_windows_package('Windows Management Framework Core 3.0').with(source: "https://powershelltest.com", checksum: "12345", installer_type: :custom, options: '/quiet /norestart')
     end
   end  
+
 end
