@@ -16,11 +16,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
+
 case node['platform']
 when 'windows'
   include_recipe 'powershell::powershell4'
-  include_recipe 'powershell::winrm'
+
+  winrm_cmd = 'powershell.exe winrm get winrm/config/listener?Address=*+Transport=HTTP'
+  shell_out = Mixlib::ShellOut.new(winrm_cmd)
+  shell_out.run_command
+
+  if shell_out.exitstatus == 1
+    include_recipe 'powershell::winrm' if shell_out.exitstatus == 1
+  end
 
   dsc_script 'test dsc' do
     code <<-EOH
