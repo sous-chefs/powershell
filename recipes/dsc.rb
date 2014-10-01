@@ -1,9 +1,9 @@
 #
-# Author:: Seth Chisamore (<schisamo@opscode.com>)
+# Author:: Mukta Aphale (<mukta.aphale@clogeny.com>)
 # Cookbook Name:: powershell
-# Attribute:: default
+# Recipe:: dsc
 #
-# Copyright:: Copyright (c) 2011 Opscode, Inc.
+# Copyright:: Copyright (c) 2014 Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,9 +17,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-if node['platform_family'] == 'windows'
-  # INSTALLATION_REBOOT_MODE = "no_reboot". It skips reboot required after powershell installation.
-  # INSTALLATION_REBOOT_MODE = "immediate_reboot". Used for immediate node reboot after powershell installation.
-  # INSTALLATION_REBOOT_MODE = "delayed_reboot". Used for node reboot after chef-client run.
-  default['powershell']['installation_reboot_mode'] = ENV['INSTALLATION_REBOOT_MODE'] || 'no_reboot'
+case node['platform']
+when 'windows'
+  include_recipe 'powershell::powershell4'
+  include_recipe 'powershell::winrm'
+
+  dsc_script 'test dsc' do
+    code <<-EOH
+Environment 'testdsc'
+{
+  Name = 'TESTDSC'
+  Value = 'Test Success'
+}
+EOH
+  end
+else
+  Chef::Log.warn('DSC can only be run on the Windows platform.')
 end
