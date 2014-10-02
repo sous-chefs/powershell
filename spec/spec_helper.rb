@@ -1,2 +1,3 @@
-
-require_relative '../libraries/powershell_module_resource.rb'
+require 'chefspec'
+require 'chefspec/berkshelf'
+require 'helpers/matchers'
