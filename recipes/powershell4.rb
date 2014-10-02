@@ -40,7 +40,9 @@ when 'windows'
       installer_type :custom
 
       case node['powershell']['installation_reboot_mode']
-      when 'no_reboot' || 'delayed_reboot'
+      when 'no_reboot'
+        options '/quiet /norestart'
+      when 'delayed_reboot'
         options '/quiet /norestart'
       when 'immediate_reboot'
         options '/quiet /forcerestart'
