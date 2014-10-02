@@ -38,7 +38,16 @@ when 'windows'
       source node['powershell']['powershell4']['url']
       checksum node['powershell']['powershell4']['checksum']
       installer_type :custom
-      options '/quiet /norestart'
+
+      case node['powershell']['installation_reboot_mode']
+      when 'no_reboot'
+        options '/quiet /norestart'
+      when 'delayed_reboot'
+        options '/quiet /norestart'
+      when 'immediate_reboot'
+        options '/quiet /forcerestart'
+      end
+
       action :install
       not_if do
         begin
