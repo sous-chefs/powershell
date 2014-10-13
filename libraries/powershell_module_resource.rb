@@ -25,37 +25,19 @@ class PowershellModule < Chef::Resource::Package
 
   def initialize(name, run_context)
     super
-    @resource_name = :powershell_module
-    @module_path = nil
-    @download_from = nil
+    @resource_name = :powershell_module    
     @allowed_actions.push(:install)
     @allowed_actions.push(:uninstall)
     @action = :install
     provider(PowershellModuleProvider)
+
+    #resource default attributes
+    @destination = "#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/"
+    @package_name = name    
   end
 
-  def module_path(arg=nil)
-    set_or_return(
-      :module_path,
-      arg,
-      :kind_of => String
-    )
+  def destination(arg=nil)
+    set_or_return(:destination, arg, :kind_of => String)
   end
-
-  def module_name(arg=nil)
-    set_or_return(
-      :module_name,
-      arg,
-      :kind_of => String,
-      :name_attribute => true
-    )
-  end
-
-  def download_from(arg=nil)
-    set_or_return(
-      :download_from,
-      arg,
-      :kind_of => String
-    )
-  end    
+    
 end

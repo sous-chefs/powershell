@@ -19,22 +19,29 @@
 require_relative 'powershell_module_resource'
 require 'tmpdir'
 require 'net/http'
+require 'chef'
+require 'chef/mixin/shell_out'
+require 'uri'
 
 class PowershellModuleProvider < Chef::Provider
+  include Chef::Mixin::ShellOut
+
   def initialize(powershell_module, run_context)
     super(powershell_module, run_context)
     @powershell_module = powershell_module
   end
 
   def action_install
-    converge_by("Powershell Module '#{@powershell_module.module_name}'") do
+    # sorce attribute was mandatory - check?
+    converge_by("Powershell Module '#{@powershell_module.package_name}'") do
       install_module
-      Chef::Log.info("Powershell Module '#{@powershell_module.module_name}' installation completed successfully")
+      Chef::Log.info("Powershell Module '#{@powershell_module.package_name}' installation completed successfully")
     end
   end
 
   def action_uninstall
-    converge_by("Powershell Module '#{@powershell_module.module_name}'") do
+    #package_name was mandatory - check?
+    converge_by("Powershell Module '#{@powershell_module.package_name}'") do
       uninstall_module
     end
   end
@@ -45,72 +52,50 @@ class PowershellModuleProvider < Chef::Provider
   private
 
   def install_module
-    fail ArgumentError, "Required attribute 'module_path' or 'download_from' for module installation" unless @new_resource.module_path || @new_resource.download_from
+    fail ArgumentError, "Required attribute 'destination' or 'source' for module installation" unless @new_resource.destination || @new_resource.source
 
-    fail ArgumentError, "Required attribute 'module_name' for module installation" unless @new_resource.module_name
+    fail ArgumentError, "Required attribute 'package_name' for module installation" unless @new_resource.package_name
 
-    if @new_resource.module_path
-      ps_module_path = FileUtils::mkdir_p("#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/#{@new_resource.module_name}").first
-      @new_resource.module_path(@new_resource.module_path.gsub(/\\/,"/"))
-      module_dir = Dir["#{@new_resource.module_path}/*.psd1","#{@new_resource.module_path}/*.psm1","#{@new_resource.module_path}/*.dll"]
+    #Check if source is a local directory or download URL
+    if Dir.exists? @new_resource.source
+      ps_module_path = FileUtils::mkdir_p("#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/#{@new_resource.package_name}").first
+      @new_resource.destination(@new_resource.destination.gsub(/\\/,"/"))
+      module_dir = Dir["#{@new_resource.source}/*.psd1","#{@new_resource.source}/*.psm1","#{@new_resource.source}/*.dll"]
       module_dir.each do |filename|
         FileUtils.cp(filename, ps_module_path)
       end
-    end
-
-    if @new_resource.download_from
+    elsif(@new_resource.source =~ URI::regexp) #Check for valid URL
       # download module to temp location
       download_file = download_module()
 
-      # extract downloaded file to $psmodulepath
-      ensure_rubyzip_gem_installed
+      # extract downloaded file to $psmodulepath      
       unzip_module(download_file)
 
       # remove temp
       FileUtils.rm_rf(::File.dirname(download_file))
-    end
+    end    
   end
 
   def uninstall_module
-    fail ArgumentError, "Required attribute 'module_name' for module installation" unless @new_resource.module_name
-    module_dir = "#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/#{@new_resource.module_name}"
+    fail ArgumentError, "Required attribute 'package_name' for module installation" unless @new_resource.package_name
+    module_dir = "#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/#{@new_resource.package_name}"
     if Dir.exists?(module_dir)
       FileUtils.rm_rf(module_dir)
-      Chef::Log.info("Powershell Module '#{@powershell_module.module_name}' uninstallation completed successfully")
+      Chef::Log.info("Powershell Module '#{@powershell_module.package_name}' uninstallation completed successfully")
     else
-      Chef::Log.info("Unable to locate module '#{@new_resource.module_name}'")
-    end
-  end
-
-  def ensure_rubyzip_gem_installed
-    begin
-      require 'zip'
-    rescue LoadError
-      Chef::Log.info("Missing gem 'rubyzip'...installing now.")
-      chef_gem "rubyzip" do
-        version node['windows']['rubyzipversion']
-      end
-      require 'zip'
+      Chef::Log.info("Unable to locate module '#{@new_resource.package_name}'")
     end
   end
 
   def unzip_module(download_file)
-    ps_module_path = "#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/"
-    Zip::File.open(download_file) do |zip|
-      zip.each do |entry|
-        path = ::File.join(ps_module_path, entry.name)
-        FileUtils.mkdir_p(::File.dirname(path))
-        if ::File.exists?(path)
-          FileUtils.rm(path)
-        end
-        zip.extract(entry, path)
-      end
-    end
+    ps_module_path = "#{ENV['PROGRAMW6432']}\\WindowsPowerShell\\Modules"       
+    ps_cmd = Mixlib::ShellOut.new("powershell.exe $shell = new-object -com shell.application; $zip = $shell.NameSpace('#{download_file.gsub("/","\\\\")}'); foreach($item in $zip.items()) { $shell.Namespace('#{ps_module_path}').copyhere($item) }")
+    ps_cmd.run_command
   end
 
   def download_module(download_url=nil, target=nil)
-    target = Dir.mktmpdir + @new_resource.module_name if target.nil?
-    download_url = @new_resource.download_from if download_url.nil?
+    target = Dir.mktmpdir + @new_resource.package_name + ".zip" if target.nil?
+    download_url = @new_resource.source if download_url.nil?
     uri = URI(download_url)
     Net::HTTP.start(uri.host) do |http|
       begin

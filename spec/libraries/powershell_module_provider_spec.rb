@@ -29,7 +29,7 @@ describe 'PowershellModuleProvider' do
 
   describe 'when installing a module' do
     it 'raise error on module path or download from missing' do
-      expect { @provider.run_action(:install) }.to raise_error(ArgumentError, "Required attribute 'module_path' or 'download_from' for module installation") 
+      expect { @provider.run_action(:install) }.to raise_error(ArgumentError, "Required attribute 'destination' or 'source' for module installation") 
     end
 
     it 'install module' do
