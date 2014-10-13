@@ -19,28 +19,27 @@
 #
 
 # This recipe required following environment variables to be set
-# ps_module_name = Its powershell module name.
-# ps_module_path = Its local path of module.
-# ps_module_url = Its remote url of module.
-# ps_module_action = Its 'install' or 'uninstall' action
+# source(Mandatory) = Local directory path(Not zipfile) or URL for the zipped module folder
+# package_name(Optional) = Name of the module. Should be same as the module file name. Resource name is the default value of package_name
+# destination(Optional) = Location where module should be installed
 
-if ENV['ps_module_action'] == "install"
-  powershell_module "install local powershell module" do
-    module_name ENV['ps_module_name']
-    module_path ENV['ps_module_path']
-    action :install
-  end
 
-  powershell_module "install powershell module from remote" do
-    module_name ENV['ps_module_name']
-    download_from ENV['ps_module_url']
-    action :install
-  end
+#Sample code for Testing
+=begin
+powershell_module "PsUrl" do
+  package_name "PsUrl"
+  source "C:\\PsUrl"
 end
 
-if ENV['ps_module_action'] == "uninstall"
-  powershell_module "uninstall powershell module" do
-    module_name ENV['ps_module_name']
-    action :uninstall
-  end
+
+# this will uninstall the ps module
+powershell_module "Uninstall PsUrl" do
+  package_name "PsUrl"
+  action :uninstall
+end
+=end
+
+powershell_module "chef-repo" do
+  package_name "chef-repo"
+  source "https://s3.amazonaws.com/chef-azure-extn/sid-linux-dev/chef-repo.zip"
 end
