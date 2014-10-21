@@ -20,10 +20,11 @@ require 'chef'
 require_relative 'powershell_module_provider'
 
 class PowershellModule < Chef::Resource::Package
+  state_attrs :enabled
 
   provides :powershell_module, :on_platforms => ["windows"]
 
-  def initialize(name, run_context)
+  def initialize(name, run_context = nil)
     super
     @resource_name = :powershell_module    
     @allowed_actions.push(:install)
@@ -34,10 +35,19 @@ class PowershellModule < Chef::Resource::Package
     #resource default attributes
     @destination = "#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/"
     @package_name = name    
+    @enabled = nil
   end
 
   def destination(arg=nil)
     set_or_return(:destination, arg, :kind_of => String)
+  end
+
+  def enabled(arg=nil)
+    set_or_return(
+      :enabled,
+      arg,
+      :kind_of => [ TrueClass, FalseClass ]
+    )
   end
     
 end
