@@ -47,6 +47,8 @@ class PowershellModuleProvider < Chef::Provider
   end
 
   def load_current_resource
+    @current_resource = PowershellModule.new(@new_resource.name)
+    Dir.exists?(@new_resource.destination + @new_resource.package_name) ? @current_resource.enabled(true) : @current_resource.enabled(false)
   end
 
   private
