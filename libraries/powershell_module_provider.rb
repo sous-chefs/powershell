@@ -67,14 +67,10 @@ class PowershellModuleProvider < Chef::Provider
         FileUtils.cp(filename, ps_module_path)
       end
     elsif(@new_resource.source =~ URI::regexp) #Check for valid URL
-      # download module to temp location
-      download_file = download_module()
-
-      # extract downloaded file to $psmodulepath      
-      unzip_module(download_file)
+      downloaded_file = download_extract_module
 
       # remove temp
-      FileUtils.rm_rf(::File.dirname(download_file))
+      FileUtils.rm_rf(::File.dirname(downloaded_file))
     end    
   end
 
@@ -89,38 +85,16 @@ class PowershellModuleProvider < Chef::Provider
     end
   end
 
-  def unzip_module(download_file)
-    ps_module_path = "#{ENV['PROGRAMW6432']}\\WindowsPowerShell\\Modules"       
-    ps_cmd = Mixlib::ShellOut.new("powershell.exe $shell = new-object -com shell.application; $zip = $shell.NameSpace('#{download_file.gsub("/","\\\\")}'); foreach($item in $zip.items()) { $shell.Namespace('#{ps_module_path}').copyhere($item) }")
-    ps_cmd.run_command
-  end
-
-  def download_module(download_url=nil, target=nil)
+  def download_extract_module(download_url=nil, target=nil)
     target = Dir.mktmpdir + @new_resource.package_name + ".zip" if target.nil?
     download_url = @new_resource.source if download_url.nil?
-    uri = URI(download_url)
-    Net::HTTP.start(uri.host) do |http|
-      begin
-          file = open(target, 'wb')
-          http.request_get(uri.request_uri) do |response|
-            case response
-            when Net::HTTPSuccess then
-              file = open(target, 'wb')
-              response.read_body do |segment|
-                file.write(segment)
-              end
-            when Net::HTTPRedirection then
-              location = response['location']
-              puts "WARNING: Redirected throw #{location}"
-              download_module(location, target)
-            else
-              puts "ERROR: Download failed. Http response code: #{response.code}"
-            end
-          end
-      ensure
-        file.close if file
-      end
-    end
+
+    ps_module_path = "#{ENV['PROGRAMW6432']}\\WindowsPowerShell\\Modules"
+    cmd_str = "powershell.exe Invoke-WebRequest #{download_url} -OutFile #{target}; $shell = new-object -com shell.application;$zip = $shell.NameSpace('#{target.gsub("/","\\\\")}'); $shell.Namespace('#{ps_module_path}').copyhere($zip.items(), 0x14);write-host $shell"
+
+    ps_cmd = Mixlib::ShellOut.new(cmd_str)
+    ps_cmd.run_command
+
     target
   end
 end
