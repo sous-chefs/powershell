@@ -167,6 +167,56 @@ powershell "read-env-var" do
 end
 ```
 
+### `powershell_module`
+
+Installs or uninstalls a powershell module
+
+#### Actions
+
+- :install: install the powershell module
+- :uninstall: uninstall the powershell module
+
+#### Attribute Parameters
+
+- `name`: name attribute. Name of the module to install or uninstall.
+- `source`: quoted string of Local directory path(Not zipfile) or URL for the zipped module folder.
+- `package_name`: quoted string of name of the module to install or uninstall.
+- `destination`: location where module should be installed
+
+#### Examples
+
+```ruby
+# Install module from local directory path
+# change the package_name and source
+powershell_module "PsUrl" do
+  package_name "PsUrl"
+  source "C:\\PsUrl"
+end
+```
+
+```ruby
+# Install from URL of zipped module folder
+powershell_module "posh-git" do
+  package_name "posh-git"
+  source "https://github.com/dahlbyk/posh-git/zipball/master"
+end
+```
+
+```ruby
+# change the package_name
+powershell_module "Uninstall PsUrl" do
+  package_name "PsUrl"
+  action :uninstall
+end
+```
+
+```ruby
+# Install without using 'source' attribute
+powershell_module "https://github.com/dahlbyk/posh-git/zipball/master" do
+  package_name "posh-git"  
+end
+```
+
 Mixin
 -----
 

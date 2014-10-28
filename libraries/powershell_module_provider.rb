@@ -32,7 +32,9 @@ class PowershellModuleProvider < Chef::Provider
   end
 
   def action_install
-    # sorce attribute was mandatory - check?
+    fail ArgumentError, "Required attribute 'package_name' for module installation" unless @new_resource.package_name
+    fail ArgumentError, "Required attribute 'destination' or 'source' for module installation" unless @new_resource.destination || @new_resource.source    
+
     converge_by("Powershell Module '#{@powershell_module.package_name}'") do
       install_module
       Chef::Log.info("Powershell Module '#{@powershell_module.package_name}' installation completed successfully")
@@ -40,7 +42,7 @@ class PowershellModuleProvider < Chef::Provider
   end
 
   def action_uninstall
-    #package_name was mandatory - check?
+    fail ArgumentError, "Required attribute 'package_name' for module uninstallation" unless @new_resource.package_name
     converge_by("Powershell Module '#{@powershell_module.package_name}'") do
       uninstall_module
     end
@@ -53,11 +55,7 @@ class PowershellModuleProvider < Chef::Provider
 
   private
 
-  def install_module
-    fail ArgumentError, "Required attribute 'destination' or 'source' for module installation" unless @new_resource.destination || @new_resource.source
-
-    fail ArgumentError, "Required attribute 'package_name' for module installation" unless @new_resource.package_name
-
+  def install_module    
     #Check if source is a local directory or download URL
     if Dir.exists? @new_resource.source
       ps_module_path = FileUtils::mkdir_p("#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/#{@new_resource.package_name}").first
@@ -74,8 +72,7 @@ class PowershellModuleProvider < Chef::Provider
     end    
   end
 
-  def uninstall_module
-    fail ArgumentError, "Required attribute 'package_name' for module installation" unless @new_resource.package_name
+  def uninstall_module    
     module_dir = "#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/#{@new_resource.package_name}"
     if Dir.exists?(module_dir)
       FileUtils.rm_rf(module_dir)

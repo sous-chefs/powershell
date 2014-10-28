@@ -34,7 +34,7 @@ class PowershellModule < Chef::Resource::Package
 
     #resource default attributes
     @destination = "#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/"
-    @package_name = name    
+    @source = name    
     @enabled = nil
   end
 
