@@ -29,7 +29,7 @@ when 'windows'
   require 'chef/win32/version'
   windows_version = Chef::ReservedNames::Win32::Version.new
 
-  if windows_version.windows_server_2012_r2? || windows_version.windows_8_1
+  if windows_version.windows_server_2012_r2? || windows_version.windows_8_1?
 
     windows_package 'Windows Management Framework Core 5.0' do
       source node['powershell']['powershell5']['url']
