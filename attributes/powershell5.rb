@@ -23,11 +23,11 @@ if node['platform_family'] == 'windows'
   when '6.3'
     case node['kernel']['machine']
     when 'i386'
-      default['powershell']['powershell5']['url'] = 'http://download.microsoft.com/download/5/5/2/55277C4B-75D1-40FB-B99C-4EAFA249F645/WindowsBlue-KB2894868-x86.msu'
-      default['powershell']['powershell5']['checksum'] = 'd552a5747b2e11bc782e2b13d85468da14384b4a608b9cb44f40cc6c85ad2f76'
+      default['powershell']['powershell5']['url'] = 'http://download.microsoft.com/download/E/E/9/EE9AF7A0-83B5-4475-AE56-B4BA40B479E2/WindowsBlue-KB2969050-x86.msu'
+      default['powershell']['powershell5']['checksum'] = '5967af18a34b6f19d7a02de626fb8e821351945d5b568ff972ec9eb96cc253cb'
     when 'x86_64'
-      default['powershell']['powershell5']['url'] = 'http://download.microsoft.com/download/5/5/2/55277C4B-75D1-40FB-B99C-4EAFA249F645/WindowsBlue-KB2894868-x64.msu'
-      default['powershell']['powershell5']['checksum'] = 'fae8c9c62b834770df385e0634592d62992b2ee8ad4cd31b7ba52248911b2a07'
+      default['powershell']['powershell5']['url'] = 'http://download.microsoft.com/download/E/E/9/EE9AF7A0-83B5-4475-AE56-B4BA40B479E2/WindowsBlue-KB2969050-x64.msu'
+      default['powershell']['powershell5']['checksum'] = 'ce20b76b7d8c287a730f7ffa890af18c553d371ca93fc3567353f576cbb0379c'
     end
   end
 end
