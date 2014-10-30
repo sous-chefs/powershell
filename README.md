@@ -169,7 +169,7 @@ end
 
 ### `powershell_module`
 
-Installs or uninstalls a powershell module
+Installs or uninstalls a Powershell module
 
 #### Actions
 
