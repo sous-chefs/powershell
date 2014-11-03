@@ -33,7 +33,7 @@ class PowershellModuleProvider < Chef::Provider
 
   def action_install
     fail ArgumentError, "Required attribute 'package_name' for module installation" unless @new_resource.package_name
-    fail ArgumentError, "Required attribute 'destination' or 'source' for module installation" unless @new_resource.destination || @new_resource.source    
+    fail ArgumentError, "Required attribute 'destination' or 'source' for module installation" unless @new_resource.destination || @new_resource.source
 
     converge_by("Powershell Module '#{@powershell_module.package_name}'") do
       install_module
@@ -50,31 +50,31 @@ class PowershellModuleProvider < Chef::Provider
 
   def load_current_resource
     @current_resource = PowershellModule.new(@new_resource.name)
-    Dir.exists?(@new_resource.destination + @new_resource.package_name) ? @current_resource.enabled(true) : @current_resource.enabled(false)
+    Dir.exist?(@new_resource.destination + @new_resource.package_name) ? @current_resource.enabled(true) : @current_resource.enabled(false)
   end
 
   private
 
-  def install_module    
-    #Check if source is a local directory or download URL
-    if Dir.exists? @new_resource.source
-      ps_module_path = FileUtils::mkdir_p("#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/#{@new_resource.package_name}").first
-      @new_resource.destination(@new_resource.destination.gsub(/\\/,"/"))
-      module_dir = Dir["#{@new_resource.source}/*.psd1","#{@new_resource.source}/*.psm1","#{@new_resource.source}/*.dll"]
+  def install_module
+    # Check if source is a local directory or download URL
+    if Dir.exist? @new_resource.source
+      ps_module_path = FileUtils.mkdir_p("#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/#{@new_resource.package_name}").first
+      @new_resource.destination(@new_resource.destination.gsub(/\\/, '/'))
+      module_dir = Dir["#{@new_resource.source}/*.psd1", "#{@new_resource.source}/*.psm1", "#{@new_resource.source}/*.dll"]
       module_dir.each do |filename|
         FileUtils.cp(filename, ps_module_path)
       end
-    elsif(@new_resource.source =~ URI::regexp) #Check for valid URL
+    elsif @new_resource.source =~ URI.regexp # Check for valid URL
       downloaded_file = download_extract_module
 
       # remove temp
       FileUtils.rm_rf(::File.dirname(downloaded_file))
-    end    
+    end
   end
 
-  def uninstall_module    
+  def uninstall_module
     module_dir = "#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/#{@new_resource.package_name}"
-    if Dir.exists?(module_dir)
+    if Dir.exist?(module_dir)
       FileUtils.rm_rf(module_dir)
       Chef::Log.info("Powershell Module '#{@powershell_module.package_name}' uninstallation completed successfully")
     else
@@ -82,12 +82,12 @@ class PowershellModuleProvider < Chef::Provider
     end
   end
 
-  def download_extract_module(download_url=nil, target=nil)
-    target = Dir.mktmpdir + @new_resource.package_name + ".zip" if target.nil?
+  def download_extract_module(download_url = nil, target = nil)
+    target = Dir.mktmpdir + @new_resource.package_name + '.zip' if target.nil?
     download_url = @new_resource.source if download_url.nil?
 
     ps_module_path = "#{ENV['PROGRAMW6432']}\\WindowsPowerShell\\Modules"
-    cmd_str = "powershell.exe Invoke-WebRequest #{download_url} -OutFile #{target}; $shell = new-object -com shell.application;$zip = $shell.NameSpace('#{target.gsub("/","\\\\")}'); $shell.Namespace('#{ps_module_path}').copyhere($zip.items(), 0x14);write-host $shell"
+    cmd_str = "powershell.exe Invoke-WebRequest #{download_url} -OutFile #{target}; $shell = new-object -com shell.application;$zip = $shell.NameSpace('#{target.gsub('/', '\\\\')}'); $shell.Namespace('#{ps_module_path}').copyhere($zip.items(), 0x14);write-host $shell"
 
     ps_cmd = Mixlib::ShellOut.new(cmd_str)
     ps_cmd.run_command
