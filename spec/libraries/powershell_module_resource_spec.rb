@@ -24,7 +24,7 @@ describe 'PowershellModule' do
     ohai_reader.all_plugins('platform')
 
     new_node = Chef::Node.new
-    new_node.consume_external_attrs(ohai_reader.data,{})
+    new_node.consume_external_attrs(ohai_reader.data, {})
 
     events = Chef::EventDispatch::Dispatcher.new
 

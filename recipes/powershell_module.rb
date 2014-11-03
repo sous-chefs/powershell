@@ -16,7 +16,6 @@
 #   source "https://example.com/PsUrl"
 # end
 
-
 # this will uninstall the ps module
 # powershell_module "Uninstall PsUrl" do
 #   package_name "PsUrl"
