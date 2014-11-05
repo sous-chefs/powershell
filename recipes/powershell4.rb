@@ -21,31 +21,23 @@
 # PowerShell 4.0 Download Page
 # http://www.microsoft.com/en-us/download/details.aspx?id=40855
 
-case node['platform']
-when 'windows'
-
+if node['platform'] == 'windows'
   require 'chef/win32/version'
   windows_version = Chef::ReservedNames::Win32::Version.new
 
   if windows_version.windows_server_2008_r2? || windows_version.windows_7? || windows_version.windows_server_2012?
 
     # Ensure .NET 4.5 is installed or installation will fail silently per Microsoft. Only necessary for Windows 2008R2 or 7.
-    if windows_version.windows_server_2008_r2? || windows_version.windows_7?
-      include_recipe 'ms_dotnet45'
-    end
+    include_recipe 'ms_dotnet45' if windows_version.windows_server_2008_r2? || windows_version.windows_7?
 
-    windows_package 'Windows Management Framework Core 4.0' do
+    # Reboot if user specifies immediate_reboot
+    include_recipe 'powershell::windows_reboot' if node['powershell']['installation_reboot_mode'] == "immediate_reboot"
+    
+
+    windows_package 'Windows Management Framework Core4.0' do
       source node['powershell']['powershell4']['url']
       checksum node['powershell']['powershell4']['checksum']
       installer_type :custom
-
-      case node['powershell']['installation_reboot_mode']
-      when 'no_reboot', 'delayed_reboot'
-        options '/quiet /norestart'
-      when 'immediate_reboot'
-        options '/quiet /forcerestart'
-      end
-
       action :install
       not_if do
         begin
