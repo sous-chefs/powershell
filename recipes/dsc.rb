@@ -26,16 +26,6 @@ when 'windows'
   shell_out.run_command
 
   include_recipe 'powershell::winrm' if shell_out.exitstatus == 1
-
-  dsc_script 'test dsc' do
-    code <<-EOH
-Environment 'testdsc'
-{
-  Name = 'TESTDSC'
-  Value = 'Test Success'
-}
-EOH
-  end
 else
   Chef::Log.warn('DSC can only be run on the Windows platform.')
 end
