@@ -1,7 +1,7 @@
 #
-# Author:: Seth Chisamore (<schisamo@opscode.com>)
+# Author:: Mukta Aphale (<mukta.aphale@clogeny.com>)
 # Cookbook Name:: powershell
-# Attribute:: default
+# Recipe:: dsc
 #
 # Copyright:: Copyright (c) 2014 Chef Software, Inc.
 #
@@ -16,10 +16,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-if node['platform_family'] == 'windows'
-  # INSTALLATION_REBOOT_MODE = "no_reboot". It skips reboot required after powershell installation.
-  # INSTALLATION_REBOOT_MODE = "immediate_reboot". Used for immediate node reboot after powershell installation.
-  # INSTALLATION_REBOOT_MODE = "delayed_reboot". Used for node reboot after chef-client run.
-  default['powershell']['installation_reboot_mode'] = ENV['INSTALLATION_REBOOT_MODE'] || 'no_reboot'
+
+case node['platform']
+when 'windows'
+  include_recipe 'powershell::powershell4'
+
+  winrm_cmd = 'powershell.exe winrm get winrm/config/listener?Address=*+Transport=HTTP'
+  shell_out = Mixlib::ShellOut.new(winrm_cmd)
+  shell_out.run_command
+
+  include_recipe 'powershell::winrm' if shell_out.exitstatus == 1
+else
+  Chef::Log.warn('DSC can only be run on the Windows platform.')
 end
