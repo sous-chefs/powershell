@@ -10,12 +10,12 @@ describe 'powershell::powershell5' do
   end
 
   before do
-    Chef::Recipe.any_instance.stub(:include_recipe).with('powershell::powershell2').and_return(true)
+    allow_any_instance_of(Chef::Recipe).to receive(:include_recipe).with('powershell::powershell2').and_return(true)
   end
 
   context 'when windows_version is windows_server_2012_r2' do
     before do
-      @windows_version = double(:windows_server_2012_r2? => true, :windows_8_1 => false)
+      @windows_version = double(:windows_server_2012_r2? => true, :windows_8_1? => false)
       allow(Chef::ReservedNames::Win32::Version).to receive(:new).and_return(@windows_version)
       registry = double
       allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
@@ -29,7 +29,7 @@ describe 'powershell::powershell5' do
 
   context 'when windows_version is windows_8_1' do
     before do
-      @windows_version = double(:windows_server_2012_r2? => false, :windows_8_1 => true)
+      @windows_version = double(:windows_server_2012_r2? => false, :windows_8_1? => true)
       allow(Chef::ReservedNames::Win32::Version).to receive(:new).and_return(@windows_version)
       registry = double
       allow(Chef::Win32::Registry).to receive(:new).and_return(registry)

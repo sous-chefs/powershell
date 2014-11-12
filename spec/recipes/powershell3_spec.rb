@@ -18,7 +18,7 @@ describe 'powershell::powershell3' do
       registry = double
       allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
       allow(registry).to receive(:data_exists?).and_return(false)
-      Chef::Recipe.any_instance.stub(:include_recipe).and_return(true)
+      allow_any_instance_of(Chef::Recipe).to receive(:include_recipe).and_return(true)
     end
 
     it 'installs windows package windows managemet framework bits and windows management framework core 3.0' do

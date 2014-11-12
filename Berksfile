@@ -1,9 +1,3 @@
-source 'https://api.berkshelf.com'
+source 'https://supermarket.getchef.com/'
 
 metadata
-
-cookbook 'chef_handler'
-cookbook 'ms_dotnet2'
-cookbook 'ms_dotnet4'
-cookbook 'ms_dotnet45'
-cookbook 'windows'

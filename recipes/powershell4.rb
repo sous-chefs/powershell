@@ -31,8 +31,7 @@ if node['platform'] == 'windows'
     include_recipe 'ms_dotnet45' if windows_version.windows_server_2008_r2? || windows_version.windows_7?
 
     # Reboot if user specifies immediate_reboot
-    include_recipe 'powershell::windows_reboot' if node['powershell']['installation_reboot_mode'] == "immediate_reboot"
-    
+    include_recipe 'powershell::windows_reboot' if node['powershell']['installation_reboot_mode'] == 'immediate_reboot'
 
     windows_package 'Windows Management Framework Core4.0' do
       source node['powershell']['powershell4']['url']

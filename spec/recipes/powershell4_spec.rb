@@ -36,7 +36,7 @@ describe 'powershell::powershell4' do
 
       it 'installs windows package windows managemet framework core 4.0 when powershell 4 is not installed' do
         expect(chef_run).to include_recipe('ms_dotnet45')
-        expect(chef_run).to install_windows_package('Windows Management Framework Core 4.0').with(source: 'https://powershelltest.com', checksum: '12345', installer_type: :custom, options: '/quiet /norestart')
+        expect(chef_run).to install_windows_package('Windows Management Framework Core4.0').with(source: 'https://powershelltest.com', checksum: '12345', installer_type: :custom)
       end
     end
 
@@ -65,7 +65,7 @@ describe 'powershell::powershell4' do
 
       it 'installs windows package windows managemet framework core 4.0 when powershell 4 is not installed' do
         expect(chef_run).to include_recipe('ms_dotnet45')
-        expect(chef_run).to install_windows_package('Windows Management Framework Core 4.0').with(source: 'https://powershelltest.com', checksum: '12345', installer_type: :custom, options: '/quiet /norestart')
+        expect(chef_run).to install_windows_package('Windows Management Framework Core4.0').with(source: 'https://powershelltest.com', checksum: '12345', installer_type: :custom)
       end
     end
 
@@ -79,7 +79,7 @@ describe 'powershell::powershell4' do
       end
 
       it 'installs windows package windows managemet framework core 4.0' do
-        expect(chef_run).to install_windows_package('Windows Management Framework Core 4.0').with(source: 'https://powershelltest.com', checksum: '12345', installer_type: :custom, options: '/quiet /norestart')
+        expect(chef_run).to install_windows_package('Windows Management Framework Core4.0').with(source: 'https://powershelltest.com', checksum: '12345', installer_type: :custom)
       end
     end
   end
@@ -118,7 +118,7 @@ describe 'powershell::powershell4' do
 
       it 'installs windows package windows managemet framework core 4.0 when powershell 4 is not installed' do
         expect(chef_run).to include_recipe('ms_dotnet45')
-        expect(chef_run).to install_windows_package('Windows Management Framework Core 4.0').with(source: 'https://powershelltest.com', checksum: '12345', installer_type: :custom, options: '/quiet /norestart')
+        expect(chef_run).to install_windows_package('Windows Management Framework Core4.0').with(source: 'https://powershelltest.com', checksum: '12345', installer_type: :custom)
       end
     end
 
@@ -147,7 +147,7 @@ describe 'powershell::powershell4' do
 
       it 'installs windows package windows managemet framework core 4.0 when powershell 4 is not installed' do
         expect(chef_run).to include_recipe('ms_dotnet45')
-        expect(chef_run).to install_windows_package('Windows Management Framework Core 4.0').with(source: 'https://powershelltest.com', checksum: '12345', installer_type: :custom, options: '/quiet /norestart')
+        expect(chef_run).to install_windows_package('Windows Management Framework Core4.0').with(source: 'https://powershelltest.com', checksum: '12345', installer_type: :custom)
       end
     end
 
@@ -161,7 +161,7 @@ describe 'powershell::powershell4' do
       end
 
       it 'installs windows package windows managemet framework core 4.0' do
-        expect(chef_run).to install_windows_package('Windows Management Framework Core 4.0').with(source: 'https://powershelltest.com', checksum: '12345', installer_type: :custom, options: '/quiet /norestart')
+        expect(chef_run).to install_windows_package('Windows Management Framework Core4.0').with(source: 'https://powershelltest.com', checksum: '12345', installer_type: :custom)
       end
     end
   end
@@ -200,7 +200,7 @@ describe 'powershell::powershell4' do
 
       it 'installs windows package windows managemet framework core 4.0 when powershell 4 is not installed' do
         expect(chef_run).to include_recipe('ms_dotnet45')
-        expect(chef_run).to install_windows_package('Windows Management Framework Core 4.0').with(source: 'https://powershelltest.com', checksum: '12345', installer_type: :custom, options: '/quiet /forcerestart')
+        expect(chef_run).to install_windows_package('Windows Management Framework Core4.0').with(source: 'https://powershelltest.com', checksum: '12345', installer_type: :custom)
       end
     end
 
@@ -229,7 +229,7 @@ describe 'powershell::powershell4' do
 
       it 'installs windows package windows managemet framework core 4.0 when powershell 4 is not installed' do
         expect(chef_run).to include_recipe('ms_dotnet45')
-        expect(chef_run).to install_windows_package('Windows Management Framework Core 4.0').with(source: 'https://powershelltest.com', checksum: '12345', installer_type: :custom, options: '/quiet /forcerestart')
+        expect(chef_run).to install_windows_package('Windows Management Framework Core4.0').with(source: 'https://powershelltest.com', checksum: '12345', installer_type: :custom)
       end
     end
 
@@ -243,7 +243,7 @@ describe 'powershell::powershell4' do
       end
 
       it 'installs windows package windows managemet framework core 4.0' do
-        expect(chef_run).to install_windows_package('Windows Management Framework Core 4.0').with(source: 'https://powershelltest.com', checksum: '12345', installer_type: :custom, options: '/quiet /forcerestart')
+        expect(chef_run).to install_windows_package('Windows Management Framework Core4.0').with(source: 'https://powershelltest.com', checksum: '12345', installer_type: :custom)
       end
     end
   end
