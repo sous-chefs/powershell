@@ -16,7 +16,6 @@
 # limitations under the License.
 #
 
-require_relative '../spec_helper.rb'
 require_relative '../../libraries/powershell_module_resource'
 
 describe 'PowershellModule' do
