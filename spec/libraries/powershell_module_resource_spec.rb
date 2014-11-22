@@ -47,4 +47,9 @@ describe 'PowershellModule' do
   it 'have provider PowershellModuleProvider' do
     expect(new_resource.provider).to eq(PowershellModuleProvider)
   end
+
+  it 'sets destination' do
+    new_resource.destination('C:/temp')
+    expect(new_resource.destination).to eq('C:/temp')
+  end
 end
