@@ -17,6 +17,7 @@
 #
 
 require_relative '../../libraries/powershell_module_provider'
+require 'tmpdir'
 
 describe 'PowershellModuleProvider' do
   before do
@@ -168,26 +169,40 @@ describe 'PowershellModuleProvider' do
       @ps_cmd = double
     end
 
-    it 'copies module from source to ps module path' do
-      # ps_module_path = 'C:/PROGRAMW6432/WindowsPowerShell/Modules/testmodule'
-      # module_dir = ['testmodule/*.psd1', 'testmodule/*.psm1', 'testmodule/*.dll']
-      expect(Dir).to receive(:exist?).with('testmodule').and_return(true)
-      # To do
-      # Dir[arguments] is nil
+    context 'install from local source' do
+      before do
+        @dir = Dir.tmpdir + '/testmodule'
+        FileUtils.mkdir_p(@dir) unless File.directory?(@dir)
+        @module_files = ["#{@dir}/test.psd1", "#{@dir}/test.psm1", "#{@dir}/test.dll"]
+        @module_files.each do |file|
+          File.new("#{file}", 'w+')
+        end
+      end
 
-      # expect(FileUtils).to receive(:mkdir_p).with(ps_module_path).and_return(["#{ps_module_path}"])
-      # module_dir.each do |filename|
-      #   expect(FileUtils).to receive(:cp).with(filename, ps_module_path)
-      # end
+      after do
+        FileUtils.rm_rf(@dir) if File.directory?(@dir)
+      end
 
-      @provider.send(:install_module)
+      it 'copies module from source to ps module path' do
+        @new_resource.source(@dir)
+        ps_module_path = 'C:/PROGRAMW6432/WindowsPowerShell/Modules/testmodule'
+        expect(Dir).to receive(:exist?).with('/tmp/testmodule').and_return(true)
+
+        expect(FileUtils).to receive(:mkdir_p).with(ps_module_path).and_return(["#{ps_module_path}"])
+        @module_files.each do |filename|
+          expect(FileUtils).to receive(:cp).with(filename, ps_module_path)
+        end
+
+        @provider.send(:install_module)
+      end
     end
-
-    it 'downloads module from source and install' do
-      @new_resource.source('https://testmodule.com')
-      expect(@provider).to receive(:download_extract_module).and_return('C:/tmp/testmodule')
-      expect(FileUtils).to receive(:rm_rf).with('C:/tmp')
-      @provider.send(:install_module)
+    context 'source is a url' do
+      it 'downloads module from source and install' do
+        @new_resource.source('https://testmodule.com')
+        expect(@provider).to receive(:download_extract_module).and_return('C:/tmp/testmodule')
+        expect(FileUtils).to receive(:rm_rf).with('C:/tmp')
+        @provider.send(:install_module)
+      end
     end
   end
 end
