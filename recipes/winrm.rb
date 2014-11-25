@@ -23,11 +23,17 @@ when 'windows'
 
   # Configure winrm
   # use attributes to add other configuration
-  powershell 'enable winrm' do
+  powershell_script 'enable winrm' do
     code <<-EOH
       winrm quickconfig -q
     EOH
-  end
+  end 
+
+  # Create HTTPS listener
+  if node['powershell']['winrm']['enable_https_transport']
+  	#using powershell_script resource fails here because of quotations
+  	%x(winrm create winrm/config/Listener?Address=*+Transport=HTTPS @{Hostname="#{node['powershell']['winrm']['hostname']}";CertificateThumbprint="#{node['powershell']['winrm']['thumbprint']}"})	
+  end 
 else
   Chef::Log.warn('WinRM can only be enabled on the Windows platform.')
 end

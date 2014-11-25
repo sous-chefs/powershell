@@ -21,7 +21,7 @@ case node['platform']
 when 'windows'
   include_recipe 'powershell::powershell4'
 
-  winrm_cmd = 'powershell.exe winrm get winrm/config/listener?Address=*+Transport=HTTP'
+  winrm_cmd = 'powershell.exe winrm get winrm/config/listener?Address=*+Transport=HTTPS'
   shell_out = Mixlib::ShellOut.new(winrm_cmd)
   shell_out.run_command
 
