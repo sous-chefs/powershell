@@ -22,11 +22,11 @@ when 'windows'
   include_recipe 'powershell::powershell4'
 
   if node['powershell']['winrm']['enable_https_transport']
-  	winrm_cmd = 'powershell.exe winrm get winrm/config/listener?Address=*+Transport=HTTPS'
+    winrm_cmd = 'powershell.exe winrm get winrm/config/listener?Address=*+Transport=HTTPS'
   else
-  	winrm_cmd = 'powershell.exe winrm get winrm/config/listener?Address=*+Transport=HTTP'
+    winrm_cmd = 'powershell.exe winrm get winrm/config/listener?Address=*+Transport=HTTP'
   end
-  
+
   shell_out = Mixlib::ShellOut.new(winrm_cmd)
   shell_out.run_command
 

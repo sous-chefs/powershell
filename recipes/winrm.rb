@@ -27,13 +27,13 @@ when 'windows'
     code <<-EOH
       winrm quickconfig -q
     EOH
-  end 
+  end
 
-  # Create HTTPS listener  
-  powershell "winrm-create-https-listener" do
-	 code "winrm create 'winrm/config/Listener?Address=*+Transport=HTTPS' '@{Hostname=\"#{node['powershell']['winrm']['hostname']}\"; CertificateThumbprint=\"#{node['powershell']['winrm']['thumbprint']}\"}'"
-	 only_if { node['powershell']['winrm']['enable_https_transport']  && !node['powershell']['winrm']['thumbprint'].empty? }
-  end   	  
+  # Create HTTPS listener
+  powershell 'winrm-create-https-listener' do
+    code "winrm create 'winrm/config/Listener?Address=*+Transport=HTTPS' '@{Hostname=\"#{node['powershell']['winrm']['hostname']}\"; CertificateThumbprint=\"#{node['powershell']['winrm']['thumbprint']}\"}'"
+    only_if { node['powershell']['winrm']['enable_https_transport']  && !node['powershell']['winrm']['thumbprint'].empty? }
+  end
 else
   Chef::Log.warn('WinRM can only be enabled on the Windows platform.')
 end
