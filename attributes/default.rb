@@ -24,7 +24,7 @@ if node['platform_family'] == 'windows'
   default['powershell']['installation_reboot_mode'] = ENV['INSTALLATION_REBOOT_MODE'] || 'no_reboot'
 
   # For enabling HTTPS transport in dsc recipe
-  default['powershell']['winrm']['enable_https_transport'] = true
+  default['powershell']['winrm']['enable_https_transport'] = false
   default['powershell']['winrm']['thumbprint'] = '75A3C92D9D86BB721C3AFED6A86F56C464213E9F'	# change this
   default['powershell']['winrm']['hostname'] = ''
 end
