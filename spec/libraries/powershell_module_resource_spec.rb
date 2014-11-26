@@ -16,7 +16,6 @@
 # limitations under the License.
 #
 
-require_relative '../spec_helper.rb'
 require_relative '../../libraries/powershell_module_resource'
 
 describe 'PowershellModule' do
@@ -46,5 +45,10 @@ describe 'PowershellModule' do
 
   it 'have provider PowershellModuleProvider' do
     expect(new_resource.provider).to eq(PowershellModuleProvider)
+  end
+
+  it 'sets destination' do
+    new_resource.destination('C:/temp')
+    expect(new_resource.destination).to eq('C:/temp')
   end
 end
