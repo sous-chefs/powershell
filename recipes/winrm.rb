@@ -30,9 +30,14 @@ when 'windows'
   end
 
   # Create HTTPS listener
-  powershell 'winrm-create-https-listener' do
-    code "winrm create 'winrm/config/Listener?Address=*+Transport=HTTPS' '@{Hostname=\"#{node['powershell']['winrm']['hostname']}\"; CertificateThumbprint=\"#{node['powershell']['winrm']['thumbprint']}\"}'"
-    only_if { node['powershell']['winrm']['enable_https_transport']  && !node['powershell']['winrm']['thumbprint'].empty? }
+  if node['powershell']['winrm']['enable_https_transport']
+    if node['powershell']['winrm']['thumbprint'].empty? || node['powershell']['winrm']['thumbprint'].nil?
+      Chef::Log.error('Please specify thumbprint in default attributes for enabling https transport.')
+    else
+      powershell 'winrm-create-https-listener' do
+        code "winrm create 'winrm/config/Listener?Address=*+Transport=HTTPS' '@{Hostname=\"#{node['powershell']['winrm']['hostname']}\"; CertificateThumbprint=\"#{node['powershell']['winrm']['thumbprint']}\"}'"
+      end
+    end
   end
 else
   Chef::Log.warn('WinRM can only be enabled on the Windows platform.')
