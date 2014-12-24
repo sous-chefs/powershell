@@ -17,7 +17,6 @@
 #
 
 require_relative 'powershell_module_resource'
-require 'tmpdir'
 require 'net/http'
 require 'chef'
 require 'chef/mixin/shell_out'
@@ -50,7 +49,7 @@ class PowershellModuleProvider < Chef::Provider
 
   def load_current_resource
     @current_resource = PowershellModule.new(@new_resource.name)
-    Dir.exist?(@new_resource.destination + @new_resource.package_name) ? @current_resource.enabled(true) : @current_resource.enabled(false)
+    Dir.exist?(module_path_name) ? @current_resource.enabled(true) : @current_resource.enabled(false)
   end
 
   private
@@ -58,8 +57,9 @@ class PowershellModuleProvider < Chef::Provider
   def install_module
     # Check if source is a local directory or download URL
     if Dir.exist? @new_resource.source
-      ps_module_path = FileUtils.mkdir_p("#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/#{@new_resource.package_name}").first
-      @new_resource.destination(@new_resource.destination.gsub(/\\/, '/'))
+      ps_module_path = FileUtils.mkdir_p(module_path_name).first
+      Chef::Log.info("Powershell Module path folder created: #{ps_module_path}")
+      @new_resource.destination(sanitize! @new_resource.destination)
       module_dir = Dir["#{@new_resource.source}/*.psd1", "#{@new_resource.source}/*.psm1", "#{@new_resource.source}/*.dll"]
       module_dir.each do |filename|
         FileUtils.cp(filename, ps_module_path)
@@ -67,13 +67,16 @@ class PowershellModuleProvider < Chef::Provider
     elsif @new_resource.source =~ URI.regexp # Check for valid URL
       downloaded_file = download_extract_module
 
-      # remove temp
-      FileUtils.rm_rf(::File.dirname(downloaded_file))
+      if ::File.exist?(downloaded_file)
+        Chef::Log.debug("Powershell Module '#{@powershell_module.package_name}' removing download #{downloaded_file}")
+        FileUtils.rm_f(downloaded_file)
+      end
+
     end
   end
 
   def uninstall_module
-    module_dir = "#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/#{@new_resource.package_name}"
+    module_dir = module_path_name
     if Dir.exist?(module_dir)
       FileUtils.rm_rf(module_dir)
       Chef::Log.info("Powershell Module '#{@powershell_module.package_name}' uninstallation completed successfully")
@@ -83,15 +86,41 @@ class PowershellModuleProvider < Chef::Provider
   end
 
   def download_extract_module(download_url = nil, target = nil)
-    target = Dir.mktmpdir + @new_resource.package_name + '.zip' if target.nil?
-    download_url = @new_resource.source if download_url.nil?
+    filename = @new_resource.package_name + '.zip'
 
-    ps_module_path = "#{ENV['PROGRAMW6432']}\\WindowsPowerShell\\Modules"
+    target = ::File.join(Chef::Config[:file_cache_path], filename) if target.nil?
+    Chef::Log.debug("Powershell Module download target is #{target}")
+
+    download_url = @new_resource.source if download_url.nil?
+    Chef::Log.debug("Powershell Module download url is #{download_url}")
+
+    ps_module_path = sanitize! @new_resource.destination
+    Chef::Log.debug("Powershell Module ps_module_path is #{ps_module_path}")
+
     cmd_str = "powershell.exe Invoke-WebRequest #{download_url} -OutFile #{target}; $shell = new-object -com shell.application;$zip = $shell.NameSpace('#{target.gsub('/', '\\\\')}'); $shell.Namespace('#{ps_module_path}').copyhere($zip.items(), 0x14);write-host $shell"
 
-    ps_cmd = Mixlib::ShellOut.new(cmd_str)
-    ps_cmd.run_command
+    installed_module = module_exists?(ps_module_path, "*#{@new_resource.package_name}*")
+
+    if installed_module
+      Chef::Log.info("Powershell Module #{@new_resource.package_name} already installed.")
+      Chef::Log.info("Remove path at #{ps_module_path}\\#{installed_module} to reinstall.")
+    else
+      ps_cmd = Mixlib::ShellOut.new(cmd_str)
+      ps_cmd.run_command
+    end
 
     target
+  end
+
+  def module_path_name
+    ::File.join(@new_resource.destination.gsub(/\\/, '/'), @new_resource.package_name)
+  end
+
+  def module_exists?(path, pattern)
+    Dir.entries(path).find { |d| ::File.fnmatch?(pattern, d, ::File::FNM_CASEFOLD) }
+  end
+
+  def sanitize!(path)
+    path.gsub(::File::SEPARATOR, ::File::ALT_SEPARATOR || '\\') if path
   end
 end
