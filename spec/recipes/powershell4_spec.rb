@@ -4,7 +4,7 @@ require 'chef/win32/version'
 describe 'powershell::powershell4' do
   context 'when installation_reboot_mode is no_reboot' do
     let(:chef_run) do
-      ChefSpec::Runner.new(platform: 'windows', version: '2012') do |node|
+      ChefSpec::SoloRunner.new(platform: 'windows', version: '2012') do |node|
         node.set['powershell']['powershell4']['url'] = 'https://powershelltest.com'
         node.set['powershell']['powershell4']['checksum'] = '12345'
         node.set['powershell']['installation_reboot_mode'] = 'no_reboot'
@@ -86,7 +86,7 @@ describe 'powershell::powershell4' do
 
   context 'when installation_reboot_mode is delayed_reboot' do
     let(:chef_run) do
-      ChefSpec::Runner.new(platform: 'windows', version: '2012') do |node|
+      ChefSpec::SoloRunner.new(platform: 'windows', version: '2012') do |node|
         node.set['powershell']['powershell4']['url'] = 'https://powershelltest.com'
         node.set['powershell']['powershell4']['checksum'] = '12345'
         node.set['powershell']['installation_reboot_mode'] = 'delayed_reboot'
@@ -168,7 +168,7 @@ describe 'powershell::powershell4' do
 
   context 'when installation_reboot_mode is immediate_reboot' do
     let(:chef_run) do
-      ChefSpec::Runner.new(platform: 'windows', version: '2012') do |node|
+      ChefSpec::SoloRunner.new(platform: 'windows', version: '2012') do |node|
         node.set['powershell']['powershell4']['url'] = 'https://powershelltest.com'
         node.set['powershell']['powershell4']['checksum'] = '12345'
         node.set['powershell']['installation_reboot_mode'] = 'immediate_reboot'

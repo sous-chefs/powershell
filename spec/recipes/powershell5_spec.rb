@@ -3,7 +3,7 @@ require 'chef/win32/version'
 
 describe 'powershell::powershell5' do
   let(:chef_run) do
-    ChefSpec::Runner.new(platform: 'windows', version: '2012') do |node|
+    ChefSpec::SoloRunner.new(platform: 'windows', version: '2012') do |node|
       node.set['powershell']['powershell5']['url'] = 'https://powershelltest.com'
       node.set['powershell']['powershell5']['checksum'] = '12345'
     end.converge(described_recipe)

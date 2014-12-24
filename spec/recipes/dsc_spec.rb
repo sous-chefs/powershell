@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mixlib/shellout'
 
 describe 'powershell::dsc' do
-  let(:chef_run) { ChefSpec::Runner.new(platform: 'windows', version: '2012').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'windows', version: '2012').converge(described_recipe) }
 
   context 'When listener is enabled' do
     before do
