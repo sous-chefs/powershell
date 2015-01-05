@@ -30,8 +30,14 @@ if node['platform'] == 'windows'
     # Ensure .NET 4.5 is installed or installation will fail silently per Microsoft. Only necessary for Windows 2008R2 or 7.
     include_recipe 'ms_dotnet45' if windows_version.windows_server_2008_r2? || windows_version.windows_7?
 
-    # Reboot if user specifies immediate_reboot
-    include_recipe 'powershell::windows_reboot' if node['powershell']['installation_reboot_mode'] == 'immediate_reboot'
+    # Get powershell version
+    powershell_version_cmd = 'powershell.exe $PSVersionTable.PSVersion.Major'
+    shell_out = Mixlib::ShellOut.new(powershell_version_cmd)
+    shell_out.run_command
+    powershell_version = shell_out.stdout.to_f
+
+    # Reboot if user specifies immediate_reboot and powershell version < 4
+    include_recipe 'powershell::windows_reboot' if (node['powershell']['installation_reboot_mode'] == 'immediate_reboot' && powershell_version < 4)
 
     windows_package 'Windows Management Framework Core4.0' do
       source node['powershell']['powershell4']['url']
