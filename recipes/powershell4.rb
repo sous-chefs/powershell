@@ -37,7 +37,7 @@ if node['platform'] == 'windows'
     powershell_version = shell_out.stdout.to_f
 
     # Reboot if user specifies immediate_reboot and powershell version < 4
-    include_recipe 'powershell::windows_reboot' if (node['powershell']['installation_reboot_mode'] == 'immediate_reboot' && powershell_version < 4)
+    include_recipe 'powershell::windows_reboot' if node['powershell']['installation_reboot_mode'] == 'immediate_reboot' && powershell_version < 4
 
     windows_package 'Windows Management Framework Core4.0' do
       source node['powershell']['powershell4']['url']
