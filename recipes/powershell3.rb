@@ -21,6 +21,8 @@
 # PowerShell 3.0 Download Page
 # http://www.microsoft.com/en-us/download/details.aspx?id=34595
 
+node.default['powershell']['reboot_notifier'] = 'windows_package[Windows Management Framework Core 3.0]'
+
 case node['platform']
 when 'windows'
 
@@ -45,11 +47,18 @@ when 'windows'
     # WMF 3.0 requires .NET 4.0
     include_recipe 'ms_dotnet4'
 
+    powershell_version_cmd = 'powershell.exe $PSVersionTable.PSVersion.Major'
+    shell_out = Mixlib::ShellOut.new(powershell_version_cmd)
+    shell_out.run_command
+    powershell_version = shell_out.stdout.to_f
+
+    # Reboot if user specifies immediate_reboot
+    include_recipe 'powershell::windows_reboot' if node['powershell']['installation_reboot_mode'] == 'immediate_reboot' && powershell_version < 3
+
     windows_package 'Windows Management Framework Core 3.0' do
       source node['powershell']['powershell3']['url']
       checksum node['powershell']['powershell3']['checksum']
       installer_type :custom
-      options '/quiet /norestart'
       action :install
       not_if do
         begin

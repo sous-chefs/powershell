@@ -21,6 +21,8 @@
 # PowerShell 4.0 Download Page
 # http://www.microsoft.com/en-us/download/details.aspx?id=40855
 
+node.default['powershell']['reboot_notifier'] = 'windows_package[Windows Management Framework Core4.0]'
+
 if node['platform'] == 'windows'
   require 'chef/win32/version'
   windows_version = Chef::ReservedNames::Win32::Version.new
