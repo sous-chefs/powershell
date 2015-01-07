@@ -35,6 +35,7 @@ when 'windows'
       source node['powershell']['powershell5']['url']
       checksum node['powershell']['powershell5']['checksum']
       installer_type :custom
+      success_codes [0, 3010]
       options '/quiet /norestart'
       action :install
       not_if { registry_data_exists?('HKLM\SOFTWARE\Microsoft\PowerShell\3\PowerShellEngine', { :name => 'PowerShellVersion', :type => :string, :data => '5.0.9701.0' }) }

@@ -37,6 +37,7 @@ when 'windows'
         source node['powershell']['bits_4']['url']
         checksum node['powershell']['bits_4']['checksum']
         installer_type :custom
+        success_codes [0, 3010]
         options '/quiet /norestart'
         action :install
       end
@@ -50,6 +51,7 @@ when 'windows'
       checksum node['powershell']['powershell3']['checksum']
       installer_type :custom
       options '/quiet /norestart'
+      success_codes [0, 3010]
       action :install
       not_if do
         begin

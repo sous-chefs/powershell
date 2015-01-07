@@ -37,6 +37,7 @@ if node['platform'] == 'windows'
       source node['powershell']['powershell4']['url']
       checksum node['powershell']['powershell4']['checksum']
       installer_type :custom
+      success_codes [0, 3010]
       action :install
       not_if do
         begin
