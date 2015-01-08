@@ -23,7 +23,7 @@ when 'windows'
 
   # Configure winrm
   # use attributes to add other configuration
-  powershell 'enable winrm' do
+  powershell_script 'enable winrm' do
     code <<-EOH
       winrm quickconfig -q
     EOH
@@ -34,7 +34,7 @@ when 'windows'
     if node['powershell']['winrm']['thumbprint'].empty? || node['powershell']['winrm']['thumbprint'].nil?
       Chef::Log.error('Please specify thumbprint in default attributes for enabling https transport.')
     else
-      powershell 'winrm-create-https-listener' do
+      powershell_script 'winrm-create-https-listener' do
         code "winrm create 'winrm/config/Listener?Address=*+Transport=HTTPS' '@{Hostname=\"#{node['powershell']['winrm']['hostname']}\"; CertificateThumbprint=\"#{node['powershell']['winrm']['thumbprint']}\"}'"
       end
     end
