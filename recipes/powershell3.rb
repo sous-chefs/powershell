@@ -59,6 +59,7 @@ when 'windows'
       source node['powershell']['powershell3']['url']
       checksum node['powershell']['powershell3']['checksum']
       installer_type :custom
+      options '/quiet'
       action :install
       not_if do
         begin

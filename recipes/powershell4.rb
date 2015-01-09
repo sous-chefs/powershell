@@ -39,6 +39,7 @@ if node['platform'] == 'windows'
       source node['powershell']['powershell4']['url']
       checksum node['powershell']['powershell4']['checksum']
       installer_type :custom
+      options '/quiet'
       action :install
       not_if do
         begin
