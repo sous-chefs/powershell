@@ -29,15 +29,24 @@ when 'windows'
     EOH
   end
 
-  # Create HTTPS listener
-  if node['powershell']['winrm']['enable_https_transport']
-    if node['powershell']['winrm']['thumbprint'].empty? || node['powershell']['winrm']['thumbprint'].nil?
-      Chef::Log.error('Please specify thumbprint in default attributes for enabling https transport.')
-    else
-      powershell_script 'winrm-create-https-listener' do
-        code "winrm create 'winrm/config/Listener?Address=*+Transport=HTTPS' '@{Hostname=\"#{node['powershell']['winrm']['hostname']}\"; CertificateThumbprint=\"#{node['powershell']['winrm']['thumbprint']}\"}'"
+  #check if https listener already exists
+  winrm_cmd = "powershell.exe winrm enumerate winrm/config/listener"
+  shell_out = Mixlib::ShellOut.new(winrm_cmd)
+  shell_out.run_command  
+
+  if !shell_out.stdout.include? "Transport = HTTPS"
+    # Create HTTPS listener
+    if node['powershell']['winrm']['enable_https_transport']
+      if node['powershell']['winrm']['thumbprint'].empty? || node['powershell']['winrm']['thumbprint'].nil?
+        Chef::Log.error('Please specify thumbprint in default attributes for enabling https transport.')
+      else
+        powershell_script 'winrm-create-https-listener' do
+          code "winrm create 'winrm/config/Listener?Address=*+Transport=HTTPS' '@{Hostname=\"#{node['powershell']['winrm']['hostname']}\"; CertificateThumbprint=\"#{node['powershell']['winrm']['thumbprint']}\"}'"
+        end
       end
     end
+  else
+    Chef::Log.warn('WinRM HTTPS listener is already configured. Please delete the existing https listener first to configure new one.')
   end
 else
   Chef::Log.warn('WinRM can only be enabled on the Windows platform.')
