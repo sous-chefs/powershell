@@ -29,12 +29,12 @@ when 'windows'
     EOH
   end
 
-  #check if https listener already exists
-  winrm_cmd = "powershell.exe winrm enumerate winrm/config/listener"
+  # check if https listener already exists
+  winrm_cmd = 'powershell.exe winrm enumerate winrm/config/listener'
   shell_out = Mixlib::ShellOut.new(winrm_cmd)
-  shell_out.run_command  
+  shell_out.run_command
 
-  if !shell_out.stdout.include? "Transport = HTTPS"
+  if !shell_out.stdout.include? 'Transport = HTTPS'
     # Create HTTPS listener
     if node['powershell']['winrm']['enable_https_transport']
       if node['powershell']['winrm']['thumbprint'].empty? || node['powershell']['winrm']['thumbprint'].nil?
