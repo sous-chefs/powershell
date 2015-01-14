@@ -31,12 +31,17 @@ when 'windows'
 
   if windows_version.windows_server_2012_r2? || windows_version.windows_8_1?
 
+    include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
+
     windows_package 'Windows Management Framework Core 5.0' do
       source node['powershell']['powershell5']['url']
       checksum node['powershell']['powershell5']['checksum']
       installer_type :custom
       options '/quiet /norestart'
       action :install
+      # Note that the :immediately is to immediately notify the other resource,
+      # not to immediately reboot. The windows_reboot 'notifies' does that.
+      notifies :request, 'windows_reboot[powershell]', :immediately unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
       not_if { registry_data_exists?('HKLM\SOFTWARE\Microsoft\PowerShell\3\PowerShellEngine', { :name => 'PowerShellVersion', :type => :string, :data => '5.0.9701.0' }) }
     end
 
