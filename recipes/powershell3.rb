@@ -53,6 +53,7 @@ when 'windows'
       checksum node['powershell']['powershell3']['checksum']
       installer_type :custom
       options '/quiet /norestart'
+      success_codes [0, 42, 127, 3010]
       action :install
       # Note that the :immediately is to immediately notify the other resource,
       # not to immediately reboot. The windows_reboot 'notifies' does that.
