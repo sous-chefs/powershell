@@ -31,13 +31,16 @@ if node['platform'] == 'windows'
     include_recipe 'ms_dotnet45' if windows_version.windows_server_2008_r2? || windows_version.windows_7?
 
     # Reboot if user specifies immediate_reboot
-    include_recipe 'powershell::windows_reboot' if node['powershell']['installation_reboot_mode'] == 'immediate_reboot'
+    include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
 
     windows_package 'Windows Management Framework Core4.0' do
       source node['powershell']['powershell4']['url']
       checksum node['powershell']['powershell4']['checksum']
       installer_type :custom
+      options '/quiet /norestart'
       action :install
+      success_codes [0, 42, 127, 3010]
+      notifies :request, 'windows_reboot[powershell]', :immediately unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
       not_if do
         begin
           registry_data_exists?('HKLM\SOFTWARE\Microsoft\PowerShell\3\PowerShellEngine', { :name => 'PowerShellVersion', :type => :string, :data => '4.0' })
