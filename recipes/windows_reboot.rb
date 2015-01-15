@@ -6,7 +6,7 @@ include_recipe 'windows::reboot_handler'
 
 windows_reboot 'powershell' do
   reason 'Reboot after successful/unsuccessful powershell installation'
-  timeout 10
+  timeout node['powershell']['reboot_timeout_seconds']
   action :nothing
   notifies :run, 'ruby_block[end_chef_run]', :immediately if node['powershell']['installation_reboot_mode'] == 'immediate_reboot'
 end
