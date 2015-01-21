@@ -8,5 +8,4 @@ windows_reboot 'rebooter' do
   reason 'Reboot after successful/unsuccessful powershell installation'
   timeout 60
   notifies :run, node['powershell']['reboot_notifier'], :immediately
-  not_if { false }
 end

@@ -28,3 +28,5 @@ if node['platform_family'] == 'windows'
   default['powershell']['winrm']['thumbprint'] = ''		# mandatory for https transport
   default['powershell']['winrm']['hostname'] = ''
 end
+
+default['powershell']['reboot_notifier'] = ''

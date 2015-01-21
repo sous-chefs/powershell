@@ -21,6 +21,8 @@
 # PowerShell 2.0 Download Page
 # http://support.microsoft.com/kb/968929/en-us
 
+node.default['powershell']['reboot_notifier'] = 'windows_package[Windows Management Framework Core]'
+
 case node['platform']
 when 'windows'
 
@@ -61,11 +63,19 @@ when 'windows'
 
     include_recipe 'ms_dotnet2'
 
+    powershell_version_cmd = 'powershell.exe $PSVersionTable.PSVersion.Major'
+    shell_out = Mixlib::ShellOut.new(powershell_version_cmd)
+    shell_out.run_command
+    powershell_version = shell_out.stdout.to_f
+
+    # Reboot if user specifies immediate_reboot
+    include_recipe 'powershell::windows_reboot' if node['powershell']['installation_reboot_mode'] == 'immediate_reboot' && powershell_version < 2
+
     windows_package 'Windows Management Framework Core' do
       source node['powershell']['powershell2']['url']
       checksum node['powershell']['powershell2']['checksum']
       installer_type :custom
-      options '/quiet /norestart'
+      options '/quiet'
       action :install
       not_if do
         begin

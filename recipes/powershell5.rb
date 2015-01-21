@@ -21,6 +21,8 @@
 # PowerShell 5.0 Preview Download Page
 # http://www.microsoft.com/en-us/download/details.aspx?id=42316
 
+node.default['powershell']['reboot_notifier'] = 'windows_package[Windows Management Framework Core 5.0]'
+
 include_recipe 'powershell::powershell2'
 
 case node['platform']
@@ -31,11 +33,19 @@ when 'windows'
 
   if windows_version.windows_server_2012_r2? || windows_version.windows_8_1?
 
+    powershell_version_cmd = 'powershell.exe $PSVersionTable.PSVersion.Major'
+    shell_out = Mixlib::ShellOut.new(powershell_version_cmd)
+    shell_out.run_command
+    powershell_version = shell_out.stdout.to_f
+
+    # Reboot if user specifies immediate_reboot
+    include_recipe 'powershell::windows_reboot' if node['powershell']['installation_reboot_mode'] == 'immediate_reboot' && powershell_version < 5
+
     windows_package 'Windows Management Framework Core 5.0' do
       source node['powershell']['powershell5']['url']
       checksum node['powershell']['powershell5']['checksum']
       installer_type :custom
-      options '/quiet /norestart'
+      options '/quiet'
       action :install
       not_if { registry_data_exists?('HKLM\SOFTWARE\Microsoft\PowerShell\3\PowerShellEngine', { :name => 'PowerShellVersion', :type => :string, :data => '5.0.9701.0' }) }
     end
