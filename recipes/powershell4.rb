@@ -41,7 +41,7 @@ if node['platform'] == 'windows'
       action :install
       success_codes [0, 42, 127, 3010]
       # Note that the :immediately is to immediately notify the other resource,
-      # not to immediately reboot. The windows_reboot 'notifies' does that. 
+      # not to immediately reboot. The windows_reboot 'notifies' does that.
       notifies :request, 'windows_reboot[powershell]', :immediately if reboot_pending? && node['powershell']['installation_reboot_mode'] != 'no_reboot'
       not_if do
         begin
