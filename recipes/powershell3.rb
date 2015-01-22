@@ -45,12 +45,19 @@ when 'windows'
     # WMF 3.0 requires .NET 4.0
     include_recipe 'ms_dotnet4'
 
+    # Reboot if user specifies doesn't specify no_reboot
+    include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot' 
+
     windows_package 'Windows Management Framework Core 3.0' do
       source node['powershell']['powershell3']['url']
       checksum node['powershell']['powershell3']['checksum']
       installer_type :custom
       options '/quiet /norestart'
+      success_codes [0, 42, 127, 3010]
       action :install
+      # Note that the :immediately is to immediately notify the other resource,
+      # not to immediately reboot. The windows_reboot 'notifies' does that.
+      notifies :request, 'windows_reboot[powershell]', :immediately if reboot_pending? && node['powershell']['installation_reboot_mode'] != 'no_reboot'
       not_if do
         begin
           registry_data_exists?('HKLM\SOFTWARE\Microsoft\PowerShell\3\PowerShellEngine', { :name => 'PowerShellVersion', :type => :string, :data => '3.0' })

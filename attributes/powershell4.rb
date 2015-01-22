@@ -38,4 +38,3 @@ if node['platform_family'] == 'windows'
   end
 end
 
-default['powershell']['reboot_notifier'] = 'windows_package[Windows Management Framework Core4.0]'
