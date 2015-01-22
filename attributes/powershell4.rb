@@ -37,4 +37,3 @@ if node['platform_family'] == 'windows'
     end
   end
 end
-
