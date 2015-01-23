@@ -57,7 +57,7 @@ when 'windows'
       action :install
       # Note that the :immediately is to immediately notify the other resource,
       # not to immediately reboot. The windows_reboot 'notifies' does that.
-      notifies :request, 'windows_reboot[powershell]', :immediately unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
+      notifies :request, 'windows_reboot[powershell]', :immediately if reboot_pending? && node['powershell']['installation_reboot_mode'] != 'no_reboot'
       not_if do
         begin
           registry_data_exists?('HKLM\SOFTWARE\Microsoft\PowerShell\3\PowerShellEngine', { :name => 'PowerShellVersion', :type => :string, :data => '3.0' })

@@ -39,9 +39,10 @@ when 'windows'
       installer_type :custom
       options '/quiet /norestart'
       action :install
+      success_codes [0, 42, 127, 3010]
       # Note that the :immediately is to immediately notify the other resource,
       # not to immediately reboot. The windows_reboot 'notifies' does that.
-      notifies :request, 'windows_reboot[powershell]', :immediately unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
+      notifies :request, 'windows_reboot[powershell]', :immediately if reboot_pending? && node['powershell']['installation_reboot_mode'] != 'no_reboot'
       not_if { registry_data_exists?('HKLM\SOFTWARE\Microsoft\PowerShell\3\PowerShellEngine', { :name => 'PowerShellVersion', :type => :string, :data => '5.0.9701.0' }) }
     end
 
