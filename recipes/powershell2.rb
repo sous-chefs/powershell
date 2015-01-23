@@ -66,6 +66,7 @@ when 'windows'
       checksum node['powershell']['powershell2']['checksum']
       installer_type :custom
       options '/quiet /norestart'
+      success_codes [0, 3010]
       action :install
       not_if do
         begin
