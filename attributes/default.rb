@@ -23,6 +23,10 @@ if node['platform_family'] == 'windows'
   # INSTALLATION_REBOOT_MODE = "delayed_reboot". Used for node reboot after chef-client run.
   default['powershell']['installation_reboot_mode'] = ENV['INSTALLATION_REBOOT_MODE'] || 'no_reboot'
 
+  # number of seconds to warn before reboot. The clock starts at the end of the
+  # chef run.
+  default['powershell']['reboot_timeout_seconds'] = 10
+
   # For enabling HTTPS transport in winrm recipe
   default['powershell']['winrm']['enable_https_transport'] = false
   default['powershell']['winrm']['thumbprint'] = ''		# mandatory for https transport
