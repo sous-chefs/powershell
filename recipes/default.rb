@@ -1,6 +1,6 @@
 #
-# Author:: Seth Chisamore (<schisamo@opscode.com>)
-# Author:: Julian C. Dunn (<jdunn@getchef.com>)
+# Author:: Seth Chisamore (<schisamo@chef.io>)
+# Author:: Julian C. Dunn (<jdunn@chef.io>)
 # Cookbook Name:: powershell
 # Recipe:: default
 #

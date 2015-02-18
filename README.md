@@ -77,7 +77,7 @@ PowerShell also requires the appropriate version of the Microsoft .NET Framework
 Resource/Provider
 -----------------
 
-**Note**: In Chef 11, use the built-in [powershell_script](http://docs.opscode.com/resource_powershell_script.html) resource.
+**Note**: In Chef 11, use the built-in [powershell_script](http://docs.chef.io/resource_powershell_script.html) resource.
 
 ### `powershell`
 
@@ -273,8 +273,8 @@ References
 License & Authors
 -----------------
 
-- Author:: Seth Chisamore (<schisamo@getchef.com>)
-- Author:: Julian Dunn (<jdunn@getchef.com>)
+- Author:: Seth Chisamore (<schisamo@chef.io>)
+- Author:: Julian Dunn (<jdunn@chef.io>)
 
 ```text
 

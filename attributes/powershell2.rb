@@ -1,5 +1,5 @@
 #
-# Author:: Julian C. Dunn (<jdunn@getchef.com>)
+# Author:: Julian C. Dunn (<jdunn@chef.io>)
 # Cookbook Name:: powershell
 # Attribute:: powershell2
 #

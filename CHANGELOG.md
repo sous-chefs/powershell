@@ -36,7 +36,7 @@ v2.0.0 (2014-01-03)
 v1.1.2
 ------
 ### Bug
-- **[COOK-3000](https://tickets.opscode.com/browse/COOK-3000)** - Fix typo that prevented module loading
+- **[COOK-3000](https://tickets.chef.io/browse/COOK-3000)** - Fix typo that prevented module loading
 
 v1.1.0
 ------
