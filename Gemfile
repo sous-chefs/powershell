@@ -10,17 +10,11 @@ group :unit do
   gem 'chefspec',   '~> 3.1'
 end
 
-group :kitchen_common do
-  gem 'test-kitchen', '~> 1.2'
-end
-
-group :kitchen_vagrant do
-  gem 'kitchen-vagrant'
-end
-
-group :kitchen_cloud do
-  gem 'kitchen-digitalocean'
-  gem 'kitchen-ec2'
+group :test_kitchen do
+  gem 'test-kitchen', '~> 1.4.0.rc.1'
+  gem 'winrm-transport', '~> 1.0'
+  gem 'kitchen-vagrant', '~> 0.17.0.beta.2'
+  gem 'vagrant-wrapper', '>= 2.0'
 end
 
 group :development do

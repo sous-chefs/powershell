@@ -1,0 +1,41 @@
+---
+driver:
+  forward_agent: yes
+  name: vagrant
+  customize:
+    cpus: 2
+    memory: 4096
+
+transport:
+  name: winrm
+
+provisioner:
+  name: chef_zero
+
+platforms:
+  - name: windows-8.1-chef11.10.4
+    driver_config:
+      box: windows-8.1
+    provisioner:
+      require_chef_omnibus: 11.10.4
+  - name: windows-8.1-chef11.12.4
+    driver_config:
+      box: windows-8.1
+    provisioner:
+      require_chef_omnibus: 11.12.4
+  - name: windows-8.1-chef11.16.4
+    driver_config:
+      box: windows-8.1
+    provisioner:
+      require_chef_omnibus: 11.16.4
+  - name: windows-8.1-chef12
+    driver_config:
+      box: windows-8.1
+    provisioner:
+      require_chef_omnibus: true
+
+suites:
+  - name: default
+    run_list:
+      - recipe[powershell::default]
+      - recipe[minimal::default]
