@@ -2,6 +2,17 @@ powershell Cookbook CHANGELOG
 =============================
 This file is used to list changes made in each version of the powershell cookbook.
 
+v3.1.0 (2015-04-27)
+-------------------
+- [**webframp**](https://github.com/webframp)
+  [PR #30](https://github.com/opscode-cookbooks/powershell/pull/30) - Fix deprecated chefspec runner config
+- [**webframp**](https://github.com/webframp) [PR #29](https://github.com/opscode-cookbooks/powershell/pull/29) - Fix slightly dangerous `rm` in `powershell_module`
+- [PR #42](https://github.com/opscode-cookbooks/powershell/pull/42) - Bump Powershell 5 to February preview
+- [**tjnicholas**](https://github.com/tjnicholas) [PR #37](https://github.com/opscode-cookbooks/powershell/pull/37) - Reboot fixes
+- [PR #27](https://github.com/opscode-cookbooks/powershell/pull/27) DSC recipe enables winrm with https transport
+- [PR #16](https://github.com/opscode-cookbooks/powershell/pull/16) Added `powershell_module` resource
+- [PR #22](https://github.com/opscode-cookbooks/powershell/pull/22) Added recipe to enable DSC
+
 v3.0.7 (2014-07-16)
 -------------------
 - Truly fix broken cookbook upload
