@@ -23,11 +23,11 @@ if node['platform_family'] == 'windows'
   when '6.3'
     case node['kernel']['machine']
     when 'i386'
-      default['powershell']['powershell5']['version'] = '5.0.9701.0'
+      default['powershell']['powershell5']['version'] = '5.0.10018.0'
       default['powershell']['powershell5']['url'] = 'http://download.microsoft.com/download/B/5/1/B5130F9A-6F07-481A-B4A6-CEDED7C96AE2/WindowsBlue-KB3037315-x86.msu'
       default['powershell']['powershell5']['checksum'] = '7929cfb10fa07f5f9ce5a24e44977d63054b27a3fa51db10242193269120305f'
     when 'x86_64'
-      default['powershell']['powershell5']['version'] = '5.0.9701.0'
+      default['powershell']['powershell5']['version'] = '5.0.10018.0'
       default['powershell']['powershell5']['url'] = 'http://download.microsoft.com/download/B/5/1/B5130F9A-6F07-481A-B4A6-CEDED7C96AE2/WindowsBlue-KB3037315-x64.msu'
       default['powershell']['powershell5']['checksum'] = '9a24de7b85fae96a87188a7fdaab27da3bc90d89426594cdc5f962234a61b7bd'
     end
