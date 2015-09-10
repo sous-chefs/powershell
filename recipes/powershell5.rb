@@ -43,7 +43,10 @@ when 'windows'
       # Note that the :immediately is to immediately notify the other resource,
       # not to immediately reboot. The windows_reboot 'notifies' does that.
       notifies :request, 'windows_reboot[powershell]', :immediately if reboot_pending? && node['powershell']['installation_reboot_mode'] != 'no_reboot'
-      not_if { registry_data_exists?('HKLM\SOFTWARE\Microsoft\PowerShell\3\PowerShellEngine', name: 'PowerShellVersion', type: :string, data: node['powershell']['powershell5']['version']) }
+      not_if { 
+        registry_value_exists?('HKLM\SOFTWARE\Microsoft\PowerShell\3\PowerShellEngine', { :name => 'PowerShellVersion', :type => :string }) && 
+        Gem::Version.new(registry_get_values('HKLM\SOFTWARE\Microsoft\PowerShell\3\PowerShellEngine').find{|i| i[:name] == 'PowerShellVersion' }[:data]) >= Gem::Version.new(node['powershell']['powershell5']['version'])
+      }
     end
 
   else
