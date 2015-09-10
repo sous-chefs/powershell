@@ -12,3 +12,9 @@ MethodLength:
   Enabled: false
 SingleSpaceBeforeFirstArg:
   Enabled: false
+Metrics/AbcSize:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+Metrics/BlockNesting:
+  Enabled: false

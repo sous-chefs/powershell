@@ -11,7 +11,7 @@ describe 'powershell::powershell2' do
 
   context 'when windows_version is windows_server_2012 and windows_version is core ' do
     before do
-      @windows_version = double(:windows_server_2012? => true, :windows_8? => false, :core? => true)
+      @windows_version = double(windows_server_2012?: true, windows_8?: false, core?: true)
       allow(Chef::ReservedNames::Win32::Version).to receive(:new).and_return(@windows_version)
     end
 
@@ -23,7 +23,7 @@ describe 'powershell::powershell2' do
 
   context 'when windows_version is windows_8 and windows_version is core ' do
     before do
-      @windows_version = double(:windows_server_2012? => false, :windows_8? => true, :core? => true)
+      @windows_version = double(windows_server_2012?: false, windows_8?: true, core?: true)
       allow(Chef::ReservedNames::Win32::Version).to receive(:new).and_return(@windows_version)
     end
 
@@ -35,7 +35,7 @@ describe 'powershell::powershell2' do
 
   context 'when windows_version is windows_server_2008_r2 and windows_version is core ' do
     before do
-      @windows_version = double(:windows_server_2008_r2? => true, :windows_7? => false, :core? => true, :windows_server_2012? => false, :windows_8? => false)
+      @windows_version = double(windows_server_2008_r2?: true, windows_7?: false, core?: true, windows_server_2012?: false, windows_8?: false)
       allow(Chef::ReservedNames::Win32::Version).to receive(:new).and_return(@windows_version)
     end
 
@@ -49,7 +49,7 @@ describe 'powershell::powershell2' do
 
   context 'when windows_version is windows_7 and windows_version is core' do
     before do
-      @windows_version = double(:windows_server_2008_r2? => false, :windows_7? => true, :core? => true, :windows_server_2012? => false, :windows_8? => false)
+      @windows_version = double(windows_server_2008_r2?: false, windows_7?: true, core?: true, windows_server_2012?: false, windows_8?: false)
       allow(Chef::ReservedNames::Win32::Version).to receive(:new).and_return(@windows_version)
     end
 
@@ -63,7 +63,7 @@ describe 'powershell::powershell2' do
 
   context 'when windows_version is windows_server_2008' do
     before do
-      @windows_version = double(:windows_server_2008? => true, :windows_server_2003_r2? => false, :windows_server_2003? => false, :windows_xp? => false, :windows_server_2008_r2? => false, :windows_7? => false, :core? => false, :windows_server_2012? => false, :windows_8? => false)
+      @windows_version = double(windows_server_2008?: true, windows_server_2003_r2?: false, windows_server_2003?: false, windows_xp?: false, windows_server_2008_r2?: false, windows_7?: false, core?: false, windows_server_2012?: false, windows_8?: false)
       allow(Chef::ReservedNames::Win32::Version).to receive(:new).and_return(@windows_version)
       registry = double
       allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
@@ -78,7 +78,7 @@ describe 'powershell::powershell2' do
 
   context 'when windows_version is windows_server_2008' do
     before do
-      @windows_version = double(:windows_server_2008? => true, :windows_server_2003_r2? => false, :windows_server_2003? => false, :windows_xp? => false, :windows_server_2008_r2? => false, :windows_7? => false, :core? => false, :windows_server_2012? => false, :windows_8? => false)
+      @windows_version = double(windows_server_2008?: true, windows_server_2003_r2?: false, windows_server_2003?: false, windows_xp?: false, windows_server_2008_r2?: false, windows_7?: false, core?: false, windows_server_2012?: false, windows_8?: false)
       allow(Chef::ReservedNames::Win32::Version).to receive(:new).and_return(@windows_version)
       registry = double
       allow(Chef::Win32::Registry).to receive(:new).and_return(registry)

@@ -19,18 +19,18 @@
 actions :run
 
 # Chef::Resource::Execute
-attribute :command, :kind_of => String, :name_attribute => true
-attribute :creates, :kind_of => String
-attribute :cwd, :kind_of => String
-attribute :environment, :kind_of => Hash
-attribute :user, :kind_of => [String, Integer]
-attribute :group, :kind_of => [String, Integer]
-attribute :returns, :kind_of => [Integer, Array]
-attribute :timeout, :kind_of => Integer
+attribute :command, kind_of: String, name_attribute: true
+attribute :creates, kind_of: String
+attribute :cwd, kind_of: String
+attribute :environment, kind_of: Hash
+attribute :user, kind_of: [String, Integer]
+attribute :group, kind_of: [String, Integer]
+attribute :returns, kind_of: [Integer, Array]
+attribute :timeout, kind_of: Integer
 
 # Chef::Resource::Script
-attribute :code, :kind_of => String
-attribute :flags, :kind_of => String
+attribute :code, kind_of: String
+attribute :flags, kind_of: String
 
 def initialize(*args)
   super
