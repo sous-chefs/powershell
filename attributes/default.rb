@@ -29,6 +29,6 @@ if node['platform_family'] == 'windows'
 
   # For enabling HTTPS transport in winrm recipe
   default['powershell']['winrm']['enable_https_transport'] = false
-  default['powershell']['winrm']['thumbprint'] = ''		# mandatory for https transport
+  default['powershell']['winrm']['thumbprint'] = '' # mandatory for https transport
   default['powershell']['winrm']['hostname'] = ''
 end
