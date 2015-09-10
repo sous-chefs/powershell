@@ -1,5 +1,7 @@
 Powershell Cookbook
 ===================
+[![Build Status](https://travis-ci.org/chef-cookbooks/powershell.svg?branch=master)](http://travis-ci.org/chef-cookbooks/powershell)
+[![Cookbook Version](https://img.shields.io/cookbook/v/powershell.svg)](https://supermarket.chef.io/cookbooks/powershell)
 
 Installs and configures PowerShell 2.0, 3.0, 4.0 or 5.0.
 
@@ -277,8 +279,7 @@ License & Authors
 - Author:: Julian Dunn (<jdunn@chef.io>)
 
 ```text
-
-Copyright:: 2011-2014, Chef Software, Inc.
+Copyright:: 2011-2015, Chef Software, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

@@ -60,7 +60,7 @@ when 'windows'
       notifies :request, 'windows_reboot[powershell]', :immediately if reboot_pending? && node['powershell']['installation_reboot_mode'] != 'no_reboot'
       not_if do
         begin
-          registry_data_exists?('HKLM\SOFTWARE\Microsoft\PowerShell\3\PowerShellEngine', { :name => 'PowerShellVersion', :type => :string, :data => '3.0' })
+          registry_data_exists?('HKLM\SOFTWARE\Microsoft\PowerShell\3\PowerShellEngine', name: 'PowerShellVersion', type: :string, data: '3.0')
         rescue Chef::Exceptions::Win32RegKeyMissing
           # whole tree is missing if Powershell 3 not installed; that's okay
           false

@@ -20,3 +20,6 @@ depends 'ms_dotnet45'
 depends 'ms_dotnet4'
 depends 'ms_dotnet2'
 depends 'chef_handler'
+
+source_url 'https://github.com/chef-cookbooks/powershell' if respond_to?(:source_url)
+issues_url 'https://github.com/chef-cookbooks/powershell/issues' if respond_to?(:issues_url)

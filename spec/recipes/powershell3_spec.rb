@@ -13,7 +13,7 @@ describe 'powershell::powershell3' do
 
   context 'when windows_version is windows_server_2008' do
     before do
-      @windows_version = double(:windows_server_2008? => true, :windows_server_2008_r2? => false, :windows_7? => false)
+      @windows_version = double(windows_server_2008?: true, windows_server_2008_r2?: false, windows_7?: false)
       allow(Chef::ReservedNames::Win32::Version).to receive(:new).and_return(@windows_version)
       registry = double
       allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
@@ -29,7 +29,7 @@ describe 'powershell::powershell3' do
 
   context 'when windows_version is windows_server_2008_r2' do
     before do
-      @windows_version = double(:windows_server_2008? => false, :windows_server_2008_r2? => true, :windows_7? => false)
+      @windows_version = double(windows_server_2008?: false, windows_server_2008_r2?: true, windows_7?: false)
       allow(Chef::ReservedNames::Win32::Version).to receive(:new).and_return(@windows_version)
       registry = double
       allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
@@ -43,7 +43,7 @@ describe 'powershell::powershell3' do
 
   context 'when windows_version is windows_server_2008_r2' do
     before do
-      @windows_version = double(:windows_server_2008? => false, :windows_server_2008_r2? => true, :windows_7? => false)
+      @windows_version = double(windows_server_2008?: false, windows_server_2008_r2?: true, windows_7?: false)
       allow(Chef::ReservedNames::Win32::Version).to receive(:new).and_return(@windows_version)
       registry = double
       allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
@@ -58,7 +58,7 @@ describe 'powershell::powershell3' do
 
   context 'when windows_version is windows_7' do
     before do
-      @windows_version = double(:windows_server_2008? => false, :windows_server_2008_r2? => false, :windows_7? => true)
+      @windows_version = double(windows_server_2008?: false, windows_server_2008_r2?: false, windows_7?: true)
       allow(Chef::ReservedNames::Win32::Version).to receive(:new).and_return(@windows_version)
       registry = double
       allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
@@ -72,7 +72,7 @@ describe 'powershell::powershell3' do
 
   context 'when windows_version is windows_7' do
     before do
-      @windows_version = double(:windows_server_2008? => false, :windows_server_2008_r2? => false, :windows_7? => true)
+      @windows_version = double(windows_server_2008?: false, windows_server_2008_r2?: false, windows_7?: true)
       allow(Chef::ReservedNames::Win32::Version).to receive(:new).and_return(@windows_version)
       registry = double
       allow(Chef::Win32::Registry).to receive(:new).and_return(registry)

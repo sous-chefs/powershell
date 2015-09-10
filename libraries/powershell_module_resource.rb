@@ -22,7 +22,7 @@ require_relative 'powershell_module_provider'
 class PowershellModule < Chef::Resource::Package
   state_attrs :enabled
 
-  provides :powershell_module, :on_platforms => ['windows']
+  provides :powershell_module, on_platforms: ['windows']
 
   def initialize(name, run_context = nil)
     super
@@ -39,14 +39,14 @@ class PowershellModule < Chef::Resource::Package
   end
 
   def destination(arg = nil)
-    set_or_return(:destination, arg, :kind_of => String)
+    set_or_return(:destination, arg, kind_of: String)
   end
 
   def enabled(arg = nil)
     set_or_return(
       :enabled,
       arg,
-      :kind_of => [TrueClass, FalseClass]
+      kind_of: [TrueClass, FalseClass]
     )
   end
 end
