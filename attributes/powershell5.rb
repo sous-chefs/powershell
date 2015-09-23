@@ -23,13 +23,13 @@ if node['platform_family'] == 'windows'
   when '6.3'
     case node['kernel']['machine']
     when 'i386'
-      default['powershell']['powershell5']['version'] = '5.0.9701.0'
-      default['powershell']['powershell5']['url'] = 'http://download.microsoft.com/download/B/5/1/B5130F9A-6F07-481A-B4A6-CEDED7C96AE2/WindowsBlue-KB3037315-x86.msu'
-      default['powershell']['powershell5']['checksum'] = '7929cfb10fa07f5f9ce5a24e44977d63054b27a3fa51db10242193269120305f'
+      default['powershell']['powershell5']['version'] = '5.0.10514.6'
+      default['powershell']['powershell5']['url'] = 'http://download.microsoft.com/download/3/F/D/3FD04B49-26F9-4D9A-8C34-4533B9D5B020/Win8.1AndW2K12R2-KB3066437-x86.msu'
+      default['powershell']['powershell5']['checksum'] = '0810a0eebf2239adde959561be8550f923ffb00e8b7d3a843143261937a0a5ab'
     when 'x86_64'
-      default['powershell']['powershell5']['version'] = '5.0.9701.0'
-      default['powershell']['powershell5']['url'] = 'http://download.microsoft.com/download/B/5/1/B5130F9A-6F07-481A-B4A6-CEDED7C96AE2/WindowsBlue-KB3037315-x64.msu'
-      default['powershell']['powershell5']['checksum'] = '9a24de7b85fae96a87188a7fdaab27da3bc90d89426594cdc5f962234a61b7bd'
+      default['powershell']['powershell5']['version'] = '5.0.10514.6'
+      default['powershell']['powershell5']['url'] = 'http://download.microsoft.com/download/3/F/D/3FD04B49-26F9-4D9A-8C34-4533B9D5B020/Win8.1AndW2K12R2-KB3066437-x64.msu'
+      default['powershell']['powershell5']['checksum'] = '9c57302ff0515a6b7eb53ab07bed0f5d420bd7204296d9f3fd17452fca1d5b3d'
     end
   end
 end
