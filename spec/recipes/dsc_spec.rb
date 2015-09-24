@@ -4,6 +4,12 @@ require 'mixlib/shellout'
 describe 'powershell::dsc' do
   let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'windows', version: '2012').converge(described_recipe) }
 
+  before do
+    allow_any_instance_of(Chef::Recipe).to receive(:include_recipe).and_call_original
+    allow_any_instance_of(Chef::Recipe).to receive(:include_recipe).with('powershell::powershell4')
+    allow_any_instance_of(Chef::Recipe).to receive(:include_recipe).with('powershell::winrm')
+  end
+
   context 'When listener is enabled' do
     before do
       command = 'powershell.exe winrm get winrm/config/listener?Address=*+Transport=HTTP'
@@ -15,8 +21,9 @@ describe 'powershell::dsc' do
     end
 
     it 'runs dsc_script' do
-      expect(chef_run).to include_recipe('powershell::powershell4')
-      expect(chef_run).to include_recipe('powershell::winrm')
+      expect_any_instance_of(Chef::Recipe).to receive(:include_recipe).with('powershell::powershell4')
+      expect_any_instance_of(Chef::Recipe).to receive(:include_recipe).with('powershell::winrm')
+      chef_run
     end
   end
 
@@ -31,7 +38,8 @@ describe 'powershell::dsc' do
     end
 
     it 'runs dsc_script' do
-      expect(chef_run).to include_recipe('powershell::powershell4')
+      expect_any_instance_of(Chef::Recipe).to receive(:include_recipe).with('powershell::powershell4')
+      chef_run
     end
   end
 end

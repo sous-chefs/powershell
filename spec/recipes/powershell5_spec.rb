@@ -11,6 +11,7 @@ describe 'powershell::powershell5' do
 
   before do
     allow_any_instance_of(Chef::Recipe).to receive(:include_recipe).with('powershell::powershell2').and_return(true)
+    allow_any_instance_of(Chef::DSL::RebootPending).to receive(:reboot_pending?).and_return(true)
   end
 
   context 'when windows_version is windows_server_2012_r2' do

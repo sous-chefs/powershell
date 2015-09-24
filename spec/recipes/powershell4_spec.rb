@@ -2,6 +2,10 @@ require 'spec_helper'
 require 'chef/win32/version'
 
 describe 'powershell::powershell4' do
+  before do
+    allow_any_instance_of(Chef::DSL::RebootPending).to receive(:reboot_pending?).and_return(true)
+  end
+
   context 'when installation_reboot_mode is no_reboot' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'windows', version: '2012') do |node|
@@ -196,6 +200,7 @@ describe 'powershell::powershell4' do
         registry = double
         allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
         allow(registry).to receive(:data_exists?).and_return(false)
+        allow_any_instance_of(Chef::DSL::RebootPending).to receive(:reboot_pending?).and_return(false)
       end
 
       it 'installs windows package windows managemet framework core 4.0 when powershell 4 is not installed' do
