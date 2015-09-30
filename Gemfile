@@ -1,9 +1,13 @@
 source 'https://rubygems.org'
 
+group :rake do
+  gem 'rake'
+  gem 'tomlrb'
+end
+
 group :lint do
   gem 'foodcritic', '~> 5.0'
   gem 'rubocop', '~> 0.34'
-  gem 'rake'
 end
 
 group :unit do
@@ -17,6 +21,12 @@ end
 
 group :kitchen_vagrant do
   gem 'kitchen-vagrant', '~> 0.18'
+end
+
+
+group :kitchen_cloud do
+  gem 'kitchen-digitalocean'
+  gem 'kitchen-ec2'
 end
 
 group :development do
