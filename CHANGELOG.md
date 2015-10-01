@@ -2,6 +2,10 @@ powershell Cookbook CHANGELOG
 =============================
 This file is used to list changes made in each version of the powershell cookbook.
 
+v3.2.0 (2015-09-30)
+-------------------
+- Added recipes to configure LCM (Local Configuration Manager).
+
 v3.1.0 (2015-04-27)
 -------------------
 - [**webframp**](https://github.com/webframp)

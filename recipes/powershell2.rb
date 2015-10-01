@@ -61,7 +61,7 @@ when 'windows'
 
     include_recipe 'ms_dotnet2'
 
-    # Reboot if user specifies doesn't specify no_reboot
+    # Reboot if user doesn't specify no_reboot
     include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
 
     windows_package 'Windows Management Framework Core' do
