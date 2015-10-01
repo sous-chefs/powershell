@@ -43,7 +43,7 @@ when 'windows'
   # * Windows NT 5.1 & 5.2 (Windows Server 2003 & Windows XP)
   # * Windows NT 6.0 server (Windows Server 2008 SP2 not vista)
   elsif nt_version.between?(5.1, 5.2) || (nt_version == 6.0 && ::Windows::VersionHelper.server_version?(node))
-    # Reboot if user specifies doesn't specify no_reboot
+    # Reboot if user doesn't specify no_reboot
     include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
 
     windows_package 'Windows Management Framework Core' do # ~FC009
