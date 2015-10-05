@@ -23,13 +23,13 @@ include_recipe 'powershell::dsc'
 case node['platform']
 when 'windows'
 
-  directory "Creating temporary directory to store LCM MOF files" do
+  directory 'Creating temporary directory to store LCM MOF files' do
     path node['lcm']['mof']['temp_dir']
     rights :read, 'Everyone'
     action :create
   end
 
-  powershell_script "Disable LCM" do
+  powershell_script 'Disable LCM' do
     code <<-EOH
 
       Configuration DisableLCM
@@ -53,7 +53,7 @@ when 'windows'
     EOH
   end
 
-  directory "Deleting temporary directory which stored LCM MOF files" do
+  directory 'Deleting temporary directory which stored LCM MOF files' do
     path node['lcm']['mof']['temp_dir']
     recursive true
     action :delete
