@@ -36,7 +36,8 @@ when 'windows'
 
   if !shell_out.stdout.include? 'Transport = HTTPS'
     # Create HTTPS listener
-    if node['powershell']['winrm']['enable_https_transport']
+    case node['powershell']['winrm']['enable_https_transport']
+    when true
       if node['powershell']['winrm']['thumbprint'].empty? || node['powershell']['winrm']['thumbprint'].nil?
         Chef::Log.error('Please specify thumbprint in default attributes for enabling https transport.')
       else
