@@ -6,8 +6,6 @@ describe 'powershell::dsc' do
 
   context 'When listener is enabled' do
     before do
-      command = 'powershell.exe winrm get winrm/config/listener?Address=*+Transport=HTTP'
-
       shell_obj = instance_double('Mixlib::ShellOut')
       allow(shell_obj).to receive(:run_command)
       allow(shell_obj).to receive(:exitstatus).and_return(1)
