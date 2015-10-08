@@ -30,7 +30,7 @@ if node['platform'] == 'windows'
     # Ensure .NET 4.5 is installed or installation will fail silently per Microsoft. Only necessary for Windows 2008R2 or 7.
     include_recipe 'ms_dotnet45' if windows_version.windows_server_2008_r2? || windows_version.windows_7?
 
-    # Reboot if user specifies doesn't specify no_reboot
+    # Reboot if user doesn't specify no_reboot
     include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
 
     windows_package 'Windows Management Framework Core4.0' do
