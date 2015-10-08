@@ -68,6 +68,8 @@ describe 'powershell::powershell2' do
       registry = double
       allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
       allow(registry).to receive(:data_exists?).and_return(false)
+      allow(registry).to receive(:value_exists?).and_return(false)
+      allow(registry).to receive(:key_exists?).and_return(false)
     end
 
     it 'installs windows package when powershell2 doesnot exist' do
@@ -83,6 +85,8 @@ describe 'powershell::powershell2' do
       registry = double
       allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
       allow(registry).to receive(:data_exists?).and_return(true)
+      allow(registry).to receive(:value_exists?).and_return(true)
+      allow(registry).to receive(:key_exists?).and_return(true)
     end
 
     it 'only includes ms_dotnet2 when powershell2 exist' do

@@ -18,6 +18,8 @@ describe 'powershell::powershell4' do
         registry = double
         allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
         allow(registry).to receive(:data_exists?).and_return(true)
+        allow(registry).to receive(:value_exists?).and_return(true)
+        allow(registry).to receive(:key_exists?).and_return(true)
       end
 
       it 'only includes ms_dotnet45 when powershell 4 is installed' do
@@ -32,6 +34,8 @@ describe 'powershell::powershell4' do
         registry = double
         allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
         allow(registry).to receive(:data_exists?).and_return(false)
+        allow(registry).to receive(:value_exists?).and_return(false)
+        allow(registry).to receive(:key_exists?).and_return(false)
       end
 
       it 'installs windows package windows managemet framework core 4.0 when powershell 4 is not installed' do
@@ -47,6 +51,8 @@ describe 'powershell::powershell4' do
         registry = double
         allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
         allow(registry).to receive(:data_exists?).and_return(true)
+        allow(registry).to receive(:value_exists?).and_return(true)
+        allow(registry).to receive(:key_exists?).and_return(true)
       end
 
       it 'only includes ms_dotnet45 when powershell 4 is installed' do
@@ -61,6 +67,8 @@ describe 'powershell::powershell4' do
         registry = double
         allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
         allow(registry).to receive(:data_exists?).and_return(false)
+        allow(registry).to receive(:value_exists?).and_return(false)
+        allow(registry).to receive(:key_exists?).and_return(false)
       end
 
       it 'installs windows package windows managemet framework core 4.0 when powershell 4 is not installed' do
@@ -76,6 +84,8 @@ describe 'powershell::powershell4' do
         registry = double
         allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
         allow(registry).to receive(:data_exists?).and_return(false)
+        allow(registry).to receive(:value_exists?).and_return(false)
+        allow(registry).to receive(:key_exists?).and_return(false)
       end
 
       it 'installs windows package windows managemet framework core 4.0' do
@@ -100,6 +110,8 @@ describe 'powershell::powershell4' do
         registry = double
         allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
         allow(registry).to receive(:data_exists?).and_return(true)
+        allow(registry).to receive(:value_exists?).and_return(true)
+        allow(registry).to receive(:key_exists?).and_return(true)
       end
 
       it 'only includes ms_dotnet45 when powershell 4 is installed' do
@@ -114,6 +126,8 @@ describe 'powershell::powershell4' do
         registry = double
         allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
         allow(registry).to receive(:data_exists?).and_return(false)
+        allow(registry).to receive(:value_exists?).and_return(false)
+        allow(registry).to receive(:key_exists?).and_return(false)
       end
 
       it 'installs windows package windows managemet framework core 4.0 when powershell 4 is not installed' do
@@ -129,6 +143,8 @@ describe 'powershell::powershell4' do
         registry = double
         allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
         allow(registry).to receive(:data_exists?).and_return(true)
+        allow(registry).to receive(:value_exists?).and_return(true)
+        allow(registry).to receive(:key_exists?).and_return(true)
       end
 
       it 'only includes ms_dotnet45 when powershell 4 is installed' do
@@ -143,6 +159,8 @@ describe 'powershell::powershell4' do
         registry = double
         allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
         allow(registry).to receive(:data_exists?).and_return(false)
+        allow(registry).to receive(:value_exists?).and_return(false)
+        allow(registry).to receive(:key_exists?).and_return(false)
       end
 
       it 'installs windows package windows managemet framework core 4.0 when powershell 4 is not installed' do
@@ -158,6 +176,8 @@ describe 'powershell::powershell4' do
         registry = double
         allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
         allow(registry).to receive(:data_exists?).and_return(false)
+        allow(registry).to receive(:value_exists?).and_return(false)
+        allow(registry).to receive(:key_exists?).and_return(false)
       end
 
       it 'installs windows package windows managemet framework core 4.0' do
@@ -182,6 +202,8 @@ describe 'powershell::powershell4' do
         registry = double
         allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
         allow(registry).to receive(:data_exists?).and_return(true)
+        allow(registry).to receive(:value_exists?).and_return(true)
+        allow(registry).to receive(:key_exists?).and_return(true)
       end
 
       it 'only includes ms_dotnet45 when powershell 4 is installed' do
@@ -196,6 +218,8 @@ describe 'powershell::powershell4' do
         registry = double
         allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
         allow(registry).to receive(:data_exists?).and_return(false)
+        allow(registry).to receive(:value_exists?).and_return(false)
+        allow(registry).to receive(:key_exists?).and_return(false)
       end
 
       it 'installs windows package windows managemet framework core 4.0 when powershell 4 is not installed' do
@@ -211,6 +235,8 @@ describe 'powershell::powershell4' do
         registry = double
         allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
         allow(registry).to receive(:data_exists?).and_return(true)
+        allow(registry).to receive(:value_exists?).and_return(true)
+        allow(registry).to receive(:key_exists?).and_return(true)
       end
 
       it 'only includes ms_dotnet45 when powershell 4 is installed' do
@@ -225,6 +251,8 @@ describe 'powershell::powershell4' do
         registry = double
         allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
         allow(registry).to receive(:data_exists?).and_return(false)
+        allow(registry).to receive(:value_exists?).and_return(false)
+        allow(registry).to receive(:key_exists?).and_return(false)
       end
 
       it 'installs windows package windows managemet framework core 4.0 when powershell 4 is not installed' do
@@ -240,6 +268,8 @@ describe 'powershell::powershell4' do
         registry = double
         allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
         allow(registry).to receive(:data_exists?).and_return(false)
+        allow(registry).to receive(:value_exists?).and_return(false)
+        allow(registry).to receive(:key_exists?).and_return(false)
       end
 
       it 'installs windows package windows managemet framework core 4.0' do
