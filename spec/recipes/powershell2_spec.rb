@@ -9,6 +9,10 @@ describe 'powershell::powershell2' do
     end.converge(described_recipe)
   end
 
+  before do
+    allow_any_instance_of(Chef::DSL::RebootPending).to receive(:reboot_pending?).and_return(true)
+  end
+
   context 'when windows_version is windows_server_2012 and windows_version is core ' do
     before do
       @windows_version = double(windows_server_2012?: true, windows_8?: false, core?: true)

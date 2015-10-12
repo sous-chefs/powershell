@@ -11,6 +11,10 @@ describe 'powershell::powershell3' do
     end.converge(described_recipe)
   end
 
+  before do
+    allow_any_instance_of(Chef::DSL::RebootPending).to receive(:reboot_pending?).and_return(true)
+  end
+
   context 'when windows_version is windows_server_2008' do
     before do
       @windows_version = double(windows_server_2008?: true, windows_server_2008_r2?: false, windows_7?: false)
