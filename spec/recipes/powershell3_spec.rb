@@ -18,6 +18,8 @@ describe 'powershell::powershell3' do
       registry = double
       allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
       allow(registry).to receive(:data_exists?).and_return(false)
+      allow(registry).to receive(:value_exists?).and_return(false)
+      allow(registry).to receive(:key_exists?).and_return(false)
       allow_any_instance_of(Chef::Recipe).to receive(:include_recipe).and_return(true)
     end
 
@@ -34,6 +36,8 @@ describe 'powershell::powershell3' do
       registry = double
       allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
       allow(registry).to receive(:data_exists?).and_return(true)
+      allow(registry).to receive(:value_exists?).and_return(true)
+      allow(registry).to receive(:key_exists?).and_return(true)
     end
 
     it 'only include ms_dotnet4 when powershell 3 is installed' do
@@ -48,6 +52,8 @@ describe 'powershell::powershell3' do
       registry = double
       allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
       allow(registry).to receive(:data_exists?).and_return(false)
+      allow(registry).to receive(:value_exists?).and_return(false)
+      allow(registry).to receive(:key_exists?).and_return(false)
     end
 
     it 'installs windows package windows management framework core 3.0 when powershell 3 doesnot exist' do
@@ -63,6 +69,8 @@ describe 'powershell::powershell3' do
       registry = double
       allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
       allow(registry).to receive(:data_exists?).and_return(true)
+      allow(registry).to receive(:value_exists?).and_return(true)
+      allow(registry).to receive(:key_exists?).and_return(true)
     end
 
     it 'only include ms_dotnet4 when powershell 3 is installed' do
@@ -77,6 +85,8 @@ describe 'powershell::powershell3' do
       registry = double
       allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
       allow(registry).to receive(:data_exists?).and_return(false)
+      allow(registry).to receive(:value_exists?).and_return(false)
+      allow(registry).to receive(:key_exists?).and_return(false)
     end
 
     it 'installs windows package windows management framework core 3.0 when powershell 3 doesnot exist' do

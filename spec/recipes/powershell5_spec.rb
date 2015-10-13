@@ -20,6 +20,8 @@ describe 'powershell::powershell5' do
       registry = double
       allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
       allow(registry).to receive(:data_exists?).and_return(false)
+      allow(registry).to receive(:value_exists?).and_return(false)
+      allow(registry).to receive(:key_exists?).and_return(false)
     end
 
     it 'installs windows package windows managemet framework core 5.0 if powershell 5 not installed' do
@@ -34,6 +36,8 @@ describe 'powershell::powershell5' do
       registry = double
       allow(Chef::Win32::Registry).to receive(:new).and_return(registry)
       allow(registry).to receive(:data_exists?).and_return(false)
+      allow(registry).to receive(:value_exists?).and_return(false)
+      allow(registry).to receive(:key_exists?).and_return(false)
     end
 
     it 'installs windows package windows managemet framework core 5.0 if powershell not installed' do
