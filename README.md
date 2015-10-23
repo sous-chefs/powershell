@@ -171,7 +171,8 @@ end
 
 ### `powershell_module`
 
-Installs or uninstalls a Powershell module
+Installs or uninstalls a Powershell module. You either need to install rubyzip with chef_gem or
+include the default recipe before using this resource.
 
 #### Actions
 
@@ -188,6 +189,8 @@ Installs or uninstalls a Powershell module
 #### Examples
 
 ```ruby
+include_recipe 'powershell::default'
+
 # Install module from local directory path
 # change the package_name and source
 powershell_module "PsUrl" do
@@ -231,7 +234,7 @@ Usage
 
 ### default
 
-The default recipe does nothing.
+The default recipe is needs to be included before using the powershell_module recipe.
 
 ### powershell2
 
