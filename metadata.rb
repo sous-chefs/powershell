@@ -16,9 +16,7 @@ recipe 'powershell::dsc', 'Desired State Configuration'
 
 supports 'windows'
 depends 'windows', '>= 1.2.8'
-depends 'ms_dotnet45'
-depends 'ms_dotnet4'
-depends 'ms_dotnet2'
+depends 'ms_dotnet', '>= 2.6'
 depends 'chef_handler'
 
 source_url 'https://github.com/chef-cookbooks/powershell' if respond_to?(:source_url)

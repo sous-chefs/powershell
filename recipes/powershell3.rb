@@ -24,13 +24,15 @@
 case node['platform']
 when 'windows'
 
-  require 'chef/win32/version'
-  windows_version = Chef::ReservedNames::Win32::Version.new
+  nt_version = ::Windows::VersionHelper.nt_version(node)
 
-  if windows_version.windows_server_2008? || windows_version.windows_server_2008_r2? || windows_version.windows_7?
+  # Powershell 3.0 is only compatible with:
+  # * Windows NT 6.0 server (Windows Server 2008 SP2 not vista)
+  # * Windows NT 6.1 (Windows Server 2008R2 & Windows 7.1)
+  if (nt_version == 6.0 && ::Windows::VersionHelper.server_version?(node)) || nt_version == 6.1
 
     # For Windows Server 2008 ensure that Powershell 2 is already installed and so is BITS 4.0
-    if windows_version.windows_server_2008?
+    if nt_version == 6.0 && ::Windows::VersionHelper.server_version?(node)
       include_recipe 'powershell::powershell2'
 
       windows_package 'Windows Management Framework Bits' do
@@ -43,7 +45,7 @@ when 'windows'
     end
 
     # WMF 3.0 requires .NET 4.0
-    include_recipe 'ms_dotnet4'
+    include_recipe 'ms_dotnet::ms_dotnet4'
 
     # Reboot if user specifies doesn't specify no_reboot
     include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
