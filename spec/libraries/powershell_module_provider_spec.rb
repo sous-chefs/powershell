@@ -17,14 +17,17 @@
 #
 
 require_relative '../../libraries/powershell_module_provider'
-require 'tmpdir'
 
 describe 'PowershellModuleProvider' do
   before do
+    allow(Chef::Config).to receive(:[]).with(:file_cache_path).and_return 'C:/tmp'
+    allow(Chef::Config).to receive(:[]).with(:why_run).and_return false
+
     @node = Chef::Node.new
     @events = Chef::EventDispatch::Dispatcher.new
     @run_context = Chef::RunContext.new(@node, {}, @events)
     @new_resource = PowershellModule.new('testmodule', @run_context)
+    @new_resource.destination '/'
     @provider = PowershellModuleProvider.new(@new_resource, @run_context)
   end
 
@@ -37,7 +40,7 @@ describe 'PowershellModuleProvider' do
 
   describe 'action_uninstall:' do
     it 'uninstall module' do
-      @provider.should_receive(:uninstall_module)
+      expect(@provider).to receive(:uninstall_module)
       expect { @provider.run_action(:uninstall) }.to_not raise_error
     end
   end
@@ -67,78 +70,51 @@ describe 'PowershellModuleProvider' do
   end
 
   describe 'download_extract_module:' do
-    context 'when download_url and target are nil' do
-      before do
-        ENV['PROGRAMW6432'] = 'C:\\PROGRAMW6432'
-        @ps_cmd = double
-      end
+    before do
+      allow(@provider).to receive(:module_exists?).and_return false
+    end
 
+    context 'when download_url and target are nil' do
       it 'downloads the package' do
-        expect(Dir).to receive(:mktmpdir).and_return('C:/tmp/')
-        cmd_str = "powershell.exe Invoke-WebRequest testmodule -OutFile C:/tmp/testmodule.zip; $shell = new-object -com shell.application;$zip = $shell.NameSpace('C:\\tmp\\testmodule.zip'); $shell.Namespace('C:\\PROGRAMW6432\\WindowsPowerShell\\Modules').copyhere($zip.items(), 0x14);write-host $shell"
-        expect(Mixlib::ShellOut).to receive(:new).with(cmd_str).and_return(@ps_cmd)
-        expect(@ps_cmd).to receive(:run_command)
+        cmd_str = "powershell.exe Invoke-WebRequest testmodule -OutFile C:/tmp/testmodule.zip; $shell = new-object -com shell.application;$zip = $shell.NameSpace('C:\\tmp\\testmodule.zip'); $shell.Namespace('\\').copyhere($zip.items(), 0x14);write-host $shell"
+        expect(Mixlib::ShellOut).to receive(:new).with(cmd_str).and_return(double('ps_cmd', run_command: nil))
 
         expect(@provider.send(:download_extract_module)).to eq('C:/tmp/testmodule.zip')
       end
     end
 
     context 'when download_url is provided and target is nil' do
-      before do
-        ENV['PROGRAMW6432'] = 'C:\\PROGRAMW6432'
-        @ps_cmd = double
-      end
-
       it 'downloads the package' do
-        expect(Dir).to receive(:mktmpdir).and_return('C:/tmp/')
-        cmd_str = "powershell.exe Invoke-WebRequest https://temp_download.com -OutFile C:/tmp/testmodule.zip; $shell = new-object -com shell.application;$zip = $shell.NameSpace('C:\\tmp\\testmodule.zip'); $shell.Namespace('C:\\PROGRAMW6432\\WindowsPowerShell\\Modules').copyhere($zip.items(), 0x14);write-host $shell"
-        expect(Mixlib::ShellOut).to receive(:new).with(cmd_str).and_return(@ps_cmd)
-        expect(@ps_cmd).to receive(:run_command)
+        cmd_str = "powershell.exe Invoke-WebRequest https:/temp_download.com -OutFile C:/tmp/testmodule.zip; $shell = new-object -com shell.application;$zip = $shell.NameSpace('C:\\tmp\\testmodule.zip'); $shell.Namespace('\\').copyhere($zip.items(), 0x14);write-host $shell"
+        expect(Mixlib::ShellOut).to receive(:new).with(cmd_str).and_return(double('ps_cmd', run_command: nil))
 
-        expect(@provider.send(:download_extract_module, 'https://temp_download.com')).to eq('C:/tmp/testmodule.zip')
+        expect(@provider.send(:download_extract_module, 'https:/temp_download.com')).to eq('C:/tmp/testmodule.zip')
       end
     end
 
     context 'when download_url is nil and target is provided' do
-      before do
-        ENV['PROGRAMW6432'] = 'C:\\PROGRAMW6432'
-        @ps_cmd = double
-      end
-
       it 'downloads the package' do
-        cmd_str = "powershell.exe Invoke-WebRequest testmodule -OutFile tmp/target1.zip; $shell = new-object -com shell.application;$zip = $shell.NameSpace('tmp\\target1.zip'); $shell.Namespace('C:\\PROGRAMW6432\\WindowsPowerShell\\Modules').copyhere($zip.items(), 0x14);write-host $shell"
-        expect(Mixlib::ShellOut).to receive(:new).with(cmd_str).and_return(@ps_cmd)
-        expect(@ps_cmd).to receive(:run_command)
+        cmd_str = "powershell.exe Invoke-WebRequest testmodule -OutFile tmp/target1.zip; $shell = new-object -com shell.application;$zip = $shell.NameSpace('tmp\\target1.zip'); $shell.Namespace('\\').copyhere($zip.items(), 0x14);write-host $shell"
+        expect(Mixlib::ShellOut).to receive(:new).with(cmd_str).and_return(double('ps_cmd', run_command: nil))
 
         expect(@provider.send(:download_extract_module, nil, 'tmp/target1.zip')).to eq('tmp/target1.zip')
       end
     end
 
     context 'when download_url and target are provided' do
-      before do
-        ENV['PROGRAMW6432'] = 'C:\\PROGRAMW6432'
-        @ps_cmd = double
-      end
-
       it 'downloads the package' do
-        cmd_str = "powershell.exe Invoke-WebRequest https://temp_download.com -OutFile tmp/target1.zip; $shell = new-object -com shell.application;$zip = $shell.NameSpace('tmp\\target1.zip'); $shell.Namespace('C:\\PROGRAMW6432\\WindowsPowerShell\\Modules').copyhere($zip.items(), 0x14);write-host $shell"
-        expect(Mixlib::ShellOut).to receive(:new).with(cmd_str).and_return(@ps_cmd)
-        expect(@ps_cmd).to receive(:run_command)
+        cmd_str = "powershell.exe Invoke-WebRequest https:/temp_download.com -OutFile tmp/target1.zip; $shell = new-object -com shell.application;$zip = $shell.NameSpace('tmp\\target1.zip'); $shell.Namespace('\\').copyhere($zip.items(), 0x14);write-host $shell"
+        expect(Mixlib::ShellOut).to receive(:new).with(cmd_str).and_return(double('ps_cmd', run_command: nil))
 
-        expect(@provider.send(:download_extract_module, 'https://temp_download.com', 'tmp/target1.zip')).to eq('tmp/target1.zip')
+        expect(@provider.send(:download_extract_module, 'https:/temp_download.com', 'tmp/target1.zip')).to eq('tmp/target1.zip')
       end
     end
   end
 
   describe 'uninstall_module:' do
     context 'when module directory exists' do
-      before do
-        ENV['PROGRAMW6432'] = 'C:/PROGRAMW6432'
-        @ps_cmd = double
-      end
-
       it 'uninstalls module' do
-        module_dir = 'C:/PROGRAMW6432/WindowsPowerShell/Modules/testmodule'
+        module_dir = '/testmodule'
         expect(Dir).to receive(:exist?).with(module_dir).and_return(true)
         expect(FileUtils).to receive(:rm_rf).with(module_dir)
         expect(Chef::Log).to receive(:info).with("Powershell Module 'testmodule' uninstallation completed successfully")
@@ -148,13 +124,8 @@ describe 'PowershellModuleProvider' do
     end
 
     context 'when module directory does not exist' do
-      before do
-        ENV['PROGRAMW6432'] = 'C:/PROGRAMW6432'
-        @ps_cmd = double
-      end
-
       it 'logs message' do
-        module_dir = 'C:/PROGRAMW6432/WindowsPowerShell/Modules/testmodule'
+        module_dir = '/testmodule'
         expect(Dir).to receive(:exist?).with(module_dir).and_return(false)
         expect(Chef::Log).to receive(:info).with("Unable to locate module 'testmodule'")
 
@@ -164,32 +135,18 @@ describe 'PowershellModuleProvider' do
   end
 
   describe 'install_module:' do
-    before do
-      ENV['PROGRAMW6432'] = 'C:/PROGRAMW6432'
-      @ps_cmd = double
-    end
-
     context 'install from local source' do
-      before do
-        @dir = Dir.tmpdir + '/testmodule'
-        FileUtils.mkdir_p(@dir) unless File.directory?(@dir)
-        @module_files = ["#{@dir}/test.psd1", "#{@dir}/test.psm1", "#{@dir}/test.dll"]
-        @module_files.each do |file|
-          File.new("#{file}", 'w+')
-        end
-      end
-
-      after do
-        FileUtils.rm_rf(@dir) if File.directory?(@dir)
-      end
-
       it 'copies module from source to ps module path' do
-        @new_resource.source(@dir)
-        ps_module_path = 'C:/PROGRAMW6432/WindowsPowerShell/Modules/testmodule'
-        expect(Dir).to receive(:exist?).with('/tmp/testmodule').and_return(true)
+        ps_module_path = '/testmodule'
+        @new_resource.source(ps_module_path)
 
+        module_files = %W(#{ps_module_path}/*.psd1 #{ps_module_path}/*.psm1 #{ps_module_path}/*.dll)
+
+        expect(Dir).to receive(:exist?).with(ps_module_path).and_return(true)
         expect(FileUtils).to receive(:mkdir_p).with(ps_module_path).and_return(["#{ps_module_path}"])
-        @module_files.each do |filename|
+        expect(Dir).to receive(:[]).with(*module_files).and_return module_files
+
+        module_files.each do |filename|
           expect(FileUtils).to receive(:cp).with(filename, ps_module_path)
         end
 
@@ -198,9 +155,15 @@ describe 'PowershellModuleProvider' do
     end
     context 'source is a url' do
       it 'downloads module from source and install' do
-        @new_resource.source('https://testmodule.com')
-        expect(@provider).to receive(:download_extract_module).and_return('C:/tmp/testmodule')
-        expect(FileUtils).to receive(:rm_rf).with('C:/tmp')
+        source = 'https:/testmodule.com'
+        destination = 'C:/tmp/testmodule'
+        @new_resource.source source
+
+        expect(Dir).to receive(:exist?).with(source).and_return(false)
+        expect(@provider).to receive(:download_extract_module).and_return(destination)
+        expect(File).to receive(:exist?).with(destination).and_return(true)
+        expect(FileUtils).to receive(:rm_f).with(destination)
+
         @provider.send(:install_module)
       end
     end
