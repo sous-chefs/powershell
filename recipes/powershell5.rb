@@ -30,7 +30,7 @@ when 'windows'
 
     include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
 
-    windows_package 'Windows Management Framework Core 5.0' do
+    windows_package 'Windows Management Framework Core 5.0' do # ~FC009
       source node['powershell']['powershell5']['url']
       checksum node['powershell']['powershell5']['checksum']
       installer_type :custom

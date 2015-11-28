@@ -46,7 +46,7 @@ when 'windows'
     # Reboot if user specifies doesn't specify no_reboot
     include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
 
-    windows_package 'Windows Management Framework Core' do
+    windows_package 'Windows Management Framework Core' do # ~FC009
       source node['powershell']['powershell2']['url']
       checksum node['powershell']['powershell2']['checksum']
       installer_type :custom
