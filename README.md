@@ -72,9 +72,7 @@ Not every version of Windows supports every version of Powershell. The following
 
 PowerShell also requires the appropriate version of the Microsoft .NET Framework to be installed, if the operating system does not ship with that version. The following community cookbooks are used to install the correct version of the .NET Framework:
 
-* ms_dotnet2
-* ms_dotnet4
-* ms_dotnet45
+* ms_dotnet
 
 Resource/Provider
 -----------------
@@ -171,7 +169,8 @@ end
 
 ### `powershell_module`
 
-Installs or uninstalls a Powershell module
+Installs or uninstalls a Powershell module. You either need to install rubyzip with chef_gem or
+include the default recipe before using this resource.
 
 #### Actions
 
@@ -188,6 +187,8 @@ Installs or uninstalls a Powershell module
 #### Examples
 
 ```ruby
+include_recipe 'powershell::default'
+
 # Install module from local directory path
 # change the package_name and source
 powershell_module "PsUrl" do
@@ -231,7 +232,7 @@ Usage
 
 ### default
 
-The default recipe does nothing.
+The default recipe is needs to be included before using the powershell_module resource.
 
 ### powershell2
 

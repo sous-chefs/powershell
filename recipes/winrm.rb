@@ -34,15 +34,13 @@ when 'windows'
   shell_out = Mixlib::ShellOut.new(winrm_cmd)
   shell_out.run_command
 
-  if !shell_out.stdout.include? 'Transport = HTTPS'
-    # Create HTTPS listener
-    if node['powershell']['winrm']['enable_https_transport']
-      if node['powershell']['winrm']['thumbprint'].empty? || node['powershell']['winrm']['thumbprint'].nil?
-        Chef::Log.error('Please specify thumbprint in default attributes for enabling https transport.')
-      else
-        powershell_script 'winrm-create-https-listener' do
-          code "winrm create 'winrm/config/Listener?Address=*+Transport=HTTPS' '@{Hostname=\"#{node['powershell']['winrm']['hostname']}\"; CertificateThumbprint=\"#{node['powershell']['winrm']['thumbprint']}\"}'"
-        end
+  # Create HTTPS listener
+  if !shell_out.stdout.include?('Transport = HTTPS') && node['powershell']['winrm']['enable_https_transport']
+    if node['powershell']['winrm']['thumbprint'].nil? || node['powershell']['winrm']['thumbprint'].empty?
+      Chef::Log.error('Please specify thumbprint in default attributes for enabling https transport.')
+    else
+      powershell_script 'winrm-create-https-listener' do
+        code "winrm create 'winrm/config/Listener?Address=*+Transport=HTTPS' '@{Hostname=\"#{node['powershell']['winrm']['hostname']}\"; CertificateThumbprint=\"#{node['powershell']['winrm']['thumbprint']}\"}'"
       end
     end
   else

@@ -23,48 +23,30 @@
 
 case node['platform']
 when 'windows'
+  nt_version = ::Windows::VersionHelper.nt_version(node)
 
-  require 'chef/win32/version'
-  windows_version = Chef::ReservedNames::Win32::Version.new
+  include_recipe 'ms_dotnet::ms_dotnet2'
 
-  if (windows_version.windows_server_2012? || windows_version.windows_8?) && windows_version.core?
-    # Windows Server 2012 Core does not come with Powershell 2.0 enabled
+  if nt_version.between?(6.1, 6.2) && ::Windows::VersionHelper.core_version?(node)
+    feature_suffix = 'V2' if nt_version == 6.2
 
-    windows_feature 'MicrosoftWindowsPowerShellV2' do
+    windows_feature "MicrosoftWindowsPowerShell#{feature_suffix}" do
       action :install
     end
-    windows_feature 'MicrosoftWindowsPowerShellV2-WOW64' do
-      action :install
-      only_if { node['kernel']['machine'] == 'x86_64' }
-    end
 
-  elsif (windows_version.windows_server_2008_r2? || windows_version.windows_7?) && windows_version.core?
-    # Windows Server 2008 R2 Core does not come with .NET or Powershell 2.0 enabled
-
-    windows_feature 'NetFx2-ServerCore' do
-      action :install
-    end
-    windows_feature 'NetFx2-ServerCore-WOW64' do
-      action :install
-      only_if { node['kernel']['machine'] == 'x86_64' }
-    end
-    windows_feature 'MicrosoftWindowsPowerShell' do
-      action :install
-    end
-    windows_feature 'MicrosoftWindowsPowerShell-WOW64' do
+    windows_feature "MicrosoftWindowsPowerShell#{feature_suffix}-WOW64" do
       action :install
       only_if { node['kernel']['machine'] == 'x86_64' }
     end
 
-  elsif windows_version.windows_server_2008? || windows_version.windows_server_2003_r2? ||
-        windows_version.windows_server_2003? || windows_version.windows_xp?
-
-    include_recipe 'ms_dotnet2'
-
-    # Reboot if user specifies doesn't specify no_reboot
+  # WMF 2.0 is required and only compatible with:
+  # * Windows NT 5.1 & 5.2 (Windows Server 2003 & Windows XP)
+  # * Windows NT 6.0 server (Windows Server 2008 SP2 not vista)
+  elsif nt_version.between?(5.1, 5.2) || (nt_version == 6.0 && ::Windows::VersionHelper.server_version?(node))
+    # Reboot if user doesn't specify no_reboot
     include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
 
-    windows_package 'Windows Management Framework Core' do
+    windows_package 'Windows Management Framework Core' do # ~FC009
       source node['powershell']['powershell2']['url']
       checksum node['powershell']['powershell2']['checksum']
       installer_type :custom
