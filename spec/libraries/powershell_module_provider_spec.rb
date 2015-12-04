@@ -72,41 +72,36 @@ describe 'PowershellModuleProvider' do
   describe 'download_extract_module:' do
     before do
       allow(@provider).to receive(:module_exists?).and_return false
+      allow(@provider).to receive(:unzip)
+      allow(@provider).to receive(:remove_download)
     end
 
     context 'when download_url and target are nil' do
       it 'downloads the package' do
-        cmd_str = "powershell.exe Invoke-WebRequest testmodule -OutFile C:/tmp/testmodule.zip; $shell = new-object -com shell.application;$zip = $shell.NameSpace('C:\\tmp\\testmodule.zip'); $shell.Namespace('\\').copyhere($zip.items(), 0x14);write-host $shell"
-        expect(Mixlib::ShellOut).to receive(:new).with(cmd_str).and_return(double('ps_cmd', run_command: nil))
-
-        expect(@provider.send(:download_extract_module)).to eq('C:/tmp/testmodule.zip')
+        expect(@provider).to receive(:download).with('testmodule', 'C:/tmp/testmodule.zip')
+        @provider.send(:download_extract_module)
       end
     end
 
     context 'when download_url is provided and target is nil' do
       it 'downloads the package' do
-        cmd_str = "powershell.exe Invoke-WebRequest https:/temp_download.com -OutFile C:/tmp/testmodule.zip; $shell = new-object -com shell.application;$zip = $shell.NameSpace('C:\\tmp\\testmodule.zip'); $shell.Namespace('\\').copyhere($zip.items(), 0x14);write-host $shell"
-        expect(Mixlib::ShellOut).to receive(:new).with(cmd_str).and_return(double('ps_cmd', run_command: nil))
-
-        expect(@provider.send(:download_extract_module, 'https:/temp_download.com')).to eq('C:/tmp/testmodule.zip')
+        expect(@provider).to receive(:download_extract_module).with('https://temp_download.com')
+        @provider.send(:download_extract_module, 'https://temp_download.com')
       end
     end
 
     context 'when download_url is nil and target is provided' do
       it 'downloads the package' do
-        cmd_str = "powershell.exe Invoke-WebRequest testmodule -OutFile tmp/target1.zip; $shell = new-object -com shell.application;$zip = $shell.NameSpace('tmp\\target1.zip'); $shell.Namespace('\\').copyhere($zip.items(), 0x14);write-host $shell"
-        expect(Mixlib::ShellOut).to receive(:new).with(cmd_str).and_return(double('ps_cmd', run_command: nil))
-
-        expect(@provider.send(:download_extract_module, nil, 'tmp/target1.zip')).to eq('tmp/target1.zip')
+        expect(@provider).to receive(:download).with('testmodule', 'C:/other_tmp/testmodule.zip')
+        @provider.send(:download_extract_module, nil, 'C:/other_tmp/testmodule.zip')
       end
     end
 
     context 'when download_url and target are provided' do
       it 'downloads the package' do
-        cmd_str = "powershell.exe Invoke-WebRequest https:/temp_download.com -OutFile tmp/target1.zip; $shell = new-object -com shell.application;$zip = $shell.NameSpace('tmp\\target1.zip'); $shell.Namespace('\\').copyhere($zip.items(), 0x14);write-host $shell"
-        expect(Mixlib::ShellOut).to receive(:new).with(cmd_str).and_return(double('ps_cmd', run_command: nil))
+        expect(@provider).to receive(:download).with('https://temp_download.com', 'tmp/target1.zip')
 
-        expect(@provider.send(:download_extract_module, 'https:/temp_download.com', 'tmp/target1.zip')).to eq('tmp/target1.zip')
+        @provider.send(:download_extract_module, 'https://temp_download.com', 'tmp/target1.zip')
       end
     end
   end
@@ -160,9 +155,7 @@ describe 'PowershellModuleProvider' do
         @new_resource.source source
 
         expect(Dir).to receive(:exist?).with(source).and_return(false)
-        expect(@provider).to receive(:download_extract_module).and_return(destination)
-        expect(File).to receive(:exist?).with(destination).and_return(true)
-        expect(FileUtils).to receive(:rm_f).with(destination)
+        expect(@provider).to receive(:download_extract_module)
 
         @provider.send(:install_module)
       end

@@ -65,13 +65,7 @@ class PowershellModuleProvider < Chef::Provider
         FileUtils.cp(filename, ps_module_path)
       end
     elsif @new_resource.source =~ URI.regexp # Check for valid URL
-      downloaded_file = download_extract_module
-
-      if ::File.exist?(downloaded_file)
-        Chef::Log.debug("Powershell Module '#{@powershell_module.package_name}' removing download #{downloaded_file}")
-        FileUtils.rm_f(downloaded_file)
-      end
-
+      download_extract_module
     end
   end
 
@@ -141,9 +135,15 @@ class PowershellModuleProvider < Chef::Provider
     else
       download(download_url, target)
       unzip(target, ps_module_path)
+      remove_download(target)
     end
+  end
 
-    target
+  def remove_download(target)
+    if ::File.exist?(target)
+      Chef::Log.debug("Powershell Module '#{@powershell_module.package_name}' removing download #{downloaded_file}")
+      FileUtils.rm_f(downloaded_file)
+    end
   end
 
   def module_path_name
