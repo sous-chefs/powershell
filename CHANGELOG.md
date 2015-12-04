@@ -2,6 +2,15 @@ powershell Cookbook CHANGELOG
 =============================
 This file is used to list changes made in each version of the powershell cookbook.
 
+v3.2.0 (unreleased)
+-------------------
+- [**Annih**](https://github.com/Annih)
+  [PR #61](http://github.com/chef-cookbooks/powershell/pull/61) - use the all in one ms_dotnet cookbook
+- [**RyanJarv**](https://github.com/RyanJarv)
+  [PR #60](http://github.com/chef-cookbooks/powershell/pull/60) - Use Ruby to unzip to support 2008 R2 Server Core
+- [**Aliasgar16**](https://Aliasgar16)
+  [PR #57](http://github.com/chef-cookbooks/powershell/pull/57) - Add LCM configuration recipes
+
 v3.1.0 (2015-04-27)
 -------------------
 - [**webframp**](https://github.com/webframp)
