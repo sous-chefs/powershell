@@ -85,6 +85,41 @@ class PowershellModuleProvider < Chef::Provider
     end
   end
 
+  def download(download_url, target)
+    uri = URI(download_url)
+
+    Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
+      f = open(target, 'wb')
+      http.request_get(uri.path) do |resp|
+        resp.read_body do |segment|
+          f.write(segment)
+        end
+      end
+
+      f.close
+    end
+  end
+
+  def unzip(zip_file, target_directory)
+    begin
+      require 'zip'
+    rescue LoadError
+      raise(
+          'Could not load the rubyzip gem, please make sure this gem is installed with the "chef_gem" resource ' \
+          'or include the powershell::default recipe before using powershell_module.'
+      )
+    end
+
+    Zip::File.open(zip_file) do |zip|
+
+      zip.each do |entry|
+        FileUtils::mkdir_p(::File.join(target_directory, ::File.dirname(entry.name)))
+        entry.extract(::File.join(target_directory, entry.name))
+      end
+
+    end
+  end
+
   def download_extract_module(download_url = nil, target = nil)
     filename = @new_resource.package_name + '.zip'
 
@@ -97,7 +132,6 @@ class PowershellModuleProvider < Chef::Provider
     ps_module_path = sanitize! @new_resource.destination
     Chef::Log.debug("Powershell Module ps_module_path is #{ps_module_path}")
 
-    cmd_str = "powershell.exe Invoke-WebRequest #{download_url} -OutFile #{target}; $shell = new-object -com shell.application;$zip = $shell.NameSpace('#{target.gsub('/', '\\\\')}'); $shell.Namespace('#{ps_module_path}').copyhere($zip.items(), 0x14);write-host $shell"
 
     installed_module = module_exists?(ps_module_path, "*#{@new_resource.package_name}*")
 
@@ -105,8 +139,8 @@ class PowershellModuleProvider < Chef::Provider
       Chef::Log.info("Powershell Module #{@new_resource.package_name} already installed.")
       Chef::Log.info("Remove path at #{ps_module_path}\\#{installed_module} to reinstall.")
     else
-      ps_cmd = Mixlib::ShellOut.new(cmd_str)
-      ps_cmd.run_command
+      download(download_url, target)
+      unzip(target, ps_module_path)
     end
 
     target
