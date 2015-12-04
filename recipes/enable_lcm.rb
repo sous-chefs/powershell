@@ -26,6 +26,18 @@ when 'windows'
     path node['lcm']['mof']['temp_dir']
     rights :read, 'Everyone'
     action :create
+    guard_interpreter :powershell_script
+    not_if <<-EOH
+      $LCM = (Get-DscLocalConfigurationManager)
+      $LCM.ConfigurationMode -eq "#{node['lcm']['config']['enable']['config_mode']}" -and
+        $LCM.RefreshMode -eq "#{node['lcm']['config']['enable']['refresh_mode']}"
+    EOH
+  end
+
+  directory 'Deleting temporary directory which stored LCM MOF files' do
+    path node['lcm']['mof']['temp_dir']
+    recursive true
+    action :nothing
   end
 
   powershell_script 'Configure and Enable LCM' do
@@ -53,13 +65,9 @@ when 'windows'
       $LCM.ConfigurationMode -eq "#{node['lcm']['config']['enable']['config_mode']}" -and
         $LCM.RefreshMode -eq "#{node['lcm']['config']['enable']['refresh_mode']}"
     EOH
+    notifies :delete, 'directory[Deleting temporary directory which stored LCM MOF files]', :immediately
   end
 
-  directory 'Deleting temporary directory which stored LCM MOF files' do
-    path node['lcm']['mof']['temp_dir']
-    recursive true
-    action :delete
-  end
 else
   Chef::Log.warn('LCM configuration can only be executed on the Windows platform.')
 end

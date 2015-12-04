@@ -49,9 +49,9 @@ describe 'powershell::enable_lcm' do
     expect(chef_run).to run_powershell_script('Configure and Enable LCM').with(
       code: @config_code
     )
-    expect(chef_run).to delete_directory('Deleting temporary directory which stored LCM MOF files').with(
-      path: 'c:\\chef\\cache\\lcm_mof',
-      recursive: true
-    )
+    expect(chef_run.powershell_script('Configure and Enable LCM'))
+      .to notify('directory[Deleting temporary directory which stored LCM MOF files]')
+      .to(:delete)
+      .immediately
   end
 end
