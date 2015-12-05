@@ -234,7 +234,7 @@ Usage
 
 ### default
 
-The default recipe is needs to be included before using the powershell_module recipe.
+The default recipe needs to be included before using the powershell_module recipe.
 
 ### powershell2
 
