@@ -22,18 +22,21 @@
 # http://www.microsoft.com/en-us/download/details.aspx?id=40855
 
 if node['platform'] == 'windows'
-  require 'chef/win32/version'
-  windows_version = Chef::ReservedNames::Win32::Version.new
 
-  if windows_version.windows_server_2008_r2? || windows_version.windows_7? || windows_version.windows_server_2012?
+  nt_version = ::Windows::VersionHelper.nt_version(node)
+  # WMF 4.0 is only compatible with:
+  # * Windows NT 6.1 (Windows Server 2008R2 & Windows 7.1)
+  # * Windows NT 6.2 Server (Windows Server 2012 not Windows 8)
+  if nt_version == 6.1 || (nt_version == 6.2 && ::Windows::VersionHelper.server_version?(node))
 
-    # Ensure .NET 4.5 is installed or installation will fail silently per Microsoft. Only necessary for Windows 2008R2 or 7.
-    include_recipe 'ms_dotnet45' if windows_version.windows_server_2008_r2? || windows_version.windows_7?
+    # Ensure .NET 4.5 is installed or installation will fail silently per Microsoft.
+    fail 'Attribute ms_dotnet.v4.version is not configured to install .NET4.5 as required for Powershell4' if node['ms_dotnet']['v4']['version'] < '4.5'
+    include_recipe 'ms_dotnet::ms_dotnet4'
 
     # Reboot if user specifies doesn't specify no_reboot
     include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
 
-    windows_package 'Windows Management Framework Core4.0' do
+    windows_package 'Windows Management Framework Core 4.0' do # ~FC009
       source node['powershell']['powershell4']['url']
       checksum node['powershell']['powershell4']['checksum']
       installer_type :custom

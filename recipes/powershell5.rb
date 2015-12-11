@@ -21,19 +21,16 @@
 # PowerShell 5.0 Preview Download Page
 # http://www.microsoft.com/en-us/download/details.aspx?id=42316
 
-include_recipe 'powershell::powershell2'
-
 case node['platform']
 when 'windows'
 
-  require 'chef/win32/version'
-  windows_version = Chef::ReservedNames::Win32::Version.new
-
-  if windows_version.windows_server_2012_r2? || windows_version.windows_8_1?
+  # Handle WMFC install on 2012R2 and 8.1 only (yet)
+  if ::Windows::VersionHelper.nt_version(node) == 6.3
+    include_recipe 'powershell::powershell2'
 
     include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
 
-    windows_package 'Windows Management Framework Core 5.0' do
+    windows_package 'Windows Management Framework Core 5.0' do # ~FC009
       source node['powershell']['powershell5']['url']
       checksum node['powershell']['powershell5']['checksum']
       installer_type :custom

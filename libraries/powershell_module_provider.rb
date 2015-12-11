@@ -65,13 +65,7 @@ class PowershellModuleProvider < Chef::Provider
         FileUtils.cp(filename, ps_module_path)
       end
     elsif @new_resource.source =~ URI.regexp # Check for valid URL
-      downloaded_file = download_extract_module
-
-      if ::File.exist?(downloaded_file)
-        Chef::Log.debug("Powershell Module '#{@powershell_module.package_name}' removing download #{downloaded_file}")
-        FileUtils.rm_f(downloaded_file)
-      end
-
+      download_extract_module
     end
   end
 
@@ -82,6 +76,39 @@ class PowershellModuleProvider < Chef::Provider
       Chef::Log.info("Powershell Module '#{@powershell_module.package_name}' uninstallation completed successfully")
     else
       Chef::Log.info("Unable to locate module '#{@new_resource.package_name}'")
+    end
+  end
+
+  def download(download_url, target)
+    uri = URI(download_url)
+
+    Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
+      f = open(target, 'wb')
+      http.request_get(uri.path) do |resp|
+        resp.read_body do |segment|
+          f.write(segment)
+        end
+      end
+
+      f.close
+    end
+  end
+
+  def unzip(zip_file, target_directory)
+    begin
+      require 'zip'
+    rescue LoadError
+      raise(
+        'Could not load the rubyzip gem, please make sure this gem is installed with the "chef_gem" resource ' \
+        'or include the powershell::default recipe before using powershell_module.'
+      )
+    end
+
+    Zip::File.open(zip_file) do |zip|
+      zip.each do |entry|
+        FileUtils.mkdir_p(::File.join(target_directory, ::File.dirname(entry.name)))
+        entry.extract(::File.join(target_directory, entry.name))
+      end
     end
   end
 
@@ -97,19 +124,20 @@ class PowershellModuleProvider < Chef::Provider
     ps_module_path = sanitize! @new_resource.destination
     Chef::Log.debug("Powershell Module ps_module_path is #{ps_module_path}")
 
-    cmd_str = "powershell.exe Invoke-WebRequest #{download_url} -OutFile #{target}; $shell = new-object -com shell.application;$zip = $shell.NameSpace('#{target.gsub('/', '\\\\')}'); $shell.Namespace('#{ps_module_path}').copyhere($zip.items(), 0x14);write-host $shell"
-
     installed_module = module_exists?(ps_module_path, "*#{@new_resource.package_name}*")
-
     if installed_module
       Chef::Log.info("Powershell Module #{@new_resource.package_name} already installed.")
       Chef::Log.info("Remove path at #{ps_module_path}\\#{installed_module} to reinstall.")
     else
-      ps_cmd = Mixlib::ShellOut.new(cmd_str)
-      ps_cmd.run_command
+      download(download_url, target)
+      unzip(target, ps_module_path)
+      remove_download(target)
     end
+  end
 
-    target
+  def remove_download(target)
+    Chef::Log.debug("Powershell Module '#{@powershell_module.package_name}' removing download #{downloaded_file}")
+    FileUtils.rm_f(downloaded_file) if ::File.exist?(target)
   end
 
   def module_path_name

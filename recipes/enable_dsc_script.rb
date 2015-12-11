@@ -1,10 +1,9 @@
 #
-# Author:: Seth Chisamore (<schisamo@chef.io>)
-# Author:: Julian C. Dunn (<jdunn@chef.io>)
+# Author:: Aliasgar Batterywala (<aliasgar.batterywala@clogeny.com>)
 # Cookbook Name:: powershell
-# Recipe:: default
+# Recipe:: enable_lcm
 #
-# Copyright:: Copyright (c) 2011-2013 Chef Software, Inc.
+# Copyright:: Copyright (c) 2015 Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +16,5 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-chef_gem 'rubyzip'
+include_recipe 'powershell::enable_lcm'

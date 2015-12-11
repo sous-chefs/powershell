@@ -2,16 +2,22 @@ require 'spec_helper'
 require 'mixlib/shellout'
 
 describe 'powershell::dsc' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'windows', version: '2012').converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::SoloRunner.new(platform: 'windows', version: '2012')do |node|
+      node.set['ms_dotnet']['v4']['version'] = '4.5'
+    end.converge(described_recipe)
+  end
+
+  before do
+    winrm_cmd = double('winrm_cmd', run_command: nil, stdout: 'Transport = HTTPS')
+    allow(Mixlib::ShellOut).to receive(:new).with('powershell.exe winrm enumerate winrm/config/listener').and_return winrm_cmd
+    allow(Chef::Win32::Registry).to receive(:new).and_return double('registry', data_exists?: false, value_exists?: false, key_exists?: false)
+  end
 
   context 'When listener is enabled' do
     before do
-      command = 'powershell.exe winrm get winrm/config/listener?Address=*+Transport=HTTP'
-
-      shell_obj = instance_double('Mixlib::ShellOut')
-      allow(Mixlib::ShellOut).to receive(:new).with(command).and_return(shell_obj)
-      allow(shell_obj).to receive(:run_command)
-      allow(shell_obj).to receive(:exitstatus).and_return(1)
+      dsc_cmd = double('dsc_cmd', run_command: nil, exitstatus: 1)
+      allow(Mixlib::ShellOut).to receive(:new).with('powershell.exe winrm get winrm/config/listener?Address=*+Transport=HTTP').and_return dsc_cmd
     end
 
     it 'runs dsc_script' do
@@ -22,12 +28,8 @@ describe 'powershell::dsc' do
 
   context 'When listener is disabled' do
     before do
-      command = 'powershell.exe winrm get winrm/config/listener?Address=*+Transport=HTTP'
-
-      shell_obj = instance_double('Mixlib::ShellOut')
-      allow(Mixlib::ShellOut).to receive(:new).with(command).and_return(shell_obj)
-      allow(shell_obj).to receive(:run_command)
-      allow(shell_obj).to receive(:exitstatus).and_return(0)
+      dsc_cmd = double('dsc_cmd', run_command: nil, exitstatus: 0)
+      allow(Mixlib::ShellOut).to receive(:new).with('powershell.exe winrm get winrm/config/listener?Address=*+Transport=HTTP').and_return dsc_cmd
     end
 
     it 'runs dsc_script' do
