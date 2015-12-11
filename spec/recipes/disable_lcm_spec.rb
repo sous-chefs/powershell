@@ -1,6 +1,8 @@
 require 'spec_helper'
 require 'chefspec'
 
+
+
 describe 'powershell::disable_lcm' do
   let(:chef_run) do
     ChefSpec::SoloRunner.new(platform: 'windows', version: '2012') do |node|
@@ -35,14 +37,15 @@ describe 'powershell::disable_lcm' do
       $LCM.RefreshMode -eq "Disabled"
     EOH
     stub_command(guard_condition).and_return(false)
-
     allow_any_instance_of(Chef::Recipe).to receive(:include_recipe).with('powershell::powershell5').and_return(true)
     allow_any_instance_of(Chef::Recipe).to receive(:include_recipe).with('powershell::dsc').and_return(true)
   end
+  
 
-  it 'disables LCM' do
+  it 'disables LCM', skip: not_windows? do
     expect(chef_run).to create_directory('Creating temporary directory to store LCM MOF files').with(
-      path: 'c:\\chef\\cache\\lcm_mof'
+      path: 'c:\\chef\\cache\\lcm_mof',
+      rights: [:read, 'Everyone']
     )
     expect(chef_run).to run_powershell_script('Disable LCM').with(
       code: @config_code

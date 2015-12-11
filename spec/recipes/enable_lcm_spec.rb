@@ -42,7 +42,7 @@ describe 'powershell::enable_lcm' do
     allow_any_instance_of(Chef::Recipe).to receive(:include_recipe).with('powershell::dsc').and_return(true)
   end
 
-  it 'enables LCM' do
+  it 'enables LCM', skip: not_windows? do
     expect(chef_run).to create_directory('Creating temporary directory to store LCM MOF files').with(
       path: 'c:\\chef\\cache\\lcm_mof'
     )

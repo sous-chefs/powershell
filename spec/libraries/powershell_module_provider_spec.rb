@@ -151,7 +151,6 @@ describe 'PowershellModuleProvider' do
     context 'source is a url' do
       it 'downloads module from source and install' do
         source = 'https:/testmodule.com'
-        destination = 'C:/tmp/testmodule'
         @new_resource.source source
 
         expect(Dir).to receive(:exist?).with(source).and_return(false)

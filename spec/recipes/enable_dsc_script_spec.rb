@@ -17,7 +17,7 @@ describe 'powershell::enable_dsc_script' do
     stub_command(guard_condition).and_return(false)
   end
 
-  it 'includes enable_lcm recipe' do
+  it 'includes enable_lcm recipe', skip: not_windows? do
     expect(chef_run).to include_recipe('powershell::enable_lcm')
   end
 end

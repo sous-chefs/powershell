@@ -99,8 +99,8 @@ class PowershellModuleProvider < Chef::Provider
       require 'zip'
     rescue LoadError
       raise(
-          'Could not load the rubyzip gem, please make sure this gem is installed with the "chef_gem" resource ' \
-          'or include the powershell::default recipe before using powershell_module.'
+        'Could not load the rubyzip gem, please make sure this gem is installed with the "chef_gem" resource ' \
+        'or include the powershell::default recipe before using powershell_module.'
       )
     end
 
