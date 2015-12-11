@@ -79,18 +79,22 @@ class PowershellModuleProvider < Chef::Provider
     end
   end
 
-  def download(download_url, target)
+  def download(download_url, target, limit = 10)
     uri = URI(download_url)
 
     Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
-      f = open(target, 'wb')
-      http.request_get(uri.path) do |resp|
-        resp.read_body do |segment|
-          f.write(segment)
-        end
+      response = http.request_get(uri.path)
+      case response
+      when Net::HTTPSuccess then write_download(response, target)
+      when Net::HTTPRedirection then download(response['location'], target, limit - 1)
+      else response.error!
       end
+    end
+  end
 
-      f.close
+  def write_download(response, target)
+    ::File.open(target, 'wb') do |file|
+      file.write(response.read_body)
     end
   end
 
@@ -136,8 +140,8 @@ class PowershellModuleProvider < Chef::Provider
   end
 
   def remove_download(target)
-    Chef::Log.debug("Powershell Module '#{@powershell_module.package_name}' removing download #{downloaded_file}")
-    FileUtils.rm_f(downloaded_file) if ::File.exist?(target)
+    Chef::Log.debug("Powershell Module '#{@powershell_module.package_name}' removing download #{target}")
+    FileUtils.rm_f(target) if ::File.exist?(target)
   end
 
   def module_path_name
