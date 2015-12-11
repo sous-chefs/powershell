@@ -82,7 +82,7 @@ class PowershellModuleProvider < Chef::Provider
   def download(download_url, target)
     uri = URI(download_url)
 
-    Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
+    Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
       f = open(target, 'wb')
       http.request_get(uri.path) do |resp|
         resp.read_body do |segment|
@@ -105,12 +105,10 @@ class PowershellModuleProvider < Chef::Provider
     end
 
     Zip::File.open(zip_file) do |zip|
-
       zip.each do |entry|
-        FileUtils::mkdir_p(::File.join(target_directory, ::File.dirname(entry.name)))
+        FileUtils.mkdir_p(::File.join(target_directory, ::File.dirname(entry.name)))
         entry.extract(::File.join(target_directory, entry.name))
       end
-
     end
   end
 
@@ -126,9 +124,7 @@ class PowershellModuleProvider < Chef::Provider
     ps_module_path = sanitize! @new_resource.destination
     Chef::Log.debug("Powershell Module ps_module_path is #{ps_module_path}")
 
-
     installed_module = module_exists?(ps_module_path, "*#{@new_resource.package_name}*")
-
     if installed_module
       Chef::Log.info("Powershell Module #{@new_resource.package_name} already installed.")
       Chef::Log.info("Remove path at #{ps_module_path}\\#{installed_module} to reinstall.")
@@ -140,10 +136,8 @@ class PowershellModuleProvider < Chef::Provider
   end
 
   def remove_download(target)
-    if ::File.exist?(target)
-      Chef::Log.debug("Powershell Module '#{@powershell_module.package_name}' removing download #{downloaded_file}")
-      FileUtils.rm_f(downloaded_file)
-    end
+    Chef::Log.debug("Powershell Module '#{@powershell_module.package_name}' removing download #{downloaded_file}")
+    FileUtils.rm_f(downloaded_file) if ::File.exist?(target)
   end
 
   def module_path_name

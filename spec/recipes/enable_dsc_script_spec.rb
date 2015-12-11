@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'chefspec'
 
 describe 'powershell::enable_dsc_script' do
-  let(:chef_run) do 
+  let(:chef_run) do
     ChefSpec::SoloRunner.new(platform: 'windows', version: '2012') do |node|
       node.set['ms_dotnet']['v4']['version'] = '4.5'
     end.converge(described_recipe)
