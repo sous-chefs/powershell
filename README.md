@@ -48,14 +48,14 @@ Not every version of Windows supports every version of Powershell. The following
     <td>Supported</td>
     <td>Included</td>
     <td>Supported</td>
-    <td></td>
+    <td>Supported</td>
   </tr>
   <tr>
     <td>Windows Server 2012 / Windows 8</td>
     <td>Supported</td>
     <td>Included</td>
     <td>Supported</td>
-    <td></td>
+    <td>Supported</td>
   </tr>
   <tr>
     <td>Windows Server 2012R2 / Windows 8.1</td>
