@@ -48,14 +48,14 @@ Not every version of Windows supports every version of Powershell. The following
     <td>Supported</td>
     <td>Included</td>
     <td>Supported</td>
-    <td></td>
+    <td>Supported</td>
   </tr>
   <tr>
     <td>Windows Server 2012 / Windows 8</td>
     <td>Supported</td>
     <td>Included</td>
     <td>Supported</td>
-    <td></td>
+    <td>Supported</td>
   </tr>
   <tr>
     <td>Windows Server 2012R2 / Windows 8.1</td>
@@ -261,7 +261,7 @@ Include the `powershell4` recipe in a run list, to install PowerShell 4.0 is ins
 
 ### powershell5
 
-Note: Windows Management Framework 5 is in preview.
+Note: Windows Management Framework 5 is in production preview.
 
 Include the `powershell5` recipe in a run list, to install PowerShell 5.0 is installed on applicable platforms. If a platform is not supported or if it already includes PowerShell 5.0, an exception will be raised.
 
@@ -271,7 +271,7 @@ References
 * Installing [Windows Management Framework 2.0](http://support.microsoft.com/kb/968929)
 * Installing [Windows Management Framework 3.0](http://www.microsoft.com/en-us/download/details.aspx?id=34595)
 * Installing [Windows Management Framework 4.0](http://www.microsoft.com/en-us/download/details.aspx?id=40855)
-* Installing [Windows Management Framework 5.0](http://www.microsoft.com/en-us/download/details.aspx?id=42936)
+* Installing [Windows Management Framework 5.0](https://www.microsoft.com/en-us/download/details.aspx?id=48729)
 
 License & Authors
 -----------------
