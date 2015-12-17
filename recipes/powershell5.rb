@@ -18,14 +18,15 @@
 # limitations under the License.
 #
 
-# PowerShell 5.0 Preview Download Page
-# http://www.microsoft.com/en-us/download/details.aspx?id=42316
-
+# PowerShell 5.0 RTM Download Page
+# https://www.microsoft.com/en-us/download/details.aspx?id=50395
 case node['platform']
 when 'windows'
 
-  # Handle WMFC install on 2012R2 and 8.1 only (yet)
-  if ::Windows::VersionHelper.nt_version(node) >= 6.1
+  
+  if ::Windows::VersionHelper.nt_version(node) >= 6.1 &&
+     node['kernel']['machine'] == 'x86_64'
+
     include_recipe 'powershell::powershell2'
 
     include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
