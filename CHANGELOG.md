@@ -2,10 +2,15 @@ powershell Cookbook CHANGELOG
 =============================
 This file is used to list changes made in each version of the powershell cookbook.
 
+v3.2.1 (2015-12-17)
+-------------------
+- [**smurawski**](https://github.com/smurawski)
+  [PR #66](https://github.com/chef-cookbooks/powershell/pull/66) - WMF 5 RTM
+
 v3.2.0 (2015-12-14)
 -------------------
-- [*smurawski*](https://github.com/smurawski) 
-  [PR #64](https://github.com/chef-cookbooks/powershell/pull64) - WMF 5 Production Preview for downlevel OSes
+- [**smurawski**](https://github.com/smurawski) 
+  [PR #64](https://github.com/chef-cookbooks/powershell/pull/64) - WMF 5 Production Preview for downlevel OSes
 - [**Annih**](https://github.com/Annih)
   [PR #61](http://github.com/chef-cookbooks/powershell/pull/61) - use the all in one ms_dotnet cookbook
 - [**RyanJarv**](https://github.com/RyanJarv)
