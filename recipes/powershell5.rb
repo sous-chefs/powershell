@@ -23,10 +23,8 @@
 case node['platform']
 when 'windows'
 
-  
-  if ::Windows::VersionHelper.nt_version(node) >= 6.1 &&
-     node['kernel']['machine'] == 'x86_64'
 
+  if ::Windows::VersionHelper.nt_version(node) >= 6.1
     include_recipe 'powershell::powershell2'
 
     include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot'

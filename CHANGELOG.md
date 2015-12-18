@@ -2,6 +2,11 @@ powershell Cookbook CHANGELOG
 =============================
 This file is used to list changes made in each version of the powershell cookbook.
 
+v3.2.2 (2015-12-18)
+-------------------
+- [**smurawski**](https://github.com/smurawski)
+  [PR #67](https://github.com/chef-cookbooks/powershell/pull/67) - WMF 5 RTM now supports x86 client builds.
+
 v3.2.1 (2015-12-17)
 -------------------
 - [**smurawski**](https://github.com/smurawski)
