@@ -23,7 +23,6 @@
 case node['platform']
 when 'windows'
 
-
   if ::Windows::VersionHelper.nt_version(node) >= 6.1
     include_recipe 'powershell::powershell2'
 
