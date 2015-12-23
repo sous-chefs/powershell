@@ -22,8 +22,11 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[powershell::default]
       - recipe[minimal::default]
     attributes: 
         powershell: 
             installation_reboot_mode: "reboot_now"
+  - name: powershell5
+    run_list:
+      - recipe[powershell::powershell5]
+    attributes:
