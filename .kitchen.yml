@@ -37,5 +37,8 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[powershell::default]
       - recipe[minimal::default]
+  - name: powershell5
+    run_list:
+      - recipe[powershell::powershell5]
+    attributes:

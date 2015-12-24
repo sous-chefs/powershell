@@ -2,6 +2,11 @@ powershell Cookbook CHANGELOG
 =============================
 This file is used to list changes made in each version of the powershell cookbook.
 
+v3.2.3 (2015-12-24)
+-------------------
+- [**smurawski**](https://github.com/smurawski)
+  [PR #71](https://github.com/chef-cookbooks/powershell/pull/71) - WMF 5 RTM was pulled - reverting to the production preview
+
 v3.2.2 (2015-12-18)
 -------------------
 - [**smurawski**](https://github.com/smurawski)
