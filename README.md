@@ -32,38 +32,38 @@ Not every version of Windows supports every version of Powershell. The following
   <tr>
     <td>Windows Server 2003 / 2003 R2</td>
     <td>Supported</td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td>Not Available</td>
+    <td>Not Available</td>
+    <td>Not Available</td>
   </tr>
   <tr>
     <td>Windows Server 2008 / Vista</td>
     <td>Supported</td>
     <td>Supported</td>
-    <td></td>
-    <td></td>
+    <td>Not Available</td>
+    <td>Not Available</td>
   </tr>
   <tr>
     <td>Windows Server 2008 R2</td>
-    <td>Supported</td>
     <td>Included</td>
+    <td>Supported</td>
     <td>Supported</td>
     <td>Supported</td>
   </tr>
   <tr>
     <td>Windows Server 2012 / Windows 8</td>
-    <td>Supported</td>
+    <td>Included</td>
     <td>Included</td>
     <td>Supported</td>
     <td>Supported</td>
   </tr>
   <tr>
     <td>Windows Server 2012R2 / Windows 8.1</td>
-    <td></td>
-    <td></td>
+    <td>Included</td>
+    <td>Not Available</td>
     <td>Included</td>
     <td>Supported</td>
-  </tr> 
+  </tr>
 </table>
 
 ### Cookbooks
@@ -262,6 +262,9 @@ Include the `powershell4` recipe in a run list, to install PowerShell 4.0 is ins
 ### powershell5
 
 Note: Windows Management Framework 5 is in production preview.
+
+#### Windows Management Framework 5 RTM had been released, but that has been pulled.  The attributes in the cookbook have been reverted to the Production Preview.  When a new release of RTM for WMF 5 ships, we'll release an updated version.
+http://blogs.msdn.com/b/powershell/archive/2015/12/23/windows-management-framework-wmf-5-0-currently-removed-from-download-center.aspx
 
 Include the `powershell5` recipe in a run list, to install PowerShell 5.0 is installed on applicable platforms. If a platform is not supported or if it already includes PowerShell 5.0, an exception will be raised.
 
