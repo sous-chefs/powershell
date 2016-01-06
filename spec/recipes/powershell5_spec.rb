@@ -3,8 +3,10 @@ require 'spec_helper'
 describe 'powershell::powershell5' do
   {
     # There is no fauxhai info for windows 8, so we use windows 2012R2 and change the product type from server to workstation
-    'Windows 8.1' => { fauxhai_version: '2012R2', product_type: 1 },
-    'Windows Server 2012R2' => { fauxhai_version: '2012R2' }
+    'Windows 8.1' => { fauxhai_version: '2012R2', product_type: 1, timeout: 600 },
+    'Windows Server 2008R2' => { fauxhai_version: '2008R2', timeout: 2700 },
+    'Windows Server 2012' => { fauxhai_version: '2012', timeout: 2700 },
+    'Windows Server 2012R2' => { fauxhai_version: '2012R2', timeout: 600 }
   }.each do |windows_version, test_conf|
     context "on #{windows_version}" do
       let(:chef_run) do
@@ -36,7 +38,7 @@ describe 'powershell::powershell5' do
         end
 
         it 'installs windows package windows management framework core 5.0' do
-          expect(chef_run).to install_windows_package('Windows Management Framework Core 5.0').with(source: 'https://powershelltest.com', checksum: '12345', installer_type: :custom, options: '/quiet /norestart')
+          expect(chef_run).to install_windows_package('Windows Management Framework Core 5.0').with(source: 'https://powershelltest.com', checksum: '12345', installer_type: :custom, options: '/quiet /norestart', timeout: test_conf[:timeout])
         end
       end
     end

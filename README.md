@@ -220,6 +220,151 @@ powershell_module "https://github.com/dahlbyk/posh-git/zipball/master" do
 end
 ```
 
+### `powershell_package`
+
+Installs or uninstalls a Powershell package. You either need to install WMF 5.0 or
+include the powershell5 recipe before using this resource. You also need to be sure
+your package provider and package source is set up.
+
+#### Actions
+
+- :install: install a powershell package 
+- :uninstall: uninstall the powershell package
+- :update: force install powershell package
+
+#### Attribute Parameters
+
+- `name`: name attribute. Name of the package provider to install.
+- `source`: specifies one or more package sources. Multiple package source names must be separated by commas.
+- `version`: specifies the exact allowed version of the package that you want to install.
+
+#### Examples
+
+```ruby
+include_recipe 'powershell::powershell5'
+
+# Install xTimeZone package from PSGallery at version 1.2.0.0
+powershell_package 'xTimeZone' do
+  source 'PSGallery'
+  version '1.2.0.0'
+  action :install
+end
+```
+
+```ruby
+# Update xTimeZone package from PSGallery to version 1.3.0.0
+powershell_package 'xTimeZone' do
+  source 'PSGallery'
+  version '1.3.0.0'
+  action :update
+end
+```
+
+```ruby
+# Uninstall xTimeZone package at version 1.3.0.0
+powershell_package 'xTimeZone' do
+  version '1.3.0.0'
+  action :uninstall
+end
+```
+
+### `powershell_package_provider`
+
+Installs or uninstalls a Powershell package provider. You either need to install WMF 5.0 or
+include the powershell5 recipe before using this resource. You can also manually add providers
+from an internally hosted repository.
+
+#### Actions
+
+- :install: install a powershell provider (will pull provider executable from Microsoft) 
+- :install_manual: install the specified powershell package provider to the provider assembly folder
+- :uninstall_manual: remove the specified powershell package provider assembly from the assembly folder
+
+#### Attribute Parameters
+
+- `name`: name attribute. Name of the package to install or uninstall.
+- `file_name`: specifies the name of the file to be placed manually in the package provider directory
+- `file_source`: specifies source of the file to be placed in the package provider directory
+- `file_checksum`: specifies checksum to verify the file to be placed in the package provider directory
+
+#### Examples
+
+```ruby
+include_recipe 'powershell::powershell5'
+
+# Install NuGet from Microsoft
+powershell_package_provider 'NuGet' 
+```
+
+```ruby
+# Manually install NuGet provider from specified source
+powershell_package_provider 'NuGet' do
+  file_name 'nuget-anycpu.exe'
+  file_source 'https://az818661.vo.msecnd.net/providers/nuget-anycpu-2.8.5.127.exe'
+  file_checksum '2dea5ef5cfc0fd13ad9e93709d33467111bb00e93c50f904a04ed476c2b2b8fa'
+  action :install_manual
+end
+```
+
+```ruby
+# Manually remove NuGet provider from specified source
+powershell_package_provider 'NuGet' do
+  file_name 'nuget-anycpu.exe'
+  file_source 'https://az818661.vo.msecnd.net/providers/nuget-anycpu-2.8.5.127.exe'
+  file_checksum '2dea5ef5cfc0fd13ad9e93709d33467111bb00e93c50f904a04ed476c2b2b8fa'
+  action :uninstall_manual
+end
+```
+
+### `powershell_package_source`
+
+Registers, updates or unregisters a Powershell package source. You either need to install WMF 5.0 or
+include the powershell5 recipe before using this resource. 
+
+#### Actions
+
+- :register: registers a new package source
+- :unregister: unregisters a package source
+- :update: updates an existing package source
+
+#### Attribute Parameters
+
+- `name`: name attribute. Name of the package source to register, update or unregister.
+- `location`: specifies the uri of the package source
+- `package_provider`: specifies the package provider for this package source
+- `trusted`: `true, false` sets the trusted flag for package source
+
+#### Examples
+
+```ruby
+include_recipe 'powershell::powershell5'
+
+# Register example source as package source
+powershell_package_source 'ExampleSource' do
+  package_provider 'PSModule'
+  location 'https://www.example.com/'
+  action :register
+end
+```
+
+```ruby
+# Update package source to be trusted
+powershell_package_source 'ExampleSource' do
+  package_provider 'PSModule'
+  location 'https://www.example.com/'
+  trusted true
+  action :update
+end
+```
+
+```ruby
+# Unregister Package Source
+powershell_package_source 'ExampleSource' do
+  package_provider 'PSModule'
+  action :unregister
+end
+```
+
 Mixin
 -----
 

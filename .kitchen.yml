@@ -10,12 +10,27 @@ transport:
   name: winrm
 
 provisioner:
-  name: chef_zero_scheduled_task
-    
+  name: chef_zero
+
 platforms:
-  - name: windows2012r2
+  - name: windows-8.1-chef11.10.4
     driver_config:
-      box: windows2012r2
+      box: windows-8.1
+    provisioner:
+      require_chef_omnibus: 11.10.4
+  - name: windows-8.1-chef11.12.4
+    driver_config:
+      box: windows-8.1
+    provisioner:
+      require_chef_omnibus: 11.12.4
+  - name: windows-8.1-chef11.16.4
+    driver_config:
+      box: windows-8.1
+    provisioner:
+      require_chef_omnibus: 11.16.4
+  - name: windows-8.1-chef12
+    driver_config:
+      box: windows-8.1
     provisioner:
       require_chef_omnibus: true
 
@@ -23,10 +38,32 @@ suites:
   - name: default
     run_list:
       - recipe[minimal::default]
-    attributes: 
-        powershell: 
-            installation_reboot_mode: "reboot_now"
   - name: powershell5
     run_list:
       - recipe[powershell::powershell5]
     attributes:
+  - name: install_package
+    run_list:
+      - recipe[minimal::installpackage]
+    attributes: 
+        powershell: 
+            installation_reboot_mode: "immediate_reboot"
+  - name: install_provider_manual
+    run_list:
+      - recipe[minimal::installprovidermanual]
+    attributes: 
+        powershell: 
+            installation_reboot_mode: "immediate_reboot"
+  - name: uninstall_package
+    run_list:
+      - recipe[minimal::uninstallpackage]
+    attributes: 
+        powershell: 
+            installation_reboot_mode: "immediate_reboot"
+  - name: uninstall_provider_manual
+    run_list:
+      - recipe[minimal::uninstallprovidermanual]
+    attributes: 
+        powershell: 
+            installation_reboot_mode: "immediate_reboot"
+            

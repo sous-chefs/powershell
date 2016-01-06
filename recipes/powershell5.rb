@@ -23,7 +23,7 @@
 case node['platform']
 when 'windows'
 
-  if ::Windows::VersionHelper.nt_version(node) >= 6.1
+  if ::Windows::VersionHelper.nt_version(node) >= 6.1 && ::Windows::VersionHelper.nt_version(node) < 10
     include_recipe 'powershell::powershell2'
 
     include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
@@ -33,6 +33,7 @@ when 'windows'
       checksum node['powershell']['powershell5']['checksum']
       installer_type :custom
       options '/quiet /norestart'
+      timeout 5000
       action :install
       success_codes [0, 42, 127, 3010]
       # Note that the :immediately is to immediately notify the other resource,
