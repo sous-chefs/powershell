@@ -31,12 +31,14 @@ if node['platform_family'] == 'windows'
       default['powershell']['powershell5']['url'] = 'https://download.microsoft.com/download/3/F/D/3FD04B49-26F9-4D9A-8C34-4533B9D5B020/Win7AndW2K8R2-KB3066439-x64.msu'
       default['powershell']['powershell5']['checksum'] = '1c068cb6e342c2bc789bb009bc50d1bddc37e313106f696521c0b27b7cec3364'
     end
+    default['powershell']['powershell5']['timeout'] = 2700
   when '6.2'
     case node['kernel']['machine']
     when 'x86_64'
       default['powershell']['powershell5']['url'] = 'https://download.microsoft.com/download/3/F/D/3FD04B49-26F9-4D9A-8C34-4533B9D5B020/W2K12-KB3066438-x64.msu'
       default['powershell']['powershell5']['checksum'] = '281d85ec2317240f260f6a42c2c5c9dfbddfdb3bc361950f1ec29a7c06b8c857'
     end
+    default['powershell']['powershell5']['timeout'] = 2700
   when '6.3'
     case node['kernel']['machine']
     when 'i386'
@@ -46,5 +48,6 @@ if node['platform_family'] == 'windows'
       default['powershell']['powershell5']['url'] = 'http://download.microsoft.com/download/3/F/D/3FD04B49-26F9-4D9A-8C34-4533B9D5B020/Win8.1AndW2K12R2-KB3066437-x64.msu'
       default['powershell']['powershell5']['checksum'] = '9c57302ff0515a6b7eb53ab07bed0f5d420bd7204296d9f3fd17452fca1d5b3d'
     end
+    default['powershell']['powershell5']['timeout'] = 600
   end
 end
