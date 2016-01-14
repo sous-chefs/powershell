@@ -1,6 +1,6 @@
 Powershell Cookbook
 ===================
-[![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/et44rb1ac700hv9o/branch/master?svg=true)](https://ci.appveyor.com/project/smurawski/powershell/branch/master)
+[![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/ej1qiur29xbuc2eq/branch/master?svg=true)](https://ci.appveyor.com/project/ChefWindowsCookbooks/powershell/branch/master)
 [![Travis Build Status](https://travis-ci.org/chef-cookbooks/powershell.svg?branch=master)](http://travis-ci.org/chef-cookbooks/powershell)
 [![Cookbook Version](https://img.shields.io/cookbook/v/powershell.svg)](https://supermarket.chef.io/cookbooks/powershell)
 
