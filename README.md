@@ -1,6 +1,7 @@
 Powershell Cookbook
 ===================
-[![Build Status](https://travis-ci.org/chef-cookbooks/powershell.svg?branch=master)](http://travis-ci.org/chef-cookbooks/powershell)
+[![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/et44rb1ac700hv9o/branch/master?svg=true)](https://ci.appveyor.com/project/smurawski/powershell/branch/master)
+[![Travis Build Status](https://travis-ci.org/chef-cookbooks/powershell.svg?branch=master)](http://travis-ci.org/chef-cookbooks/powershell)
 [![Cookbook Version](https://img.shields.io/cookbook/v/powershell.svg)](https://supermarket.chef.io/cookbooks/powershell)
 
 Installs and configures PowerShell 2.0, 3.0, 4.0 or 5.0.
