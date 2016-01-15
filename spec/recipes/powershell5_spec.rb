@@ -3,10 +3,10 @@ require 'spec_helper'
 describe 'powershell::powershell5' do
   {
     # There is no fauxhai info for windows 8, so we use windows 2012R2 and change the product type from server to workstation
-    'Windows 8.1' => { fauxhai_version: '2012R2', product_type: 1, timeout: 600 },
+    'Windows 8.1' => { fauxhai_version: '2012R2', product_type: 1, timeout: 600, dotnet4kb: 'KB2934520' },
     'Windows Server 2008R2' => { fauxhai_version: '2008R2', timeout: 2700 },
-    'Windows Server 2012' => { fauxhai_version: '2012', timeout: 2700 },
-    'Windows Server 2012R2' => { fauxhai_version: '2012R2', timeout: 600 }
+    'Windows Server 2012' => { fauxhai_version: '2012', timeout: 2700, dotnet4kb: 'KB2901982'},
+    'Windows Server 2012R2' => { fauxhai_version: '2012R2', timeout: 600, dotnet4kb: 'KB2934520'}
   }.each do |windows_version, test_conf|
     context "on #{windows_version}" do
       let(:chef_run) do
@@ -14,12 +14,17 @@ describe 'powershell::powershell5' do
           node.automatic['kernel']['os_info']['product_type'] = test_conf[:product_type] if test_conf[:product_type]
           node.set['powershell']['powershell5']['url'] = 'https://powershelltest.com'
           node.set['powershell']['powershell5']['checksum'] = '12345'
+          node.set['ms_dotnet']['v4']['version'] = '4.5.2'
+          if test_conf[:dotnet4kb]
+            stub_command("wmic path Win32_QuickFixEngineering WHERE HotFixID='#{test_conf[:dotnet4kb]}' | FindStr #{test_conf[:dotnet4kb]}").and_return(0)
+          end
         end.converge(described_recipe)
       end
 
-      it 'includes powershell 2 recipe' do
+      it 'includes powershell 2 recipe and ms_dotnet 4 recipe' do
         allow(Chef::Win32::Registry).to receive(:new).and_return double('registry', data_exists?: false, value_exists?: false, key_exists?: false)
         expect(chef_run).to include_recipe('powershell::powershell2')
+        expect(chef_run).to include_recipe('ms_dotnet::ms_dotnet4')
       end
 
       context 'when powershell is installed' do
