@@ -25,15 +25,12 @@ module Powershell
   end
 
   module VersionHelper
-    def powershell_version
+    def self.powershell_version
       Powershell::PowershellVersionHelper.new.powershell_version
     end
 
-    def powershell_version?(versionstring = nil)
+    def self.powershell_version?(versionstring = nil)
       Powershell::PowershellVersionHelper.new.powershell_version?(versionstring)
     end
   end
-end
-
-Chef::Recipe.send(:include, Powershell::VersionHelper)
-Chef::Resource.send(:include, Powershell::VersionHelper)
+end unless defined?(Powershell)

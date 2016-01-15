@@ -41,7 +41,7 @@ describe 'powershell::powershell2' do
 
     context 'when powershell2 does not exist' do
       before do
-        allow(Chef::Win32::Registry).to receive(:new).and_return double('registry', data_exists?: false, value_exists?: false, key_exists?: false)
+        allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return false
       end
 
       it 'installs windows package' do
@@ -52,7 +52,7 @@ describe 'powershell::powershell2' do
 
     context 'when powershell2 exist' do
       before do
-        allow(Chef::Win32::Registry).to receive(:new).and_return double('registry', data_exists?: true, value_exists?: true)
+        allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return true
       end
 
       it 'only includes ms_dotnet2' do

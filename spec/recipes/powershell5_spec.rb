@@ -18,13 +18,13 @@ describe 'powershell::powershell5' do
       end
 
       it 'includes powershell 2 recipe' do
-        allow(Chef::Win32::Registry).to receive(:new).and_return double('registry', data_exists?: false, value_exists?: false, key_exists?: false)
+        allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return false
         expect(chef_run).to include_recipe('powershell::powershell2')
       end
 
       context 'when powershell is installed' do
         before do
-          allow(Chef::Win32::Registry).to receive(:new).and_return double('registry', data_exists?: true, value_exists?: true)
+          allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return true
         end
 
         it 'does not install WMF 5' do
@@ -34,7 +34,7 @@ describe 'powershell::powershell5' do
 
       context 'when powershell does not exist' do
         before do
-          allow(Chef::Win32::Registry).to receive(:new).and_return double('registry', data_exists?: false, value_exists?: false, key_exists?: false)
+          allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return false
         end
 
         it 'installs windows package windows management framework core 5.0' do
