@@ -44,3 +44,6 @@ vendor/
 .vagrant/
 .vagrant.d/
 .kitchen/
+
+#vscode stuff
+.vscode/
