@@ -5,12 +5,8 @@ if ::Windows::VersionHelper.nt_version(node) < 10
   ps_get_provider_name = 'PSModule'
 end
 
-powershell_package_provider 'NuGet' do
-  file_name 'nuget-anycpu.exe'
-  file_source 'https://az818661.vo.msecnd.net/providers/nuget-anycpu-2.8.5.127.exe'
-  file_checksum '2dea5ef5cfc0fd13ad9e93709d33467111bb00e93c50f904a04ed476c2b2b8fa'
-  action :install_manual
-end
+include_recipe 'powershell::install_nuget_provider_manual'
+
 powershell_package_provider ps_get_provider_name
 
 powershell_package_source 'PSGallery' do
@@ -25,4 +21,3 @@ powershell_package 'xTimeZone' do
   version '1.3.0.0'
   action :install
 end
-

@@ -24,7 +24,6 @@ class Chef
       end
     end
 
-
     action :update do
       if new_resource.location.nil? then Chef::Log.fatal "#{new_resource.location} did not specify a package source location, cannot update a source without!" end
       powershell_script "update registered package source #{new_resource.source_name}" do
@@ -34,4 +33,3 @@ class Chef
     end
   end
 end
-

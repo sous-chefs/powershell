@@ -225,7 +225,8 @@ end
 
 Installs or uninstalls a Powershell package. You either need to install WMF 5.0 or
 include the powershell5 recipe before using this resource. You also need to be sure
-your package provider and package source is set up.
+your package provider and package source is set up. This uses the new resource provider model and
+will only work with Chef 12 and above. 
 
 #### Actions
 
@@ -272,21 +273,16 @@ end
 ### `powershell_package_provider`
 
 Installs or uninstalls a Powershell package provider. You either need to install WMF 5.0 or
-include the powershell5 recipe before using this resource. You can also manually add providers
-from an internally hosted repository.
+include the powershell5 recipe before using this resource. This uses the new resource provider model and
+will only work with Chef 12 and above. 
 
 #### Actions
 
 - :install: install a powershell provider (will pull provider executable from Microsoft) 
-- :install_manual: install the specified powershell package provider to the provider assembly folder
-- :uninstall_manual: remove the specified powershell package provider assembly from the assembly folder
 
 #### Attribute Parameters
 
-- `name`: name attribute. Name of the package to install or uninstall.
-- `file_name`: specifies the name of the file to be placed manually in the package provider directory
-- `file_source`: specifies source of the file to be placed in the package provider directory
-- `file_checksum`: specifies checksum to verify the file to be placed in the package provider directory
+- `name`: name attribute. Name of the package provider to install.
 
 #### Examples
 
@@ -297,30 +293,11 @@ include_recipe 'powershell::powershell5'
 powershell_package_provider 'NuGet' 
 ```
 
-```ruby
-# Manually install NuGet provider from specified source
-powershell_package_provider 'NuGet' do
-  file_name 'nuget-anycpu.exe'
-  file_source 'https://az818661.vo.msecnd.net/providers/nuget-anycpu-2.8.5.127.exe'
-  file_checksum '2dea5ef5cfc0fd13ad9e93709d33467111bb00e93c50f904a04ed476c2b2b8fa'
-  action :install_manual
-end
-```
-
-```ruby
-# Manually remove NuGet provider from specified source
-powershell_package_provider 'NuGet' do
-  file_name 'nuget-anycpu.exe'
-  file_source 'https://az818661.vo.msecnd.net/providers/nuget-anycpu-2.8.5.127.exe'
-  file_checksum '2dea5ef5cfc0fd13ad9e93709d33467111bb00e93c50f904a04ed476c2b2b8fa'
-  action :uninstall_manual
-end
-```
-
 ### `powershell_package_source`
 
 Registers, updates or unregisters a Powershell package source. You either need to install WMF 5.0 or
-include the powershell5 recipe before using this resource. 
+include the powershell5 recipe before using this resource. This uses the new resource provider model and
+will only work with Chef 12 and above. 
 
 #### Actions
 
@@ -413,6 +390,17 @@ Note: Windows Management Framework 5 is in production preview.
 http://blogs.msdn.com/b/powershell/archive/2015/12/23/windows-management-framework-wmf-5-0-currently-removed-from-download-center.aspx
 
 Include the `powershell5` recipe in a run list, to install PowerShell 5.0 is installed on applicable platforms. If a platform is not supported or if it already includes PowerShell 5.0, an exception will be raised.
+
+### install_nuget_provider_manual
+Allows manual installation of NuGet provider from an internally hosted repository.
+
+#### Attribute Parameters
+  * `default['powershell']['nuget_provider']['source']` - URL to the hosted nuget-anycpu.exe file
+  * `default['powershell']['nuget_provider']['checksum']` - checksum for the hosted nuget-anycpu.exe file
+
+### uninstall_nuget_provider_manual
+Allows manual removal of NuGet provider that was installed from an internally hosted repository.
+
 
 References
 ----------

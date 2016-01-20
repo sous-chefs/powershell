@@ -34,7 +34,7 @@ when 'windows'
       checksum node['powershell']['powershell5']['checksum']
       installer_type :custom
       options '/quiet /norestart'
-      timeout 5000
+      timeout node['powershell']['powershell5']['timeout']
       action :install
       success_codes [0, 42, 127, 3010]
       # Note that the :immediately is to immediately notify the other resource,

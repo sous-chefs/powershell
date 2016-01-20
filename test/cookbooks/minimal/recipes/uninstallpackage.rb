@@ -5,7 +5,6 @@ if ::Windows::VersionHelper.nt_version(node) < 10
   ps_get_provider_name = 'PSModule'
 end
 
-
 powershell_package_provider 'NuGet'
 powershell_package_provider ps_get_provider_name
 
