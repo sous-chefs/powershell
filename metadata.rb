@@ -20,6 +20,7 @@ supports 'windows'
 depends 'windows', '>= 1.2.8'
 depends 'ms_dotnet', '>= 2.6'
 depends 'chef_handler'
+depends 'compat_resource', '>=12.5'
 
 source_url 'https://github.com/chef-cookbooks/powershell' if respond_to?(:source_url)
 issues_url 'https://github.com/chef-cookbooks/powershell/issues' if respond_to?(:issues_url)

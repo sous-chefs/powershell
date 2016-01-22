@@ -23,8 +23,9 @@
 case node['platform']
 when 'windows'
 
-  if ::Windows::VersionHelper.nt_version(node) >= 6.1
+  if ::Windows::VersionHelper.nt_version(node) >= 6.1 && ::Windows::VersionHelper.nt_version(node) < 10
     include_recipe 'powershell::powershell2'
+    include_recipe 'ms_dotnet::ms_dotnet4'
 
     include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
 
@@ -39,7 +40,13 @@ when 'windows'
       # Note that the :immediately is to immediately notify the other resource,
       # not to immediately reboot. The windows_reboot 'notifies' does that.
       notifies :request, 'windows_reboot[powershell]', :immediately if reboot_pending? && node['powershell']['installation_reboot_mode'] != 'no_reboot'
-      not_if { registry_data_exists?('HKLM\SOFTWARE\Microsoft\PowerShell\3\PowerShellEngine', name: 'PowerShellVersion', type: :string, data: node['powershell']['powershell5']['version']) }
+      not_if do
+        begin
+          registry_data_exists?('HKLM\SOFTWARE\Microsoft\PowerShell\3\PowerShellEngine', name: 'PowerShellVersion', type: :string, data: node['powershell']['powershell5']['version'])
+        rescue Chef::Exceptions::Win32RegKeyMissing
+          false
+        end
+      end
     end
 
   else

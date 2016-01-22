@@ -20,6 +20,7 @@
 
 if node['platform_family'] == 'windows'
   default['powershell']['powershell5']['version'] = '5.0.10514.6'
+  default['ms_dotnet']['v4']['version'] = '4.5.2'
 
   case node['platform_version'].split('.')[0..1].join('.')
   when '6.1'
