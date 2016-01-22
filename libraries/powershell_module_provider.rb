@@ -59,7 +59,7 @@ class PowershellModuleProvider < Chef::Provider
     if Dir.exist? @new_resource.source
       ps_module_path = FileUtils.mkdir_p(module_path_name).first
       Chef::Log.info("Powershell Module path folder created: #{ps_module_path}")
-      @new_resource.destination(sanitize! @new_resource.destination)
+      @new_resource.destination(sanitize!(@new_resource.destination))
       module_dir = Dir["#{@new_resource.source}/*.psd1", "#{@new_resource.source}/*.psm1", "#{@new_resource.source}/*.dll"]
       module_dir.each do |filename|
         FileUtils.cp(filename, ps_module_path)
@@ -145,7 +145,7 @@ class PowershellModuleProvider < Chef::Provider
   end
 
   def module_path_name
-    ::File.join(@new_resource.destination.gsub(/\\/, '/'), @new_resource.package_name)
+    ::File.join(@new_resource.destination.tr('\\', '/'), @new_resource.package_name)
   end
 
   def module_exists?(path, pattern)

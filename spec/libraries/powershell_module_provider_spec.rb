@@ -138,7 +138,7 @@ describe 'PowershellModuleProvider' do
         module_files = %W(#{ps_module_path}/*.psd1 #{ps_module_path}/*.psm1 #{ps_module_path}/*.dll)
 
         expect(Dir).to receive(:exist?).with(ps_module_path).and_return(true)
-        expect(FileUtils).to receive(:mkdir_p).with(ps_module_path).and_return(["#{ps_module_path}"])
+        expect(FileUtils).to receive(:mkdir_p).with(ps_module_path).and_return([ps_module_path])
         expect(Dir).to receive(:[]).with(*module_files).and_return module_files
 
         module_files.each do |filename|
