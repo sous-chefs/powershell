@@ -33,4 +33,4 @@ module Powershell
       Powershell::PowershellVersionHelper.new.powershell_version?(versionstring)
     end
   end
-end unless defined?(Powershell)
+end unless defined?(Powershell::VersionHelper)
