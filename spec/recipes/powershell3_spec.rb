@@ -22,19 +22,19 @@ describe 'powershell::powershell3' do
 
       if test_conf[:should_install_bits]
         it 'installs windows package Windows Management Framework Bits' do
-          allow(Chef::Win32::Registry).to receive(:new).and_return double('registry', data_exists?: true, value_exists?: true)
+          allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return false
           expect(chef_run).to install_windows_package('Windows Management Framework Bits').with(source: 'https://powershellbits.com', checksum: '99999', installer_type: :custom, options: '/quiet /norestart')
         end
       else
         it 'does not install windows package Windows Management Framework Bits' do
-          allow(Chef::Win32::Registry).to receive(:new).and_return double('registry', data_exists?: true, value_exists?: true)
+          allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return false
           expect(chef_run).to_not install_windows_package('Windows Management Framework Bits')
         end
       end
 
       context 'when powershell 3 is installed' do
         before do
-          allow(Chef::Win32::Registry).to receive(:new).and_return double('registry', data_exists?: true, value_exists?: true)
+          allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return true
         end
 
         it 'only include ms_dotnet4' do
@@ -45,7 +45,7 @@ describe 'powershell::powershell3' do
 
       context 'when powershell 3 does not exist' do
         before do
-          allow(Chef::Win32::Registry).to receive(:new).and_return double('registry', data_exists?: false, value_exists?: false, key_exists?: false)
+          allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return false
         end
 
         it 'installs windows package windows management framework core 3.0' do
