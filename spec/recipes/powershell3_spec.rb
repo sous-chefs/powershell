@@ -9,6 +9,8 @@ describe 'powershell::powershell3' do
     'Windows 7' => { fauxhai_version: '2008R2', product_type: 1, should_install_bits: false }
   }.each do |windows_version, test_conf|
     context "on #{windows_version}" do
+      before { allow_any_instance_of(Chef::Resource).to receive(:reboot_pending?).and_return(false) }
+
       let(:chef_run) do
         ChefSpec::SoloRunner.new(platform: 'windows', version: test_conf[:fauxhai_version]) do |node|
           node.automatic['platform_version'] = test_conf[:platform_version] if test_conf[:platform_version]

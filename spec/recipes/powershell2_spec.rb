@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe 'powershell::powershell2' do
+  before { allow_any_instance_of(Chef::Resource).to receive(:reboot_pending?).and_return(false) }
+
   context 'on Windows Server 2012 Core' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'windows', version: '2012') do |node|
