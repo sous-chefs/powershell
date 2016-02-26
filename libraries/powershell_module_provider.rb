@@ -31,8 +31,8 @@ class PowershellModuleProvider < Chef::Provider
   end
 
   def action_install
-    fail ArgumentError, "Required attribute 'package_name' for module installation" unless @new_resource.package_name
-    fail ArgumentError, "Required attribute 'destination' or 'source' for module installation" unless @new_resource.destination || @new_resource.source
+    raise ArgumentError, "Required attribute 'package_name' for module installation" unless @new_resource.package_name
+    raise ArgumentError, "Required attribute 'destination' or 'source' for module installation" unless @new_resource.destination || @new_resource.source
 
     converge_by("Powershell Module '#{@powershell_module.package_name}'") do
       install_module
@@ -41,7 +41,7 @@ class PowershellModuleProvider < Chef::Provider
   end
 
   def action_uninstall
-    fail ArgumentError, "Required attribute 'package_name' for module uninstallation" unless @new_resource.package_name
+    raise ArgumentError, "Required attribute 'package_name' for module uninstallation" unless @new_resource.package_name
     converge_by("Powershell Module '#{@powershell_module.package_name}'") do
       uninstall_module
     end
