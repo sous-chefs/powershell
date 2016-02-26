@@ -15,7 +15,7 @@ end
 # needs to happen straight away to be useful, throw an exception...
 ruby_block 'end_chef_run' do
   block do
-    fail 'Requested sudden end to the run... I hope this was justified.'
+    raise 'Requested sudden end to the run... I hope this was justified.'
   end
   action :nothing
 end

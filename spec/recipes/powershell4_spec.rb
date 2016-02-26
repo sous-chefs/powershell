@@ -16,6 +16,8 @@ describe 'powershell::powershell4' do
         end.converge(described_recipe)
       end
 
+      before { allow_any_instance_of(Chef::Resource).to receive(:reboot_pending?).and_return(false) }
+
       context 'when ms_dotnet::ms_dotnet4 is not configured for .NET 4.5' do
         before { normal_attributes['ms_dotnet']['v4']['version'] = '4.0' }
         it 'fails' do

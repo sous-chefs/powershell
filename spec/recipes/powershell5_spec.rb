@@ -9,6 +9,10 @@ describe 'powershell::powershell5' do
     'Windows Server 2012R2' => { fauxhai_version: '2012R2', timeout: 600 }
   }.each do |windows_version, test_conf|
     context "on #{windows_version}" do
+      before do
+        allow_any_instance_of(Chef::Resource).to receive(:reboot_pending?).and_return(false)
+      end
+
       let(:chef_run) do
         ChefSpec::SoloRunner.new(platform: 'windows', version: test_conf[:fauxhai_version]) do |node|
           node.automatic['kernel']['os_info']['product_type'] = test_conf[:product_type] if test_conf[:product_type]

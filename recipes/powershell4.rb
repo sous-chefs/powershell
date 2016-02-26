@@ -30,7 +30,7 @@ if node['platform'] == 'windows'
   if nt_version == 6.1 || (nt_version == 6.2 && ::Windows::VersionHelper.server_version?(node))
 
     # Ensure .NET 4.5 is installed or installation will fail silently per Microsoft.
-    fail 'Attribute ms_dotnet.v4.version is not configured to install .NET4.5 as required for Powershell4' if node['ms_dotnet']['v4']['version'] < '4.5'
+    raise 'Attribute ms_dotnet.v4.version is not configured to install .NET4.5 as required for Powershell4' if node['ms_dotnet']['v4']['version'] < '4.5'
     include_recipe 'ms_dotnet::ms_dotnet4'
 
     # Reboot if user specifies doesn't specify no_reboot
