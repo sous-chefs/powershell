@@ -30,7 +30,7 @@ if node['platform'] == 'windows'
   if nt_version == 6.1 || (nt_version == 6.2 && ::Windows::VersionHelper.server_version?(node))
 
     # Ensure .NET 4.5 is installed or installation will fail silently per Microsoft.
-    fail 'Attribute ms_dotnet.v4.version is not configured to install .NET4.5 as required for Powershell4' if node['ms_dotnet']['v4']['version'] < '4.5'
+    raise 'Attribute ms_dotnet.v4.version is not configured to install .NET4.5 as required for Powershell4' if node['ms_dotnet']['v4']['version'] < '4.5'
     include_recipe 'ms_dotnet::ms_dotnet4'
 
     # Reboot if user specifies doesn't specify no_reboot
@@ -46,13 +46,7 @@ if node['platform'] == 'windows'
       # Note that the :immediately is to immediately notify the other resource,
       # not to immediately reboot. The windows_reboot 'notifies' does that.
       notifies :request, 'windows_reboot[powershell]', :immediately if reboot_pending? && node['powershell']['installation_reboot_mode'] != 'no_reboot'
-      not_if do
-        begin
-          registry_data_exists?('HKLM\SOFTWARE\Microsoft\PowerShell\3\PowerShellEngine', name: 'PowerShellVersion', type: :string, data: '4.0')
-        rescue Chef::Exceptions::Win32RegKeyMissing
-          false
-        end
-      end
+      not_if { ::Powershell::VersionHelper.powershell_version?('4.0') }
     end
   else
     Chef::Log.warn("PowerShell 4.0 is not supported or already installed on this version of Windows: #{node['platform_version']}")

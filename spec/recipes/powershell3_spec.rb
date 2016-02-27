@@ -9,6 +9,8 @@ describe 'powershell::powershell3' do
     'Windows 7' => { fauxhai_version: '2008R2', product_type: 1, should_install_bits: false }
   }.each do |windows_version, test_conf|
     context "on #{windows_version}" do
+      before { allow_any_instance_of(Chef::Resource).to receive(:reboot_pending?).and_return(false) }
+
       let(:chef_run) do
         ChefSpec::SoloRunner.new(platform: 'windows', version: test_conf[:fauxhai_version]) do |node|
           node.automatic['platform_version'] = test_conf[:platform_version] if test_conf[:platform_version]
@@ -22,19 +24,19 @@ describe 'powershell::powershell3' do
 
       if test_conf[:should_install_bits]
         it 'installs windows package Windows Management Framework Bits' do
-          allow(Chef::Win32::Registry).to receive(:new).and_return double('registry', data_exists?: true, value_exists?: true)
+          allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return false
           expect(chef_run).to install_windows_package('Windows Management Framework Bits').with(source: 'https://powershellbits.com', checksum: '99999', installer_type: :custom, options: '/quiet /norestart')
         end
       else
         it 'does not install windows package Windows Management Framework Bits' do
-          allow(Chef::Win32::Registry).to receive(:new).and_return double('registry', data_exists?: true, value_exists?: true)
+          allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return false
           expect(chef_run).to_not install_windows_package('Windows Management Framework Bits')
         end
       end
 
       context 'when powershell 3 is installed' do
         before do
-          allow(Chef::Win32::Registry).to receive(:new).and_return double('registry', data_exists?: true, value_exists?: true)
+          allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return true
         end
 
         it 'only include ms_dotnet4' do
@@ -45,7 +47,7 @@ describe 'powershell::powershell3' do
 
       context 'when powershell 3 does not exist' do
         before do
-          allow(Chef::Win32::Registry).to receive(:new).and_return double('registry', data_exists?: false, value_exists?: false, key_exists?: false)
+          allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return false
         end
 
         it 'installs windows package windows management framework core 3.0' do

@@ -9,6 +9,10 @@ describe 'powershell::powershell5' do
     'Windows Server 2012R2' => { fauxhai_version: '2012R2', timeout: 600 }
   }.each do |windows_version, test_conf|
     context "on #{windows_version}" do
+      before do
+        allow_any_instance_of(Chef::Resource).to receive(:reboot_pending?).and_return(false)
+      end
+
       let(:chef_run) do
         ChefSpec::SoloRunner.new(platform: 'windows', version: test_conf[:fauxhai_version]) do |node|
           node.automatic['kernel']['os_info']['product_type'] = test_conf[:product_type] if test_conf[:product_type]
@@ -18,13 +22,13 @@ describe 'powershell::powershell5' do
       end
 
       it 'includes powershell 2 recipe' do
-        allow(Chef::Win32::Registry).to receive(:new).and_return double('registry', data_exists?: false, value_exists?: false, key_exists?: false)
+        allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return false
         expect(chef_run).to include_recipe('powershell::powershell2')
       end
 
       context 'when powershell is installed' do
         before do
-          allow(Chef::Win32::Registry).to receive(:new).and_return double('registry', data_exists?: true, value_exists?: true)
+          allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return true
         end
 
         it 'does not install WMF 5' do
@@ -34,7 +38,7 @@ describe 'powershell::powershell5' do
 
       context 'when powershell does not exist' do
         before do
-          allow(Chef::Win32::Registry).to receive(:new).and_return double('registry', data_exists?: false, value_exists?: false, key_exists?: false)
+          allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return false
         end
 
         it 'installs windows package windows management framework core 5.0' do

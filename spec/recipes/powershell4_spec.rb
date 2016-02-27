@@ -16,6 +16,8 @@ describe 'powershell::powershell4' do
         end.converge(described_recipe)
       end
 
+      before { allow_any_instance_of(Chef::Resource).to receive(:reboot_pending?).and_return(false) }
+
       context 'when ms_dotnet::ms_dotnet4 is not configured for .NET 4.5' do
         before { normal_attributes['ms_dotnet']['v4']['version'] = '4.0' }
         it 'fails' do
@@ -29,7 +31,7 @@ describe 'powershell::powershell4' do
         context 'when powershell 4 is installed' do
           before do
             allow_any_instance_of(::Chef::Resource).to receive(:reboot_pending?).and_return false
-            expect_any_instance_of(::Chef::Resource).to receive(:registry_data_exists?).with('HKLM\SOFTWARE\Microsoft\PowerShell\3\PowerShellEngine', name: 'PowerShellVersion', type: :string, data: '4.0').and_return true
+            allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return true
           end
           it 'includes ms_dotnet::ms_dotnet4' do
             expect(chef_run).to include_recipe('ms_dotnet::ms_dotnet4')
@@ -45,7 +47,7 @@ describe 'powershell::powershell4' do
             normal_attributes['powershell']['powershell4']['checksum'] = '12345'
             normal_attributes['powershell']['installation_reboot_mode'] = 'no_reboot'
             allow_any_instance_of(::Chef::Resource).to receive(:reboot_pending?).and_return false
-            allow_any_instance_of(::Chef::Resource).to receive(:registry_data_exists?).with('HKLM\SOFTWARE\Microsoft\PowerShell\3\PowerShellEngine', name: 'PowerShellVersion', type: :string, data: '4.0').and_return false
+            allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return false
           end
           it 'includes ms_dotnet::ms_dotnet4' do
             expect(chef_run).to include_recipe('ms_dotnet::ms_dotnet4')

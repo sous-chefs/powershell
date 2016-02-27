@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe 'powershell::powershell2' do
+  before { allow_any_instance_of(Chef::Resource).to receive(:reboot_pending?).and_return(false) }
+
   context 'on Windows Server 2012 Core' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'windows', version: '2012') do |node|
@@ -41,7 +43,7 @@ describe 'powershell::powershell2' do
 
     context 'when powershell2 does not exist' do
       before do
-        allow(Chef::Win32::Registry).to receive(:new).and_return double('registry', data_exists?: false, value_exists?: false, key_exists?: false)
+        allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return false
       end
 
       it 'installs windows package' do
@@ -52,7 +54,7 @@ describe 'powershell::powershell2' do
 
     context 'when powershell2 exist' do
       before do
-        allow(Chef::Win32::Registry).to receive(:new).and_return double('registry', data_exists?: true, value_exists?: true)
+        allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return true
       end
 
       it 'only includes ms_dotnet2' do
