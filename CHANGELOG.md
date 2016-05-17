@@ -2,6 +2,12 @@ powershell Cookbook CHANGELOG
 =============================
 This file is used to list changes made in each version of the powershell cookbook.
 
+v3.3.0 (2016-05-17)
+-------------------
+- [PR #86](https://github.com/chef-cookbooks/pull/86) - wmf5 release
+- [PR #83](https://github.com/chef-cookbooks/pull/83) - Add supported exit code for PowerShell 5 install
+- Updated the Maintainers doc/toml
+
 v3.2.3 (2015-12-24)
 -------------------
 - [**smurawski**](https://github.com/smurawski)

@@ -4,7 +4,7 @@ maintainer_email 'cookbooks@chef.io'
 license 'Apache 2.0'
 description 'Installs/Configures PowerShell on the Windows platform'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '3.2.3'
+version '3.3.0'
 
 recipe 'powershell::default', 'Makes sure RubyZip is installed (for powershell_module)'
 recipe 'powershell::powershell2', 'Installs PowerShell 2.0'
