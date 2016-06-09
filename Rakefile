@@ -1,5 +1,6 @@
-require 'rspec/core/rake_task'
+require 'cookstyle'
 require 'rubocop/rake_task'
+require 'rspec/core/rake_task'
 require 'foodcritic'
 require 'kitchen'
 
@@ -8,7 +9,10 @@ require_relative 'tasks/maintainers'
 # Style tests. Rubocop and Foodcritic
 namespace :style do
   desc 'Run Ruby style checks'
-  RuboCop::RakeTask.new(:ruby)
+
+  RuboCop::RakeTask.new(:ruby) do |task|
+    task.options << '--display-cop-names'
+  end
 
   desc 'Run Chef style checks'
   FoodCritic::Rake::LintTask.new(:chef) do |t|
@@ -60,19 +64,19 @@ task travis: ['style', 'spec', 'integration:cloud']
 task default: ['style', 'spec', 'integration:vagrant']
 
 begin
-  require "github_changelog_generator/task"
-  require "stove"
-  require "stove/cookbook/metadata"
+  require 'github_changelog_generator/task'
+  require 'stove'
+  require 'stove/cookbook/metadata'
 
   GitHubChangelogGenerator::RakeTask.new :changelog do |config|
-    config.future_release = "v#{Stove::Cookbook::Metadata.from_file("./metadata.rb").version}"
+    config.future_release = "v#{Stove::Cookbook::Metadata.from_file('./metadata.rb').version}"
     config.pulls = true
     config.issues = false
-    config.user = "chef-cookbooks"
-    config.project = "powershell"
-    #require 'pry'; binding.pry
+    config.user = 'chef-cookbooks'
+    config.project = 'powershell'
+    # require 'pry'; binding.pry
   end
 rescue LoadError
-  puts "github_changelog_generator is not available." \
-       " gem install github_changelog_generator to generate changelogs"
+  puts 'github_changelog_generator is not available.' \
+       ' gem install github_changelog_generator to generate changelogs'
 end
