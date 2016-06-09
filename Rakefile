@@ -58,3 +58,21 @@ task travis: ['style', 'spec', 'integration:cloud']
 
 # Default
 task default: ['style', 'spec', 'integration:vagrant']
+
+begin
+  require "github_changelog_generator/task"
+  require "stove"
+  require "stove/cookbook/metadata"
+
+  GitHubChangelogGenerator::RakeTask.new :changelog do |config|
+    config.future_release = "v#{Stove::Cookbook::Metadata.from_file("./metadata.rb").version}"
+    config.pulls = true
+    config.issues = false
+    config.user = "chef-cookbooks"
+    config.project = "powershell"
+    #require 'pry'; binding.pry
+  end
+rescue LoadError
+  puts "github_changelog_generator is not available." \
+       " gem install github_changelog_generator to generate changelogs"
+end
