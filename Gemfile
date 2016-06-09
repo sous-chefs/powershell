@@ -38,4 +38,10 @@ group :development do
   gem 'guard-rspec'
   gem 'guard-rubocop'
   gem 'rake'
+  gem 'cookstyle'
+end
+
+group :release do
+  gem 'github_changelog_generator', '~> 1'
+  gem 'stove'
 end
