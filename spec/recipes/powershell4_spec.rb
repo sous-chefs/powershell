@@ -12,7 +12,7 @@ describe 'powershell::powershell4' do
       let(:chef_run) do
         ChefSpec::SoloRunner.new(platform: 'windows', version: test_conf[:fauxhai_version]) do |node|
           node.automatic['kernel']['os_info']['product_type'] = test_conf[:product_type] if test_conf[:product_type]
-          normal_attributes.each { |k, v| node.set[k] = v }
+          normal_attributes.each { |k, v| node.normal[k] = v }
         end.converge(described_recipe)
       end
 

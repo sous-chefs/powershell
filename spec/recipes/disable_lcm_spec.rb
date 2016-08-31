@@ -4,10 +4,10 @@ require 'chefspec'
 describe 'powershell::disable_lcm' do
   let(:chef_run) do
     ChefSpec::SoloRunner.new(platform: 'windows', version: '2012') do |node|
-      node.set['powershell']['powershell5']['url'] = 'https://powershelltest.com'
-      node.set['powershell']['powershell5']['checksum'] = '12345'
-      node.set['lcm']['mof']['temp_dir'] = 'c:\\chef\\cache\\lcm_mof'
-      node.set['lcm']['config']['disable']['refresh_mode'] = 'Disabled'
+      node.normal['powershell']['powershell5']['url'] = 'https://powershelltest.com'
+      node.normal['powershell']['powershell5']['checksum'] = '12345'
+      node.normal['lcm']['mof']['temp_dir'] = 'c:\\chef\\cache\\lcm_mof'
+      node.normal['lcm']['config']['disable']['refresh_mode'] = 'Disabled'
     end.converge(described_recipe)
   end
 

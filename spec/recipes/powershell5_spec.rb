@@ -16,8 +16,8 @@ describe 'powershell::powershell5' do
       let(:chef_run) do
         ChefSpec::SoloRunner.new(platform: 'windows', version: test_conf[:fauxhai_version]) do |node|
           node.automatic['kernel']['os_info']['product_type'] = test_conf[:product_type] if test_conf[:product_type]
-          node.set['powershell']['powershell5']['url'] = 'https://powershelltest.com'
-          node.set['powershell']['powershell5']['checksum'] = '12345'
+          node.normal['powershell']['powershell5']['url'] = 'https://powershelltest.com'
+          node.normal['powershell']['powershell5']['checksum'] = '12345'
         end.converge(described_recipe)
       end
 

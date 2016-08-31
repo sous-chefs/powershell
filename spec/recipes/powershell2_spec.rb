@@ -36,8 +36,8 @@ describe 'powershell::powershell2' do
       # There is no fauxhai info for windows server 2008, so we use 2008R2 and change the platform version
       ChefSpec::SoloRunner.new(platform: 'windows', version: '2008R2') do |node|
         node.automatic['platform_version'] = '6.0.6001'
-        node.set['powershell']['powershell2']['url'] = 'https://powershelltest.com'
-        node.set['powershell']['powershell2']['checksum'] = '12345'
+        node.normal['powershell']['powershell2']['url'] = 'https://powershelltest.com'
+        node.normal['powershell']['powershell2']['checksum'] = '12345'
       end.converge(described_recipe)
     end
 

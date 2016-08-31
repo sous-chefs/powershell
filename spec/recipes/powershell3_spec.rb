@@ -15,10 +15,10 @@ describe 'powershell::powershell3' do
         ChefSpec::SoloRunner.new(platform: 'windows', version: test_conf[:fauxhai_version]) do |node|
           node.automatic['platform_version'] = test_conf[:platform_version] if test_conf[:platform_version]
           node.automatic['kernel']['os_info']['product_type'] = test_conf[:product_type] if test_conf[:product_type]
-          node.set['powershell']['powershell3']['url'] = 'https://powershelltest.com'
-          node.set['powershell']['powershell3']['checksum'] = '12345'
-          node.set['powershell']['bits_4']['url'] = 'https://powershellbits.com'
-          node.set['powershell']['bits_4']['checksum'] = '99999'
+          node.normal['powershell']['powershell3']['url'] = 'https://powershelltest.com'
+          node.normal['powershell']['powershell3']['checksum'] = '12345'
+          node.normal['powershell']['bits_4']['url'] = 'https://powershellbits.com'
+          node.normal['powershell']['bits_4']['checksum'] = '99999'
         end.converge(described_recipe)
       end
 
