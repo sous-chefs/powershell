@@ -1,4 +1,3 @@
-#
 include_recipe 'powershell::default'
 
 powershell_module 'posh-git' do
