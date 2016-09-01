@@ -21,7 +21,7 @@
 # PowerShell 4.0 Download Page
 # http://www.microsoft.com/en-us/download/details.aspx?id=40855
 
-if node['platform'] == 'windows'
+if platform_family?('windows')
 
   nt_version = ::Windows::VersionHelper.nt_version(node)
   # WMF 4.0 is only compatible with:

@@ -21,8 +21,7 @@
 # PowerShell 3.0 Download Page
 # http://www.microsoft.com/en-us/download/details.aspx?id=34595
 
-case node['platform']
-when 'windows'
+if platform_family?('windows')
 
   nt_version = ::Windows::VersionHelper.nt_version(node)
 

@@ -17,8 +17,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-case node['platform']
-when 'windows'
+if platform_family?('windows')
+
   include_recipe 'powershell::powershell4'
 
   winrm_cmd = if node['powershell']['winrm']['enable_https_transport']

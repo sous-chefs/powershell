@@ -20,8 +20,8 @@
 
 # PowerShell 5.0 RTM Download Page
 # https://www.microsoft.com/en-us/download/details.aspx?id=50395
-case node['platform']
-when 'windows'
+
+if platform_family?('windows')
 
   if ::Windows::VersionHelper.nt_version(node) >= 6.1
     include_recipe 'powershell::powershell2'

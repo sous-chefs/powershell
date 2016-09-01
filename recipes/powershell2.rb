@@ -21,8 +21,8 @@
 # PowerShell 2.0 Download Page
 # http://support.microsoft.com/kb/968929/en-us
 
-case node['platform']
-when 'windows'
+if platform_family?('windows')
+
   nt_version = ::Windows::VersionHelper.nt_version(node)
 
   include_recipe 'ms_dotnet::ms_dotnet2'
