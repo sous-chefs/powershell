@@ -18,7 +18,7 @@ Windows Server 2012R2 / Windows 8.1 | Included       | Not Available  | Included
 
 ### Chef
 
-- Chef 12+
+- Chef 12.1+
 
 ### Cookbooks
 
@@ -32,7 +32,7 @@ PowerShell also requires the appropriate version of the Microsoft .NET Framework
 
 ### `powershell_module`
 
-Installs or uninstalls a Powershell module. You either need to install rubyzip with chef_gem or include the default recipe before using this resource.
+Installs or uninstalls a Powershell module.
 
 #### Actions
 
@@ -49,8 +49,6 @@ Installs or uninstalls a Powershell module. You either need to install rubyzip w
 #### Examples
 
 ```ruby
-include_recipe 'powershell::default'
-
 # Install module from local directory path
 # change the package_name and source
 powershell_module "PsUrl" do
@@ -88,7 +86,7 @@ end
 
 ### default
 
-The default recipe is needs to be included before using the powershell_module resource.
+The default recipe contains no resources and will do nothing if included on a run_list.
 
 ### powershell2
 

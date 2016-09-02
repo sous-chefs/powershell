@@ -19,4 +19,4 @@
 # limitations under the License.
 #
 
-chef_gem 'rubyzip'
+Chef::Log.debug('The powershell::default recipe has no resources and should not be included in a run_list. See the README.md file for a description of each recipe.')

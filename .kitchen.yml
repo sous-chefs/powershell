@@ -50,3 +50,6 @@ suites:
     includes:
       - windows-8.1
       - windows-2012r2
+  - name: custom_resource
+    run_list:
+      - recipe[test::default]
