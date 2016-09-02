@@ -17,7 +17,8 @@ Windows Server 2012 / Windows 8     | Included       | Included       | Supporte
 Windows Server 2012R2 / Windows 8.1 | Included       | Not Available  | Included       | Supported
 
 ### Chef
-- Chef 11+
+
+- Chef 12+
 
 ### Cookbooks
 
@@ -91,13 +92,7 @@ The default recipe is needs to be included before using the powershell_module re
 
 ### powershell2
 
-Include the `powershell2` recipe in a run list, to ensure PowerShell 2.0 is installed.
-
-On the following versions of Windows, PowerShell 2.0 is present and must just be enabled:
-
-- Windows 7
-- Windows Server 2008 R2
-- Windows Server 2008 R2 Core
+Include the `powershell2` recipe in a run list, to ensure PowerShell 2.0 is installed. If a platform is not supported, an exception will be raised.
 
 ### powershell3
 
