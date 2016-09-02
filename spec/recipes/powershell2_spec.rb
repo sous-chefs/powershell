@@ -32,37 +32,4 @@ describe 'powershell::powershell2' do
       expect(chef_run).to install_windows_feature('MicrosoftWindowsPowerShell-WOW64')
     end
   end
-
-  context 'on Windows Server 2008' do
-    let(:chef_run) do
-      # There is no fauxhai info for windows server 2008, so we use 2008R2 and change the platform version
-      ChefSpec::SoloRunner.new(platform: 'windows', version: '2008R2') do |node|
-        node.automatic['platform_version'] = '6.0.6001'
-        node.normal['powershell']['powershell2']['url'] = 'https://powershelltest.com'
-        node.normal['powershell']['powershell2']['checksum'] = '12345'
-      end.converge(described_recipe)
-    end
-
-    context 'when powershell2 does not exist' do
-      before do
-        allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return false
-      end
-
-      it 'installs windows package' do
-        expect(chef_run).to include_recipe('ms_dotnet::ms_dotnet2')
-        expect(chef_run).to install_windows_package('Windows Management Framework Core').with(source: 'https://powershelltest.com', checksum: '12345', installer_type: :custom, options: '/quiet /norestart')
-      end
-    end
-
-    context 'when powershell2 exist' do
-      before do
-        allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return true
-      end
-
-      it 'only includes ms_dotnet2' do
-        expect(chef_run).to include_recipe('ms_dotnet::ms_dotnet2')
-        expect(chef_run).to_not install_windows_package('Windows Management Framework Core')
-      end
-    end
-  end
 end

@@ -3,8 +3,6 @@ require 'spec_helper'
 describe 'powershell::powershell3' do
   {
     'Windows Server 2008R2' => { fauxhai_version: '2008R2', should_install_bits: false },
-    # There is no fauxhai info for windows server 2008, so we use 2008R2 and change the platform version
-    'Windows Server 2008' => { fauxhai_version: '2008R2', platform_version: '6.0.6001', should_install_bits: true },
     # There is no fauxhai info for windows 7, so we use 2008R2 and change the product type from server to workstation
     'Windows 7' => { fauxhai_version: '2008R2', product_type: 1, should_install_bits: false }
   }.each do |windows_version, test_conf|

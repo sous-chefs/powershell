@@ -38,26 +38,6 @@ if platform_family?('windows')
       action :install
       only_if { node['kernel']['machine'] == 'x86_64' }
     end
-
-  # WMF 2.0 is required and only compatible with:
-  # * Windows NT 5.1 & 5.2 (Windows Server 2003 & Windows XP)
-  # * Windows NT 6.0 server (Windows Server 2008 SP2 not vista)
-  elsif nt_version.between?(5.1, 5.2) || (nt_version == 6.0 && ::Windows::VersionHelper.server_version?(node))
-    # Reboot if user doesn't specify no_reboot
-    include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
-
-    windows_package 'Windows Management Framework Core' do # ~FC009
-      source node['powershell']['powershell2']['url']
-      checksum node['powershell']['powershell2']['checksum']
-      installer_type :custom
-      options '/quiet /norestart'
-      success_codes [0, 42, 127, 3010, 2_359_302]
-      action :install
-      # Note that the :immediately is to immediately notify the other resource,
-      # not to immediately reboot. The windows_reboot 'notifies' does that.
-      notifies :request, 'windows_reboot[powershell]', :immediately if reboot_pending? && node['powershell']['installation_reboot_mode'] != 'no_reboot'
-      not_if { ::Powershell::VersionHelper.powershell_version?('2.0') }
-    end
   else
     Chef::Log.warn("PowerShell 2.0 is not supported or already installed on this version of Windows: #{node['platform_version']}")
   end
