@@ -23,9 +23,11 @@ describe 'powershell::powershell2' do
       end.converge(described_recipe)
     end
 
+    it 'includes the ms_dotnet cookbook' do
+      expect(chef_run).to include_recipe('ms_dotnet::ms_dotnet2')
+    end
+
     it 'installs windows features' do
-      expect(chef_run).to install_windows_feature('NetFx2-ServerCore')
-      expect(chef_run).to install_windows_feature('NetFx2-ServerCore-WOW64')
       expect(chef_run).to install_windows_feature('MicrosoftWindowsPowerShell')
       expect(chef_run).to install_windows_feature('MicrosoftWindowsPowerShell-WOW64')
     end
@@ -36,8 +38,8 @@ describe 'powershell::powershell2' do
       # There is no fauxhai info for windows server 2008, so we use 2008R2 and change the platform version
       ChefSpec::SoloRunner.new(platform: 'windows', version: '2008R2') do |node|
         node.automatic['platform_version'] = '6.0.6001'
-        node.set['powershell']['powershell2']['url'] = 'https://powershelltest.com'
-        node.set['powershell']['powershell2']['checksum'] = '12345'
+        node.normal['powershell']['powershell2']['url'] = 'https://powershelltest.com'
+        node.normal['powershell']['powershell2']['checksum'] = '12345'
       end.converge(described_recipe)
     end
 

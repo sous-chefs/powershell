@@ -4,10 +4,10 @@ require 'chefspec'
 describe 'powershell::enable_lcm' do
   let(:chef_run) do
     ChefSpec::SoloRunner.new(platform: 'windows', version: '2012') do |node|
-      node.set['lcm']['mof']['temp_dir'] = 'c:\\chef\\cache\\lcm_mof'
-      node.set['lcm']['config']['enable']['config_mode'] = 'ApplyOnly'
-      node.set['lcm']['config']['enable']['reboot_node'] = false
-      node.set['lcm']['config']['enable']['refresh_mode'] = 'Push'
+      node.normal['lcm']['mof']['temp_dir'] = 'c:\\chef\\cache\\lcm_mof'
+      node.normal['lcm']['config']['enable']['config_mode'] = 'ApplyOnly'
+      node.normal['lcm']['config']['enable']['reboot_node'] = false
+      node.normal['lcm']['config']['enable']['refresh_mode'] = 'Push'
     end.converge(described_recipe)
   end
 
