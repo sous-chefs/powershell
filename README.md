@@ -16,6 +16,9 @@ Windows Server 2008 R2              | Included       | Supported      | Supporte
 Windows Server 2012 / Windows 8     | Included       | Included       | Supported      | Supported
 Windows Server 2012R2 / Windows 8.1 | Included       | Not Available  | Included       | Supported
 
+### Chef
+- Chef 11+
+
 ### Cookbooks
 
 - windows
