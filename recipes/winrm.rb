@@ -18,8 +18,7 @@
 # limitations under the License.
 #
 
-case node['platform']
-when 'windows'
+if platform_family?('windows')
 
   # Configure winrm
   # use attributes to add other configuration
