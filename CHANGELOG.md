@@ -2,6 +2,14 @@
 
 This file is used to list changes made in each version of the powershell cookbook.
 
+## 5.0.0 (2016-09-02)
+
+- Require Chef 12.1 or later
+- Dynamically install rubyzip in the provider. This eliminates the need for the default recipe, which only installed the rubyzip gem. It now just works as expected
+- Test Powershell 2-5 and the custom resource in test kitchen on multiple Windows releases
+- Remove test deps that are in ChefDK from the Gemfile
+- Update the documentation for the powershell recipes to clarify what happens if the platform is not supported
+
 ## 4.0.0 (2016-09-02)
 
 - Remove support for Windows XP, 2003, 2003 R2, and 2008
