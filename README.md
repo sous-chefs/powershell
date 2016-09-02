@@ -90,19 +90,19 @@ The default recipe contains no resources and will do nothing if included on a ru
 
 ### powershell2
 
-Include the `powershell2` recipe in a run list, to ensure PowerShell 2.0 is installed. If a platform is not supported, an exception will be raised.
+Include the `powershell2` recipe in a run list, to ensure PowerShell 2.0 is installed. If the platform is not supported, a warning will be logged.
 
 ### powershell3
 
-Include the `powershell3` recipe in a run list, to install PowerShell 3.0 is installed on applicable platforms. If a platform is not supported or if it already includes PowerShell 3.0, an exception will be raised.
+Include the `powershell3` recipe in a run list, to install PowerShell 3.0 is installed on applicable platforms. If the platform is not supported, a warning will be logged.
 
 ### powershell4
 
-Include the `powershell4` recipe in a run list, to install PowerShell 4.0 is installed on applicable platforms. If a platform is not supported or if it already includes PowerShell 4.0, an exception will be raised.
+Include the `powershell4` recipe in a run list, to install PowerShell 4.0 is installed on applicable platforms. If the platform is not supported, a warning will be logged.
 
 ### powershell5
 
-Include the `powershell5` recipe in a run list, to install PowerShell 5.0 is installed on applicable platforms. If a platform is not supported or if it already includes PowerShell 5.0, an exception will be raised.
+Include the `powershell5` recipe in a run list, to install PowerShell 5.0 is installed on applicable platforms. If the platform is not supported, a warning will be logged.
 
 ## References
 
