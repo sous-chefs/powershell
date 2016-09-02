@@ -20,15 +20,6 @@
 
 if node['platform_family'] == 'windows'
   case node['platform_version'].split('.')[0..1].join('.')
-  when '6.0'
-    case node['kernel']['machine']
-    when 'i386'
-      default['powershell']['powershell3']['url'] = 'http://download.microsoft.com/download/E/7/6/E76850B8-DA6E-4FF5-8CCE-A24FC513FD16/Windows6.0-KB2506146-x86.msu'
-      default['powershell']['powershell3']['checksum'] = '3ff9d23c1d56113690635a3c2397434a144ab90f4753eba44001583605de17ce'
-    when 'x86_64'
-      default['powershell']['powershell3']['url'] = 'http://download.microsoft.com/download/E/7/6/E76850B8-DA6E-4FF5-8CCE-A24FC513FD16/Windows6.0-KB2506146-x64.msu'
-      default['powershell']['powershell3']['checksum'] = '8af5cd1fb937afdebf0c8401686f1fc1674f8fc8d5d47d7865aa894c66bccd3e'
-    end
   when '6.1'
     case node['kernel']['machine']
     when 'i386'

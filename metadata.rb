@@ -17,9 +17,11 @@ recipe 'powershell::enable_lcm', 'Enable the DSC Local Configuration Manager'
 recipe 'powershell::disable_lcm', 'Disable the DSC Local Configuration Manager'
 
 supports 'windows'
-depends 'windows', '>= 1.2.8'
+depends 'windows', '>= 1.44'
 depends 'ms_dotnet', '>= 2.6'
 depends 'chef_handler'
 
 source_url 'https://github.com/chef-cookbooks/powershell' if respond_to?(:source_url)
 issues_url 'https://github.com/chef-cookbooks/powershell/issues' if respond_to?(:issues_url)
+
+chef_version '>= 11' if respond_to?(:chef_version)

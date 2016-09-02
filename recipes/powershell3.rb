@@ -26,22 +26,8 @@ if platform_family?('windows')
   nt_version = ::Windows::VersionHelper.nt_version(node)
 
   # Powershell 3.0 is only compatible with:
-  # * Windows NT 6.0 server (Windows Server 2008 SP2 not vista)
   # * Windows NT 6.1 (Windows Server 2008R2 & Windows 7.1)
-  if (nt_version == 6.0 && ::Windows::VersionHelper.server_version?(node)) || nt_version == 6.1
-
-    # For Windows Server 2008 ensure that Powershell 2 is already installed and so is BITS 4.0
-    if nt_version == 6.0 && ::Windows::VersionHelper.server_version?(node)
-      include_recipe 'powershell::powershell2'
-
-      windows_package 'Windows Management Framework Bits' do
-        source node['powershell']['bits_4']['url']
-        checksum node['powershell']['bits_4']['checksum']
-        installer_type :custom
-        options '/quiet /norestart'
-        action :install
-      end
-    end
+  if nt_version == 6.1
 
     # WMF 3.0 requires .NET 4.0
     include_recipe 'ms_dotnet::ms_dotnet4'
