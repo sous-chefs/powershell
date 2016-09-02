@@ -21,7 +21,7 @@ depends 'windows', '>= 1.44'
 depends 'ms_dotnet', '>= 2.6'
 depends 'chef_handler'
 
-source_url 'https://github.com/chef-cookbooks/powershell' if respond_to?(:source_url)
-issues_url 'https://github.com/chef-cookbooks/powershell/issues' if respond_to?(:issues_url)
+source_url 'https://github.com/chef-cookbooks/powershell'
+issues_url 'https://github.com/chef-cookbooks/powershell/issues'
 
-chef_version '>= 11' if respond_to?(:chef_version)
+chef_version '>= 12' if respond_to?(:chef_version)
