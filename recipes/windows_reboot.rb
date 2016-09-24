@@ -2,11 +2,7 @@
 node.default['windows']['allow_pending_reboots'] = true
 node.default['windows']['allow_reboot_on_failure'] = true
 
-include_recipe 'windows::reboot_handler'
-
-windows_reboot 'powershell' do
-  reason 'Reboot after successful/unsuccessful powershell installation'
-  timeout node['powershell']['reboot_timeout_seconds']
+reboot 'powershell' do
   action :nothing
   notifies :run, 'ruby_block[end_chef_run]', :immediately if node['powershell']['installation_reboot_mode'] == 'immediate_reboot'
 end

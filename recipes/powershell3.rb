@@ -44,7 +44,7 @@ if platform_family?('windows')
       action :install
       # Note that the :immediately is to immediately notify the other resource,
       # not to immediately reboot. The windows_reboot 'notifies' does that.
-      notifies :request, 'windows_reboot[powershell]', :immediately if reboot_pending? && node['powershell']['installation_reboot_mode'] != 'no_reboot'
+      notifies :reboot_now, 'reboot[powershell]', :immediately if reboot_pending? && node['powershell']['installation_reboot_mode'] != 'no_reboot'
       not_if { ::Powershell::VersionHelper.powershell_version?('3.0') }
     end
   else
