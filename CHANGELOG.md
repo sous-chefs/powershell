@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the powershell cookbook.
 
+## 5.1.0 (2016-09-02)
+
+- Remove the `windows_reboot` resource which has been removed from the Windows cookbook.
+
 ## 5.0.0 (2016-09-02)
 
 - Require Chef 12.1 or later
