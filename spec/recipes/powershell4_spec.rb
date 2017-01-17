@@ -5,7 +5,7 @@ describe 'powershell::powershell4' do
     # There is no fauxhai info for windows 7, so we use windows 2008R2 and change the product type from server to workstation
     'Windows 7' => { fauxhai_version: '2008R2', product_type: 1 },
     'Windows Server 2008R2' => { fauxhai_version: '2008R2' },
-    'Windows Server 2012' => { fauxhai_version: '2012' }
+    'Windows Server 2012' => { fauxhai_version: '2012' },
   }.each do |windows_version, test_conf|
     context "on #{windows_version}" do
       let(:normal_attributes) { ::Chef::Node::VividMash.new(double('fake_node').as_null_object) }

@@ -4,7 +4,7 @@ describe 'powershell::powershell3' do
   {
     'Windows Server 2008R2' => { fauxhai_version: '2008R2', should_install_bits: false },
     # There is no fauxhai info for windows 7, so we use 2008R2 and change the product type from server to workstation
-    'Windows 7' => { fauxhai_version: '2008R2', product_type: 1, should_install_bits: false }
+    'Windows 7' => { fauxhai_version: '2008R2', product_type: 1, should_install_bits: false },
   }.each do |windows_version, test_conf|
     context "on #{windows_version}" do
       before { allow_any_instance_of(Chef::Resource).to receive(:reboot_pending?).and_return(false) }

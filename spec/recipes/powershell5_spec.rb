@@ -6,7 +6,7 @@ describe 'powershell::powershell5' do
     'Windows 8.1' => { fauxhai_version: '2012R2', product_type: 1, timeout: 600 },
     'Windows Server 2008R2' => { fauxhai_version: '2008R2', timeout: 2700 },
     'Windows Server 2012' => { fauxhai_version: '2012', timeout: 2700 },
-    'Windows Server 2012R2' => { fauxhai_version: '2012R2', timeout: 600 }
+    'Windows Server 2012R2' => { fauxhai_version: '2012R2', timeout: 600 },
   }.each do |windows_version, test_conf|
     context "on #{windows_version}" do
       before do
