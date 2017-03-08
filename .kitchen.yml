@@ -40,7 +40,7 @@ suites:
       - windows-7
   - name: powershell4
     run_list:
-      - recipe[powershell::powershell5]
+      - recipe[powershell::powershell4]
     includes:
       - windows-2008r2
       - windows-7
