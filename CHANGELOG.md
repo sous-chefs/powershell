@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of the powershell cookbook.
 
+## 5.2.0 (2017-03-08)
+
+- Test with Local Delivery instead of Rake
+- Add integration testing in Appveyer on a Windows 2012R2 node and remove the Travis testing
+- Require chef-client 12.6 or later since we're using windows_package
+
 ## 5.1.0 (2016-09-02)
 
 - Remove the `windows_reboot` resource which has been removed from the Windows cookbook.
