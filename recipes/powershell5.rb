@@ -35,7 +35,7 @@ if platform_family?('windows')
       options '/quiet /norestart'
       timeout node['powershell']['powershell5']['timeout']
       action :install
-      success_codes [0, 42, 127, 3010, 2_359_302]
+      returns [0, 42, 127, 3010, 2_359_302]
       # Note that the :immediately is to immediately notify the other resource,
       # not to immediately reboot. The windows_reboot 'notifies' does that.
       notifies :reboot_now, 'reboot[powershell]', :immediately if node['powershell']['installation_reboot_mode'] != 'no_reboot'
