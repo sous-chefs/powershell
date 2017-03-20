@@ -1,7 +1,7 @@
 name 'powershell'
 maintainer 'Chef Software, Inc.'
 maintainer_email 'cookbooks@chef.io'
-license 'Apache 2.0'
+license 'Apache-2.0'
 description 'Installs/Configures PowerShell on the Windows platform'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version '5.2.0'
@@ -17,7 +17,7 @@ recipe 'powershell::enable_lcm', 'Enable the DSC Local Configuration Manager'
 recipe 'powershell::disable_lcm', 'Disable the DSC Local Configuration Manager'
 
 supports 'windows'
-depends 'windows', '>= 1.44'
+depends 'windows', '>= 3.0'
 depends 'ms_dotnet', '>= 2.6'
 depends 'chef_handler'
 
