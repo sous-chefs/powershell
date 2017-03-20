@@ -22,7 +22,7 @@ Windows Server 2012R2 / Windows 8.1 | Included       | Not Available  | Included
 
 ### Cookbooks
 
-- windows
+- windows 3.0+
 
 PowerShell also requires the appropriate version of the Microsoft .NET Framework to be installed, if the operating system does not ship with that version. The following community cookbooks are used to install the correct version of the .NET Framework:
 
