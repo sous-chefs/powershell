@@ -23,12 +23,38 @@
 
 if platform_family?('windows')
 
-  if ::Windows::VersionHelper.nt_version(node) >= 6.1
-    include_recipe 'powershell::powershell2'
+  include_recipe 'ms_dotnet::ms_dotnet4'
+
+  if ::Windows::VersionHelper.nt_version(node) == 6.1
+
+    # For some reason, MSFT decided to ship the Win7/2008R2 version as a zip
+    # with a helper script for installing it, which we don't need
+    # thanks to the magic of the preceeding resources.
+
+    windows_zipfile "#{Chef::Config['file_cache_path']}\\wmf51" do
+      source node['powershell']['powershell5']['url']
+      checksum node['powershell']['powershell5']['checksum']
+      action :unzip
+    end
+
+    windows_package 'Windows Management Framework Core 5.1' do # ~FC009
+      source "#{Chef::Config['file_cache_path']}\\wmf51\\Win7AndW2K8R2-KB3191566-x64.msu"
+      installer_type :custom
+      options '/quiet /norestart'
+      timeout node['powershell']['powershell5']['timeout']
+      action :install
+      returns [0, 42, 127, 3010, 2_359_302]
+      # Note that the :immediately is to immediately notify the other resource,
+      # not to immediately reboot. The windows_reboot 'notifies' does that.
+      notifies :reboot_now, 'reboot[powershell]', :immediately if node['powershell']['installation_reboot_mode'] != 'no_reboot'
+      not_if { ::Powershell::VersionHelper.powershell_version?(node['powershell']['powershell5']['version']) }
+    end
+
+  elsif ::Windows::VersionHelper.nt_version(node) > 6.1
 
     include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
 
-    windows_package 'Windows Management Framework Core 5.0' do # ~FC009
+    windows_package 'Windows Management Framework Core 5.1' do # ~FC009
       source node['powershell']['powershell5']['url']
       checksum node['powershell']['powershell5']['checksum']
       installer_type :custom
@@ -43,7 +69,7 @@ if platform_family?('windows')
     end
 
   else
-    Chef::Log.warn("PowerShell 5.0 is not supported or already installed on this version of Windows: #{node['platform_version']}")
+    Chef::Log.warn("PowerShell 5.0 is not supported on this version of Windows: #{node['platform_version']}")
   end
 
 else

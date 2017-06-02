@@ -18,8 +18,7 @@ recipe 'powershell::disable_lcm', 'Disable the DSC Local Configuration Manager'
 
 supports 'windows'
 depends 'windows', '>= 3.0'
-depends 'ms_dotnet', '>= 2.6'
-depends 'chef_handler'
+depends 'ms_dotnet', '>= 3.2.1'
 
 source_url 'https://github.com/chef-cookbooks/powershell'
 issues_url 'https://github.com/chef-cookbooks/powershell/issues'
