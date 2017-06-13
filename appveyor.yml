@@ -15,7 +15,7 @@ clone_depth: 1
 
 # Install the latest nightly of ChefDK
 install:
-  - ps: iex (irm https://omnitruck.chef.io/install.ps1); Install-Project -Project chefdk -channel current
+  - ps: iex (irm https://omnitruck.chef.io/install.ps1); Install-Project -Project chefdk
   - ps: 'Get-CimInstance win32_operatingsystem -Property Caption, OSArchitecture, Version | fl Caption, OSArchitecture, Version'
   - ps: $PSVersionTable
   - c:\opscode\chefdk\bin\chef.bat exec ruby --version
@@ -25,6 +25,8 @@ install:
   - ps: secedit /configure /db $env:windir/security/new.sdb /cfg $env:temp/export.cfg /areas SECURITYPOLICY
   - ps: net user /add $env:machine_user $env:machine_pass
   - ps: net localgroup administrators $env:machine_user /add
+  - ps: set-service wuauserv -startuptype manual
+  - ps: start-service wuauserv
 
 build_script:
   - ps: c:\opscode\chefdk\bin\chef.bat shell-init powershell | iex; cmd /c c:\opscode\chefdk\bin\chef.bat --version

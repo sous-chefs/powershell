@@ -19,35 +19,40 @@
 #
 
 if node['platform_family'] == 'windows'
-  default['powershell']['powershell5']['version'] = '5.0.10586.117'
+  default['powershell']['powershell5']['version'] = '5.1'
+
+  # Make sure .NET 4.5 (minimum) is available.
+  default['ms_dotnet']['v4']['version'] = '4.5'
 
   case node['platform_version'].split('.')[0..1].join('.')
   when '6.1'
     case node['kernel']['machine']
     when 'i386'
-      default['powershell']['powershell5']['url'] = 'https://download.microsoft.com/download/2/C/6/2C6E1B4A-EBE5-48A6-B225-2D2058A9CEFB/Win7-KB3134760-x86.msu'
-      default['powershell']['powershell5']['checksum'] = '0486901b4fd9c41a70644e3a427fe06dd23765f1ad8b45c14be3321203695464'
+      default['powershell']['powershell5']['url'] = 'https://download.microsoft.com/download/6/F/5/6F5FF66C-6775-42B0-86C4-47D41F2DA187/Win7-KB3191566-x86.zip'
+      default['powershell']['powershell5']['checksum'] = 'eb7e2c4ce2c6cb24206474a6cb8610d9f4bd3a9301f1cd8963b4ff64e529f563'
     when 'x86_64'
-      default['powershell']['powershell5']['url'] = 'https://download.microsoft.com/download/2/C/6/2C6E1B4A-EBE5-48A6-B225-2D2058A9CEFB/Win7AndW2K8R2-KB3134760-x64.msu'
-      default['powershell']['powershell5']['checksum'] = '077e864cc83739ac53750c97a506e1211f637c3cd6da320c53bb01ed1ef7a98b'
+      default['powershell']['powershell5']['url'] = 'https://download.microsoft.com/download/6/F/5/6F5FF66C-6775-42B0-86C4-47D41F2DA187/Win7AndW2K8R2-KB3191566-x64.zip'
+      default['powershell']['powershell5']['checksum'] = 'f383c34aa65332662a17d95409a2ddedadceda74427e35d05024cd0a6a2fa647'
     end
     default['powershell']['powershell5']['timeout'] = 2700
   when '6.2'
     case node['kernel']['machine']
     when 'x86_64'
-      default['powershell']['powershell5']['url'] = 'https://download.microsoft.com/download/2/C/6/2C6E1B4A-EBE5-48A6-B225-2D2058A9CEFB/W2K12-KB3134759-x64.msu'
-      default['powershell']['powershell5']['checksum'] = '6e59cec4bd30c505f426a319673a13c4a9aa8d8ff69fd0582bfa89f522f5ff00'
+      default['powershell']['powershell5']['url'] = 'https://download.microsoft.com/download/6/F/5/6F5FF66C-6775-42B0-86C4-47D41F2DA187/W2K12-KB3191565-x64.msu'
+      default['powershell']['powershell5']['checksum'] = '4a1385642c1f08e3be7bc70f4a9d74954e239317f50d1a7f60aa444d759d4f49'
     end
     default['powershell']['powershell5']['timeout'] = 2700
   when '6.3'
     case node['kernel']['machine']
     when 'i386'
-      default['powershell']['powershell5']['url'] = 'https://download.microsoft.com/download/2/C/6/2C6E1B4A-EBE5-48A6-B225-2D2058A9CEFB/Win8.1-KB3134758-x86.msu'
-      default['powershell']['powershell5']['checksum'] = 'f9ee4bf2d826827bc56cd58fabd0529cb4b49082b2740f212851cc0cc4acba06'
+      default['powershell']['powershell5']['url'] = 'https://download.microsoft.com/download/6/F/5/6F5FF66C-6775-42B0-86C4-47D41F2DA187/Win8.1-KB3191564-x86.msu'
+      default['powershell']['powershell5']['checksum'] = 'f3430a90be556a77a30bab3ac36dc9b92a43055d5fcc5869da3bfda116dbd817'
     when 'x86_64'
-      default['powershell']['powershell5']['url'] = 'https://download.microsoft.com/download/2/C/6/2C6E1B4A-EBE5-48A6-B225-2D2058A9CEFB/Win8.1AndW2K12R2-KB3134758-x64.msu'
-      default['powershell']['powershell5']['checksum'] = 'bb6af4547545b5d10d8ef239f47d59de76daff06f05d0ed08c73eff30b213bf2'
+      default['powershell']['powershell5']['url'] = 'https://download.microsoft.com/download/6/F/5/6F5FF66C-6775-42B0-86C4-47D41F2DA187/Win8.1AndW2K12R2-KB3191564-x64.msu'
+      default['powershell']['powershell5']['checksum'] = 'a8d788fa31b02a999cc676fb546fc782e86c2a0acd837976122a1891ceee42c0'
     end
+    default['powershell']['powershell5']['timeout'] = 600
+  else
     default['powershell']['powershell5']['timeout'] = 600
   end
 end
