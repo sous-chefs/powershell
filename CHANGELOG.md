@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the powershell cookbook.
 
+## 6.1.0 (2017-06-13)
+
+- Replaces PowerShell 5 installs with PowerShell 5.1
+
 ## 6.0.0 (2017-03-20)
 
 - Add `returns` property to windows_package resource to ensure compatibility with chef's built-in windows_package resource
