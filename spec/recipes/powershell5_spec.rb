@@ -14,7 +14,7 @@ describe 'powershell::powershell5' do
       end
 
       let(:chef_run) do
-        ChefSpec::SoloRunner.new(platform: 'windows', version: test_conf[:fauxhai_version], file_cache_path: 'c:\Chef' ) do |node|
+        ChefSpec::SoloRunner.new(platform: 'windows', version: test_conf[:fauxhai_version], file_cache_path: 'c:\Chef') do |node|
           node.automatic['kernel']['os_info']['product_type'] = test_conf[:product_type] if test_conf[:product_type]
           node.normal['powershell']['powershell5']['url'] = 'https://powershelltest.com'
           node.normal['powershell']['powershell5']['checksum'] = '12345'
