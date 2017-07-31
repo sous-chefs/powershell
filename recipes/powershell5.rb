@@ -24,6 +24,7 @@
 if platform_family?('windows')
 
   include_recipe 'ms_dotnet::ms_dotnet4'
+  include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
 
   if ::Windows::VersionHelper.nt_version(node) == 6.1
 
@@ -51,8 +52,6 @@ if platform_family?('windows')
     end
 
   elsif ::Windows::VersionHelper.nt_version(node) > 6.1
-
-    include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
 
     windows_package 'Windows Management Framework Core 5.1' do # ~FC009
       source node['powershell']['powershell5']['url']
