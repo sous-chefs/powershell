@@ -11,6 +11,7 @@ describe 'powershell::powershell5' do
     context "on #{windows_version}" do
       before do
         allow_any_instance_of(Chef::Resource).to receive(:reboot_pending?).and_return(false)
+        @enable_reboot = false
       end
 
       let(:chef_run) do
@@ -18,6 +19,7 @@ describe 'powershell::powershell5' do
           node.automatic['kernel']['os_info']['product_type'] = test_conf[:product_type] if test_conf[:product_type]
           node.normal['powershell']['powershell5']['url'] = 'https://powershelltest.com'
           node.normal['powershell']['powershell5']['checksum'] = '12345'
+          node.normal['powershell']['installation_reboot_mode'] = 'yes' if @enable_reboot
         end.converge(described_recipe)
       end
 
@@ -26,6 +28,14 @@ describe 'powershell::powershell5' do
         expect(chef_run).to include_recipe('ms_dotnet::ms_dotnet4')
       end
 
+      it 'does not includes powershell windows_reboot recipe by default' do
+        expect(chef_run).to_not include_recipe('powershell::windows_reboot')
+      end
+      it 'includes powershell windows_reboot recipe when reboot enabled' do
+        @enable_reboot = true
+        expect(chef_run).to include_recipe('powershell::windows_reboot')
+      end
+      
       context 'when powershell is installed' do
         before do
           allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return true
