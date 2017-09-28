@@ -108,7 +108,6 @@ class PowershellModuleProvider < Chef::Provider::LWRPBase
     begin
       require 'zip'
     rescue LoadError
-
       Chef::Log.debug('Did not find rubyzip gem installed. Installing now')
 
       chef_gem 'rubyzip' do
