@@ -35,7 +35,7 @@ describe 'powershell::powershell5' do
         @enable_reboot = true
         expect(chef_run).to include_recipe('powershell::windows_reboot')
       end
-      
+
       context 'when powershell is installed' do
         before do
           allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return true
