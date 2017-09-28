@@ -2,6 +2,11 @@
 
 This file is used to list changes made in each version of the powershell cookbook.
 
+## 6.1.1 (2017-09-28)
+
+- Fixed reboot not found in 2008R2 bug
+- Fix specs that weren't running
+
 ## 6.1.0 (2017-06-13)
 
 - Replaces PowerShell 5 installs with PowerShell 5.1
