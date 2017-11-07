@@ -36,6 +36,7 @@ if platform_family?('windows')
       source node['powershell']['powershell5']['url']
       checksum node['powershell']['powershell5']['checksum']
       action :unzip
+      not_if { ::Powershell::VersionHelper.powershell_version?(node['powershell']['powershell5']['version']) }
     end
 
     windows_package 'Windows Management Framework Core 5.1' do # ~FC009

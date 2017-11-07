@@ -41,6 +41,9 @@ describe 'powershell::powershell5' do
           allow(::Powershell::VersionHelper).to receive(:powershell_version?).and_return true
         end
 
+        it 'does not unzip WMF 5.1' do
+          expect(chef_run).to_not unzip_windows_zipfile("#{Chef::Config['file_cache_path']}\\wmf51")
+        end
         it 'does not install WMF 5.1' do
           expect(chef_run).to_not install_windows_package('Windows Management Framework Core 5.1')
         end
