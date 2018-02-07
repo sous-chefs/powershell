@@ -31,24 +31,21 @@ class PowershellModuleProvider < Chef::Provider::LWRPBase
     true
   end
 
-  def initialize(powershell_module, run_context)
-    super(powershell_module, run_context)
-    @powershell_module = powershell_module
-  end
+  provides :powershell_module
 
   action :install do
-    raise ArgumentError, "Required attribute 'package_name' for module installation" unless @new_resource.package_name
-    raise ArgumentError, "Required attribute 'destination' or 'source' for module installation" unless @new_resource.destination || @new_resource.source
+    raise ArgumentError, "Required attribute 'package_name' for module installation" unless new_resource.package_name
+    raise ArgumentError, "Required attribute 'destination' or 'source' for module installation" unless new_resource.destination || @new_resource.source
 
-    converge_by("Powershell Module '#{@powershell_module.package_name}'") do
+    converge_by("Powershell Module '#{new_resource.package_name}'") do
       install_module
-      Chef::Log.info("Powershell Module '#{@powershell_module.package_name}' installation completed successfully")
+      Chef::Log.info("Powershell Module '#{new_resource.package_name}' installation completed successfully")
     end
   end
 
   action :uninstall do
     raise ArgumentError, "Required attribute 'package_name' for module uninstallation" unless @new_resource.package_name
-    converge_by("Powershell Module '#{@powershell_module.package_name}'") do
+    converge_by("Powershell Module '#{new_resource.package_name}'") do
       uninstall_module
     end
   end
@@ -79,7 +76,7 @@ class PowershellModuleProvider < Chef::Provider::LWRPBase
     module_dir = module_path_name
     if Dir.exist?(module_dir)
       FileUtils.rm_rf(module_dir)
-      Chef::Log.info("Powershell Module '#{@powershell_module.package_name}' uninstallation completed successfully")
+      Chef::Log.info("Powershell Module '#{new_resource.package_name}' uninstallation completed successfully")
     else
       Chef::Log.info("Unable to locate module '#{@new_resource.package_name}'")
     end
@@ -150,7 +147,7 @@ class PowershellModuleProvider < Chef::Provider::LWRPBase
   end
 
   def remove_download(target)
-    Chef::Log.debug("Powershell Module '#{@powershell_module.package_name}' removing download #{target}")
+    Chef::Log.debug("Powershell Module '#{new_resource.package_name}' removing download #{target}")
     FileUtils.rm_f(target) if ::File.exist?(target)
   end
 
