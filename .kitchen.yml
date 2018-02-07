@@ -13,43 +13,22 @@ provisioner:
   deprecations_as_errors: true
 
 platforms:
-  - name: windows-7
+  - name: windows-10
     driver_config:
-      box: chef/windows-7-professional
-  - name: windows-8.1
-    driver_config:
-      box: chef/windows-8.1-professional
-  - name: windows-2008r2
-    driver_config:
-      box: chef/windows-server-2008r2-standard
+      box: chef/windows-10-enterprise
   - name: windows-2012r2
     driver_config:
       box: chef/windows-server-2012r2-standard
+  - name: windows-2016
+    driver_config:
+      box: chef/windows-server-2016-standard
 
 suites:
-  - name: powershell2
-    run_list:
-      - recipe[powershell::powershell2]
-    includes:
-      - windows-2008r2
-      - windows-7
-  - name: powershell3
-    run_list:
-      - recipe[powershell::powershell3]
-    includes:
-      - windows-2008r2
-      - windows-7
-  - name: powershell4
-    run_list:
-      - recipe[powershell::powershell4]
-    includes:
-      - windows-2008r2
-      - windows-7
   - name: powershell5
     run_list:
       - recipe[powershell::powershell5]
     includes:
-      - windows-8.1
+      - windows-10
       - windows-2012r2
   - name: custom_resource
     run_list:
