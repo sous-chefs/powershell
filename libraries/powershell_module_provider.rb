@@ -102,18 +102,7 @@ class PowershellModuleProvider < Chef::Provider::LWRPBase
   end
 
   def unzip(zip_file, target_directory)
-    begin
-      require 'zip'
-    rescue LoadError
-      Chef::Log.debug('Did not find rubyzip gem installed. Installing now')
-
-      chef_gem 'rubyzip' do
-        compile_time true
-        action :install
-      end
-
-      require 'zip'
-    end
+    require 'zip'
 
     Zip::File.open(zip_file) do |zip|
       zip.each do |entry|
