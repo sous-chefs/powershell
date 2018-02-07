@@ -26,8 +26,8 @@ class PowershellModule < Chef::Resource::Package
   allowed_actions :install, :uninstall
   default_action :install
 
-  property :destination, String, default: "#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/"
   property :source, String, name_property: true
+  property :destination, String, default: "#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/", desired_state: false
 
   action :install do
     raise ArgumentError, "Required property 'package_name' for module installation" unless new_resource.package_name
