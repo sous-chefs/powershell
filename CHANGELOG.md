@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the powershell cookbook.
 
+## 6.1.2 (2018-02-07)
+
+- Added guard to not unzip WMF if already installed
+
 ## 6.1.1 (2017-09-28)
 
 - Fixed reboot not found in 2008R2 bug
