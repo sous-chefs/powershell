@@ -31,8 +31,8 @@ class PowershellModule < Chef::Resource::Package
   property :enabled, [TrueClass, FalseClass]
 
   action :install do
-    raise ArgumentError, "Required attribute 'package_name' for module installation" unless new_resource.package_name
-    raise ArgumentError, "Required attribute 'destination' or 'source' for module installation" unless new_resource.destination || new_resource.source
+    raise ArgumentError, "Required property 'package_name' for module installation" unless new_resource.package_name
+    raise ArgumentError, "Required property 'destination' or 'source' for module installation" unless new_resource.destination || new_resource.source
 
     converge_by("Powershell Module '#{new_resource.package_name}'") do
       install_module
@@ -41,7 +41,7 @@ class PowershellModule < Chef::Resource::Package
   end
 
   action :uninstall do
-    raise ArgumentError, "Required attribute 'package_name' for module uninstallation" unless new_resource.package_name
+    raise ArgumentError, "Required property 'package_name' for module uninstallation" unless new_resource.package_name
     converge_by("Powershell Module '#{new_resource.package_name}'") do
       uninstall_module
     end
