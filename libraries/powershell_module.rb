@@ -28,28 +28,26 @@ class PowershellModule < Chef::Resource::Package
 
   property :destination, String, default: "#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/"
   property :source, String, name_property: true
-  property :enabled, [TrueClass, FalseClass]
 
   action :install do
     raise ArgumentError, "Required property 'package_name' for module installation" unless new_resource.package_name
     raise ArgumentError, "Required property 'destination' or 'source' for module installation" unless new_resource.destination || new_resource.source
 
-    converge_by("Powershell Module '#{new_resource.package_name}'") do
-      install_module
-      Chef::Log.info("Powershell Module '#{new_resource.package_name}' installation completed successfully")
+    unless Dir.exist?(module_path_name)
+      converge_by("install powershell module '#{new_resource.package_name}'") do
+        install_module
+        Chef::Log.info("Powershell Module '#{new_resource.package_name}' installation completed successfully")
+      end
     end
   end
 
   action :uninstall do
     raise ArgumentError, "Required property 'package_name' for module uninstallation" unless new_resource.package_name
-    converge_by("Powershell Module '#{new_resource.package_name}'") do
-      uninstall_module
+    if Dir.exist?(module_path_name)
+      converge_by("uninstall powershell module '#{new_resource.package_name}'") do
+        uninstall_module
+      end
     end
-  end
-
-  def load_current_resource
-    @current_resource = PowershellModule.new(new_resource.name)
-    Dir.exist?(module_path_name) ? @current_resource.enabled(true) : @current_resource.enabled(false)
   end
 
   action_class do
