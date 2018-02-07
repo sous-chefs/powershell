@@ -1,7 +1,7 @@
 #
 # Author:: Siddheshwar More (<siddheshwar.more@clogeny.com>)
 #
-# Copyright:: 2014-2017, Chef Software, Inc
+# Copyright:: 2014-2018, Chef Software, Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,33 +20,13 @@ require 'chef'
 require_relative 'powershell_module_provider'
 
 class PowershellModule < Chef::Resource::Package
-  state_attrs :enabled
+  resource_name :powershell_module
+  provides :powershell_module
 
-  provides :powershell_module, platform: ['windows']
+  allowed_actions :install, :uninstall
+  default_action :install
 
-  def initialize(name, run_context = nil)
-    super
-    @resource_name = :powershell_module
-    @allowed_actions.push(:install)
-    @allowed_actions.push(:uninstall)
-    @action = :install
-    provider(PowershellModuleProvider)
-
-    # resource default attributes
-    @destination = "#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/"
-    @source = name
-    @enabled = nil
-  end
-
-  def destination(arg = nil)
-    set_or_return(:destination, arg, kind_of: String)
-  end
-
-  def enabled(arg = nil)
-    set_or_return(
-      :enabled,
-      arg,
-      kind_of: [TrueClass, FalseClass]
-    )
-  end
+  property :destination, String, default: "#{ENV['PROGRAMW6432']}/WindowsPowerShell/Modules/"
+  property :source, String, name_property: true
+  property :enabled, [TrueClass, FalseClass]
 end
