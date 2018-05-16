@@ -61,7 +61,7 @@ class PowershellModule < Chef::Resource::Package
         module_dir.each do |filename|
           FileUtils.cp(filename, ps_module_path)
         end
-      elsif new_resource.source =~ URI.regexp # Check for valid URL
+      elsif new_resource.source =~ URI::DEFAULT_PARSER.make_regexp # Check for valid URL
         download_extract_module
       end
     end
