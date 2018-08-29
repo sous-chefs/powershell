@@ -40,7 +40,7 @@ if platform_family?('windows')
     end
 
     windows_package 'Windows Management Framework Core 5.1' do # ~FC009
-      source "#{Chef::Config['file_cache_path']}\\wmf51\\Win7AndW2K8R2-KB3191566-x64.msu"
+      source "#{Chef::Config['file_cache_path']}\\wmf51\\#{node['powershell']['powershell5']['package']}"
       installer_type :custom
       options '/quiet /norestart'
       timeout node['powershell']['powershell5']['timeout']
