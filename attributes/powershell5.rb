@@ -30,9 +30,11 @@ if node['platform_family'] == 'windows'
     when 'i386'
       default['powershell']['powershell5']['url'] = 'https://download.microsoft.com/download/6/F/5/6F5FF66C-6775-42B0-86C4-47D41F2DA187/Win7-KB3191566-x86.zip'
       default['powershell']['powershell5']['checksum'] = 'eb7e2c4ce2c6cb24206474a6cb8610d9f4bd3a9301f1cd8963b4ff64e529f563'
+      default['powershell']['powershell5']['package'] = 'Win7-KB3191566-x86.msu'
     when 'x86_64'
       default['powershell']['powershell5']['url'] = 'https://download.microsoft.com/download/6/F/5/6F5FF66C-6775-42B0-86C4-47D41F2DA187/Win7AndW2K8R2-KB3191566-x64.zip'
       default['powershell']['powershell5']['checksum'] = 'f383c34aa65332662a17d95409a2ddedadceda74427e35d05024cd0a6a2fa647'
+      default['powershell']['powershell5']['package'] = 'Win7AndW2K8R2-KB3191566-x64.msu'
     end
     default['powershell']['powershell5']['timeout'] = 2700
   when '6.2'
