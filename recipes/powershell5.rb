@@ -18,8 +18,8 @@
 # limitations under the License.
 #
 
-# PowerShell 5.0 RTM Download Page
-# https://www.microsoft.com/en-us/download/details.aspx?id=50395
+# PowerShell 5.1 RTM Download Page
+# https://www.microsoft.com/en-us/download/details.aspx?id=54616
 
 if platform_family?('windows')
 
@@ -69,9 +69,9 @@ if platform_family?('windows')
     end
 
   else
-    Chef::Log.warn("PowerShell 5.0 is not supported on this version of Windows: #{node['platform_version']}")
+    Chef::Log.warn("PowerShell 5.1 is not supported on this version of Windows: #{node['platform_version']}")
   end
 
 else
-  Chef::Log.warn('PowerShell 5.0 can only be installed on the Windows platform.')
+  Chef::Log.warn('PowerShell 5.1 can only be installed on the Windows platform.')
 end
