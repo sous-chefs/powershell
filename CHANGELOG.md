@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of the powershell cookbook.
 
+## 6.1.3 (2018-09-20)
+
+- Fix installation on Windows 7 x32
+- Remove the non-functional powershell_module resource
+- Change version to 5.1 in comments in powershell5 recipe
+
 ## 6.1.2 (2018-02-07)
 
 - Added guard to not unzip WMF if already installed
