@@ -1,4 +1,3 @@
-
 ## temporary directory related attributes ##
 default['lcm']['mof']['temp_dir'] = "#{Chef::Config[:file_cache_path]}\\lcm_mof"
 
