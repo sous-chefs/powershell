@@ -39,13 +39,9 @@ if platform_family?('windows')
       not_if { ::Powershell::VersionHelper.powershell_version?(node['powershell']['powershell5']['version']) }
     end
 
-    windows_package 'Windows Management Framework Core 5.1' do # ~FC009
+    msu_package 'Windows Management Framework Core 5.1' do # ~FC009
       source "#{Chef::Config['file_cache_path']}\\wmf51\\#{node['powershell']['powershell5']['package']}"
-      installer_type :custom
-      options '/quiet /norestart'
-      timeout node['powershell']['powershell5']['timeout']
       action :install
-      returns [0, 42, 127, 3010, 2_359_302]
       # Note that the :immediately is to immediately notify the other resource,
       # not to immediately reboot. The windows_reboot 'notifies' does that.
       notifies :reboot_now, 'reboot[powershell]', :immediately if node['powershell']['installation_reboot_mode'] != 'no_reboot'
@@ -54,14 +50,10 @@ if platform_family?('windows')
 
   elsif ::Windows::VersionHelper.nt_version(node) > 6.1
 
-    windows_package 'Windows Management Framework Core 5.1' do # ~FC009
+    msu_package 'Windows Management Framework Core 5.1' do # ~FC009
       source node['powershell']['powershell5']['url']
       checksum node['powershell']['powershell5']['checksum']
-      installer_type :custom
-      options '/quiet /norestart'
-      timeout node['powershell']['powershell5']['timeout']
       action :install
-      returns [0, 42, 127, 3010, 2_359_302]
       # Note that the :immediately is to immediately notify the other resource,
       # not to immediately reboot. The windows_reboot 'notifies' does that.
       notifies :reboot_now, 'reboot[powershell]', :immediately if node['powershell']['installation_reboot_mode'] != 'no_reboot'
