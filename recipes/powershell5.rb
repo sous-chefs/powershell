@@ -42,6 +42,7 @@ if platform_family?('windows')
     msu_package 'Windows Management Framework Core 5.1' do # ~FC009
       source "#{Chef::Config['file_cache_path']}\\wmf51\\#{node['powershell']['powershell5']['package']}"
       action :install
+      ignore_failure true
       # Note that the :immediately is to immediately notify the other resource,
       # not to immediately reboot. The windows_reboot 'notifies' does that.
       notifies :reboot_now, 'reboot[powershell]', :immediately if node['powershell']['installation_reboot_mode'] != 'no_reboot'
@@ -54,6 +55,7 @@ if platform_family?('windows')
       source node['powershell']['powershell5']['url']
       checksum node['powershell']['powershell5']['checksum']
       action :install
+      ignore_failure true
       # Note that the :immediately is to immediately notify the other resource,
       # not to immediately reboot. The windows_reboot 'notifies' does that.
       notifies :reboot_now, 'reboot[powershell]', :immediately if node['powershell']['installation_reboot_mode'] != 'no_reboot'
