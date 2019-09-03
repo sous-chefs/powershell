@@ -11,4 +11,4 @@ depends 'ms_dotnet', '>= 3.2.1'
 
 source_url 'https://github.com/chef-cookbooks/powershell'
 issues_url 'https://github.com/chef-cookbooks/powershell/issues'
-chef_version '>= 12.6'
+chef_version '>= 13.0'

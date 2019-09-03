@@ -18,7 +18,7 @@ Windows Server 2012R2 / Windows 8.1 | Included       | Not Available  | Included
 
 ### Chef
 
-- Chef 12.6+
+- Chef 13+
 
 ### Cookbooks
 
