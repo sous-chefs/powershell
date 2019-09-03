@@ -14,13 +14,13 @@ provisioner:
 
 platforms:
   - name: windows-10
-    driver_config:
+    driver:
       box: chef/windows-10-enterprise
   - name: windows-2012r2
-    driver_config:
+    driver:
       box: tas50/windows_2012r2
   - name: windows-2016
-    driver_config:
+    driver:
       box: tas50/windows_2016
 
 suites:
