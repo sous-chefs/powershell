@@ -23,7 +23,7 @@
 
 if platform_family?('windows')
 
-  nt_version = ::Windows::VersionHelper.nt_version(node)
+  nt_version = node['platform_version'].to_f
 
   include_recipe 'ms_dotnet::ms_dotnet2'
 

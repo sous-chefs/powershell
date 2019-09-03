@@ -23,7 +23,7 @@
 
 if platform_family?('windows')
 
-  nt_version = ::Windows::VersionHelper.nt_version(node)
+  nt_version = node['platform_version'].to_f
   # WMF 4.0 is only compatible with:
   # * Windows NT 6.1 (Windows Server 2008R2 & Windows 7.1)
   # * Windows NT 6.2 Server (Windows Server 2012 not Windows 8)
