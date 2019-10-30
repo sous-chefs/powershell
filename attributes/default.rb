@@ -3,7 +3,7 @@
 # Cookbook:: powershell
 # Attribute:: default
 #
-# Copyright:: 2014-2018, Chef Software, Inc.
+# Copyright:: 2014-2019, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-if node['platform_family'] == 'windows'
+if platform_family?('windows')
   # INSTALLATION_REBOOT_MODE = "no_reboot". It skips reboot required after powershell installation.
   # INSTALLATION_REBOOT_MODE = "immediate_reboot". Used for immediate node reboot after powershell installation.
   # INSTALLATION_REBOOT_MODE = "delayed_reboot". Used for node reboot after chef-client run.

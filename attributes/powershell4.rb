@@ -3,7 +3,7 @@
 # Cookbook:: powershell
 # Attribute:: powershell4
 #
-# Copyright:: 2014-2018, Chef Software, Inc.
+# Copyright:: 2014-2019, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-if node['platform_family'] == 'windows'
+if platform_family?('windows')
   case node['platform_version'].split('.')[0..1].join('.')
   when '6.1'
     case node['kernel']['machine']

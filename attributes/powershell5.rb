@@ -3,7 +3,7 @@
 # Cookbook:: powershell
 # Attribute:: powershell5
 #
-# Copyright:: 2014-2018, Chef Software, Inc.
+# Copyright:: 2014-2019, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-if node['platform_family'] == 'windows'
+if platform?('windows')
   default['powershell']['powershell5']['version'] = '5.1'
 
   # Make sure .NET 4.5 (minimum) is available.
