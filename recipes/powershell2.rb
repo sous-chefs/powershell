@@ -27,7 +27,7 @@ if platform_family?('windows')
 
   include_recipe 'ms_dotnet::ms_dotnet2'
 
-  if nt_version.between?(6.1, 6.2) && ::Windows::VersionHelper.core_version?(node)
+  if nt_version.between?(6.1, 6.2)
     feature_suffix = 'V2' if nt_version == 6.2
 
     windows_feature "MicrosoftWindowsPowerShell#{feature_suffix}" do
