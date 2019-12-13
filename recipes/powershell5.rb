@@ -39,7 +39,7 @@ if platform_family?('windows')
       not_if { ::Powershell::VersionHelper.powershell_version?(node['powershell']['powershell5']['version']) }
     end
 
-    msu_package 'Windows Management Framework Core 5.1' do # ~FC009
+    msu_package 'Windows Management Framework Core 5.1' do
       source "#{Chef::Config['file_cache_path']}\\wmf51\\#{node['powershell']['powershell5']['package']}"
       action :install
       ignore_failure true
@@ -51,7 +51,7 @@ if platform_family?('windows')
 
   elsif node['platform_version'].to_f > 6.1
 
-    msu_package 'Windows Management Framework Core 5.1' do # ~FC009
+    msu_package 'Windows Management Framework Core 5.1' do
       source node['powershell']['powershell5']['url']
       checksum node['powershell']['powershell5']['checksum']
       action :install
