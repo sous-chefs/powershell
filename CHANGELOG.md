@@ -2,6 +2,19 @@
 
 This file is used to list changes made in each version of the powershell cookbook.
 
+## Unreleased
+
+- resolved cookstyle error: recipes/powershell3.rb:48:16 warning: `ChefDeprecations/PowershellCookbookHelpers`
+- resolved cookstyle error: recipes/powershell4.rb:49:16 warning: `ChefDeprecations/PowershellCookbookHelpers`
+- resolved cookstyle error: recipes/powershell5.rb:39:16 warning: `ChefDeprecations/PowershellCookbookHelpers`
+- resolved cookstyle error: recipes/powershell5.rb:49:16 warning: `ChefDeprecations/PowershellCookbookHelpers`
+- resolved cookstyle error: recipes/powershell5.rb:62:16 warning: `ChefDeprecations/PowershellCookbookHelpers`
+- resolved cookstyle error: spec/libraries/powershell_version_spec.rb:11:12 warning: `ChefDeprecations/PowershellCookbookHelpers`
+- resolved cookstyle error: spec/libraries/powershell_version_spec.rb:14:12 warning: `ChefDeprecations/PowershellCookbookHelpers`
+- resolved cookstyle error: spec/libraries/powershell_version_spec.rb:17:12 warning: `ChefDeprecations/PowershellCookbookHelpers`
+- resolved cookstyle error: spec/libraries/powershell_version_spec.rb:20:12 warning: `ChefDeprecations/PowershellCookbookHelpers`
+- resolved cookstyle error: spec/libraries/powershell_version_spec.rb:35:7 warning: `ChefDeprecations/PowershellCookbookHelpers`
+
 ## 6.1.3 (2018-09-20)
 
 - Fix installation on Windows 7 x32
