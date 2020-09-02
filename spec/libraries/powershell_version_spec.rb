@@ -8,16 +8,16 @@ shared_examples 'version retrieval' do |version, lower_semver_version, higher_ve
     expect(::Powershell::VersionHelper.powershell_version).to eq(version)
   end
   it 'returns true if queried with same version' do
-    expect(::Powershell::VersionHelper.powershell_version?(version)).to be true
+    expect(node['powershell']['version'].to_f == version).to be true
   end
   it 'returns true if queried with lower (SemVer) version' do
-    expect(::Powershell::VersionHelper.powershell_version?(lower_semver_version)).to be true
+    expect(node['powershell']['version'].to_f == lower_semver_version).to be true
   end
   it 'returns false if queried with higher version' do
-    expect(::Powershell::VersionHelper.powershell_version?(higher_version)).not_to be true
+    expect(node['powershell']['version'].to_f == higher_version).not_to be true
   end
   it 'returns false if queried with higher (SemVer) version' do
-    expect(::Powershell::VersionHelper.powershell_version?(higher_semver_version)).not_to be true
+    expect(node['powershell']['version'].to_f == higher_semver_version).not_to be true
   end
 end
 
@@ -32,7 +32,7 @@ describe PowershellVersionHelper do
     end
 
     it 'returns false if queried with any version' do
-      ::Powershell::VersionHelper.powershell_version?('0.0') == false
+      node['powershell']['version'].to_f == '0.0' == false
     end
   end
 
