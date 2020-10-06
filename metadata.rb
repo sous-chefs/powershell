@@ -3,7 +3,7 @@ maintainer 'Chef Software, Inc.'
 maintainer_email 'cookbooks@chef.io'
 license 'Apache-2.0'
 description 'Installs/Configures PowerShell on the Windows platform'
-version '6.1.3'
+version '6.1.4'
 
 supports 'windows'
 depends 'windows', '>= 3.0'

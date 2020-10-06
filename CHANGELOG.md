@@ -1,6 +1,9 @@
 # powershell Cookbook CHANGELOG
 
 This file is used to list changes made in each version of the powershell cookbook.
+## 6.1.3 (2019-09-10)
+
+- Added an optional reboot delay
 
 ## 6.1.3 (2018-09-20)
 
