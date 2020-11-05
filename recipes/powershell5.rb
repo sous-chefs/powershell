@@ -36,7 +36,7 @@ if platform_family?('windows')
       source node['powershell']['powershell5']['url']
       checksum node['powershell']['powershell5']['checksum']
       action :unzip
-      not_if { ::Powershell::VersionHelper.powershell_version?(node['powershell']['powershell5']['version']) }
+      not_if { node['powershell']['version'].to_f == node['powershell']['powershell5']['version'] }
     end
 
     msu_package 'Windows Management Framework Core 5.1' do
@@ -46,7 +46,7 @@ if platform_family?('windows')
       # Note that the :immediately is to immediately notify the other resource,
       # not to immediately reboot. The windows_reboot 'notifies' does that.
       notifies :reboot_now, 'reboot[powershell]', :immediately if node['powershell']['installation_reboot_mode'] != 'no_reboot'
-      not_if { ::Powershell::VersionHelper.powershell_version?(node['powershell']['powershell5']['version']) }
+      not_if { node['powershell']['version'].to_f == node['powershell']['powershell5']['version'] }
     end
 
   elsif node['platform_version'].to_f > 6.1
@@ -59,7 +59,7 @@ if platform_family?('windows')
       # Note that the :immediately is to immediately notify the other resource,
       # not to immediately reboot. The windows_reboot 'notifies' does that.
       notifies :reboot_now, 'reboot[powershell]', :immediately if node['powershell']['installation_reboot_mode'] != 'no_reboot'
-      not_if { ::Powershell::VersionHelper.powershell_version?(node['powershell']['powershell5']['version']) }
+      not_if { node['powershell']['version'].to_f == node['powershell']['powershell5']['version'] }
     end
 
   else
