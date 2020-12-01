@@ -45,7 +45,7 @@ if platform_family?('windows')
       # Note that the :immediately is to immediately notify the other resource,
       # not to immediately reboot. The windows_reboot 'notifies' does that.
       notifies :reboot_now, 'reboot[powershell]', :immediately if node['powershell']['installation_reboot_mode'] != 'no_reboot'
-      not_if { ::Powershell::VersionHelper.powershell_version?('3.0') }
+      not_if { node['powershell']['version'].to_f == '3.0' }
     end
   else
     Chef::Log.warn("PowerShell 3.0 is not supported or already installed on this version of Windows: #{node['platform_version']}")
