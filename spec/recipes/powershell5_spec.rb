@@ -2,11 +2,12 @@ require 'spec_helper'
 
 describe 'powershell::powershell5' do
   {
-    # There is no fauxhai info for windows 8, so we use windows 2012R2 and change the product type from server to workstation
-    'Windows 8.1' => { fauxhai_version: '2012R2', product_type: 1, timeout: 600 },
-    'Windows Server 2008R2' => { fauxhai_version: '2008R2', timeout: 2700 },
-    'Windows Server 2012' => { fauxhai_version: '2012', timeout: 2700 },
-    'Windows Server 2012R2' => { fauxhai_version: '2012R2', timeout: 600 },
+    # There is no fauxhai info for windows 8, so we use windows 2012R2 and change the product type from server to
+    # workstation
+    'Windows 8.1' => { fauxhai_version: '2012R2', product_type: 1, timeout: 3600 },
+    'Windows Server 2008R2' => { fauxhai_version: '2008R2', timeout: 3600 },
+    'Windows Server 2012' => { fauxhai_version: '2012', timeout: 3600 },
+    'Windows Server 2012R2' => { fauxhai_version: '2012R2', timeout: 3600 },
   }.each do |windows_version, test_conf|
     context "on #{windows_version}" do
       before do
@@ -56,11 +57,18 @@ describe 'powershell::powershell5' do
 
         if windows_version == 'Windows Server 2008R2'
           it 'installs windows package windows management framework core 5.1' do
-            expect(chef_run).to install_windows_package('Windows Management Framework Core 5.1').with(source: Chef::Util::PathHelper.canonical_path("#{Chef::Config['file_cache_path']}\\wmf51\\Win7AndW2K8R2-KB3191566-x64.msu", false), installer_type: :custom, options: '/quiet /norestart', timeout: test_conf[:timeout])
+            expect(chef_run).to install_msu_package('Windows Management Framework Core 5.1').with(
+              source: Chef::Util::PathHelper.canonical_path("#{Chef::Config['file_cache_path']}\\wmf51\\Win7AndW2K8R2-KB3191566-x64.msu", false),
+              timeout: test_conf[:timeout]
+            )
           end
         else
           it 'installs windows package windows management framework core 5.1' do
-            expect(chef_run).to install_windows_package('Windows Management Framework Core 5.1').with(source: 'https://powershelltest.com', checksum: '12345', installer_type: :custom, options: '/quiet /norestart', timeout: test_conf[:timeout])
+            expect(chef_run).to install_msu_package('Windows Management Framework Core 5.1').with(
+              source: 'https://powershelltest.com',
+              checksum: '12345',
+              timeout: test_conf[:timeout]
+            )
           end
         end
       end
