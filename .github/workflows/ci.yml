@@ -9,12 +9,17 @@ name: ci
 
 jobs:
   delivery:
+    # This needs to run on a Windows host due to the Win32::Registry requirement
+    # in ChefSpec
     runs-on: windows-latest
     steps:
       - name: Check out code
         uses: actions/checkout@master
+      - name: Install Chef
+        uses: actionshub/chef-install@master
       - name: Run Chef Delivery
-        uses: actionshub/chef-delivery@master
+        run: |
+          chef exec delivery local all
         env:
           CHEF_LICENSE: accept-no-persist
 
