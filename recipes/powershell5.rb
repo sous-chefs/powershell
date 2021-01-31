@@ -32,7 +32,7 @@ if platform_family?('windows')
     # with a helper script for installing it, which we don't need
     # thanks to the magic of the preceeding resources.
 
-    windows_zipfile "#{Chef::Config['file_cache_path']}\\wmf51" do
+    windows_zipfile "#{Chef::Config['file_cache_path']}\\wmf51" do # rubocop:disable Chef/Modernize/WindowsZipfileUsage
       source node['powershell']['powershell5']['url']
       checksum node['powershell']['powershell5']['checksum']
       action :unzip
