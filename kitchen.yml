@@ -1,5 +1,6 @@
 driver:
   name: vagrant
+  gui: false
   customize:
     cpus: 2
     memory: 4096
@@ -19,17 +20,8 @@ platforms:
   - name: windows-2012r2
     driver:
       box: tas50/windows_2012r2
-  - name: windows-2016
-    driver:
-      box: tas50/windows_2016
-  - name: windows-2019
-    driver_config:
-      box: tas50/windows_2019
 
 suites:
   - name: powershell5
     run_list:
       - recipe[powershell::powershell5]
-  - name: custom_resource
-    run_list:
-      - recipe[test::default]
