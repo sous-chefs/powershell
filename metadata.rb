@@ -1,6 +1,6 @@
 name              'powershell'
-maintainer        'Chef Software, Inc.'
-maintainer_email  'cookbooks@chef.io'
+maintainer        'Sous Chefs'
+maintainer_email  'help@sous-chefs.org'
 license           'Apache-2.0'
 description       'Installs/Configures PowerShell on the Windows platform'
 version           '6.1.3'
