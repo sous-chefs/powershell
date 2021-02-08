@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of the powershell cookbook.
 
+## Unreleased
+
+- Sous Chefs Adoption
+- Standardise files with files in sous-chefs/repo-management
+- Add GitHub Actions testing
+
 ## 6.1.3 (2018-09-20)
 
 - Fix installation on Windows 7 x32
