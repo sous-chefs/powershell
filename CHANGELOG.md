@@ -2,6 +2,8 @@
 
 This file is used to list changes made in each version of the powershell cookbook.
 
+## Unreleased
+
 ## 6.2.0 - *2021-02-08*
 
 - Sous Chefs Adoption
