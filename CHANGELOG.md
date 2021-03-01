@@ -2,6 +2,8 @@
 
 This file is used to list changes made in each version of the powershell cookbook.
 
+## Unreleased
+
 ## 6.2.1 - *2021-03-01*
 
 - update powershell5 recipe to log warning that 5.1 is preinstalled on windows server 2016+
