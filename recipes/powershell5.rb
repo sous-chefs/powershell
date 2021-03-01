@@ -26,7 +26,6 @@ if platform_family?('windows')
     Chef::Log.warn("PowerShell 5.1 comes with this version of Windows: #{node['platform_version']}")
 
   elsif node['platform_version'].to_f == 6.1
-    #if node['platform_version'].to_f == 6.1
     include_recipe 'ms_dotnet::ms_dotnet4'
     include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
 
