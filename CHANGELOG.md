@@ -4,6 +4,8 @@ This file is used to list changes made in each version of the powershell cookboo
 
 ## Unreleased
 
+- update powershell5 recipe to log warning that 5.1 is preinstalled on windows server 2016+
+
 ## 6.2.0 - *2021-02-08*
 
 - Sous Chefs Adoption

@@ -22,11 +22,12 @@
 # https://www.microsoft.com/en-us/download/details.aspx?id=54616
 
 if platform_family?('windows')
+  if node['platform_version'].to_f >= 10.0
+    Chef::Log.warn("PowerShell 5.1 comes with this version of Windows: #{node['platform_version']}")
 
-  include_recipe 'ms_dotnet::ms_dotnet4'
-  include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
-
-  if node['platform_version'].to_f == 6.1
+  elsif node['platform_version'].to_f == 6.1
+    include_recipe 'ms_dotnet::ms_dotnet4'
+    include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
 
     # For some reason, MSFT decided to ship the Win7/2008R2 version as a zip
     # with a helper script for installing it, which we don't need
@@ -50,6 +51,8 @@ if platform_family?('windows')
     end
 
   elsif node['platform_version'].to_f > 6.1
+    include_recipe 'ms_dotnet::ms_dotnet4'
+    include_recipe 'powershell::windows_reboot' unless node['powershell']['installation_reboot_mode'] == 'no_reboot'
 
     msu_package 'Windows Management Framework Core 5.1' do
       source node['powershell']['powershell5']['url']
