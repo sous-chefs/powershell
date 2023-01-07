@@ -10,5 +10,5 @@ chef_version      '>= 13.0'
 
 supports 'windows'
 
-depends 'windows', '>= 3.0'
+depends 'windows', '>= 3.0' unless Chef::VERSION.to_f >= 14
 depends 'ms_dotnet', '>= 3.2.1'
