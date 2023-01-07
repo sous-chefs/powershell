@@ -2,7 +2,7 @@
 
 This file is used to list changes made in each version of the powershell cookbook.
 
-## Unreleased
+## 6.3.0 - *2023-01-07*
 
 Add filter to remove deprecation warning when depends on windows cookbook (EOL cookbook)
 
