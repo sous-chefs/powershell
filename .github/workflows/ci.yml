@@ -16,7 +16,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
       - name: Install Chef
-        uses: actionshub/chef-install@main
+        uses: actionshub/chef-install@2.0.4
       - name: Run Chef Delivery
         run: |
           chef exec delivery local all
