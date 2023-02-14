@@ -8,18 +8,34 @@ name: ci
       - main
 
 jobs:
-  delivery:
-    # This needs to run on a Windows host due to the Win32::Registry requirement
-    # in ChefSpec
+  rspec:
+    # This needs to run on a Windows host due to expecting windows paths in tests
     runs-on: windows-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Install Chef
         uses: actionshub/chef-install@2.0.4
-      - name: Run Chef Delivery
-        run: |
-          chef exec delivery local all
+      - name: Run RSpec
+        run: chef exec rspec -f j -o tmp/rspec_results.json -f p
+        env:
+          CHEF_LICENSE: accept-no-persist
+      - name: RSpec Report
+        uses: SonicGarden/rspec-report-action@v2.1.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          json-path: tmp/rspec_results.json
+        if: always()
+
+  cookstyle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Install Chef
+        uses: actionshub/chef-install@2.0.4
+      - name: Run Cookstyle
+        run: chef exec cookstyle --display-cop-names --extra-details
         env:
           CHEF_LICENSE: accept-no-persist
 
@@ -27,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Run yaml Lint
         uses: actionshub/yamllint@main
 
@@ -35,6 +51,34 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Run Markdown Lint
-        uses: actionshub/markdownlint@main
+        uses: actionshub/markdownlint@v2.1.4
+
+  # This needs to run on vagrant due to the fact these nodes reboot during their
+  # runs
+  integration:
+    needs: [mdl, yamllint, cookstyle, rspec]
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - "windows-2012r2"
+          - "windows-2016"
+          - "windows-2019"
+        suite:
+          - "powershell5"
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Install Chef
+        uses: actionshub/chef-install@2.0.4
+      - name: test-kitchen
+        uses: actionshub/test-kitchen@2.1.0
+        env:
+          CHEF_LICENSE: accept-no-persist
+        with:
+          suite: ${{ matrix.suite }}
+          os: ${{ matrix.os }}
