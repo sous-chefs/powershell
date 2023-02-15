@@ -2,7 +2,7 @@
 
 This file is used to list changes made in each version of the powershell cookbook.
 
-## Unreleased
+## 6.4.0 - *2023-02-15*
 
 - Remove Delivery
 - Update GitHub Actions
