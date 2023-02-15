@@ -2,7 +2,7 @@
 
 This file is used to list changes made in each version of the powershell cookbook.
 
-## Unreleased
+## 6.3.1 - *2023-02-15*
 
 Standardise files with files in sous-chefs/repo-management
 
