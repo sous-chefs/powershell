@@ -4,6 +4,9 @@ This file is used to list changes made in each version of the powershell cookboo
 
 ## Unreleased
 
+- Remove Delivery
+- Update GitHub Actions
+
 ## 6.3.2 - *2023-02-15*
 
 ## 6.3.1 - *2023-02-15*
@@ -14,9 +17,10 @@ Standardise files with files in sous-chefs/repo-management
 
 Add filter to remove deprecation warning when depends on windows cookbook (EOL cookbook)
 
-Standardise files with files in sous-chefs/repo-management
+## 6.3.0 - *2023-01-07*
 
-Standardise files with files in sous-chefs/repo-management
+- Add filter to remove deprecation warning when depends on windows cookbook (EOL cookbook)
+- Standardise files with files in sous-chefs/repo-management
 
 ## 6.2.5 - *2022-02-10*
 
