@@ -53,7 +53,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
       - name: Run Markdown Lint
-        uses: actionshub/markdownlint@v2.1.5
+        uses: actionshub/markdownlint@v3.1.3
 
   # This needs to run on vagrant due to the fact these nodes reboot during their
   # runs
@@ -72,7 +72,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Install Chef
         uses: actionshub/chef-install@2.0.4
       - name: test-kitchen
