@@ -7,6 +7,16 @@ This file is used to list changes made in each version of the powershell cookboo
 - Remove Delivery
 - Update GitHub Actions
 
+## 6.3.2 - *2023-02-15*
+
+## 6.3.1 - *2023-02-15*
+
+Standardise files with files in sous-chefs/repo-management
+
+## 6.3.0 - *2023-01-07*
+
+Add filter to remove deprecation warning when depends on windows cookbook (EOL cookbook)
+
 ## 6.3.0 - *2023-01-07*
 
 - Add filter to remove deprecation warning when depends on windows cookbook (EOL cookbook)
