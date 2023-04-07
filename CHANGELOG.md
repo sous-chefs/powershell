@@ -4,6 +4,8 @@ This file is used to list changes made in each version of the powershell cookboo
 
 ## Unreleased
 
+Standardise files with files in sous-chefs/repo-management
+
 ## 6.4.9 - *2023-04-01*
 
 ## 6.4.8 - *2023-04-01*
