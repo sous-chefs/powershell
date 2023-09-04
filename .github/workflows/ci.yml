@@ -21,7 +21,7 @@ jobs:
         env:
           CHEF_LICENSE: accept-no-persist
       - name: RSpec Report
-        uses: SonicGarden/rspec-report-action@v2.1.1
+        uses: SonicGarden/rspec-report-action@v2.1.2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           json-path: tmp/rspec_results.json
