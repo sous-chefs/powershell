@@ -2,6 +2,8 @@
 
 This file is used to list changes made in each version of the powershell cookbook.
 
+## Unreleased
+
 ## 6.4.13 - *2023-11-06*
 
 ## 6.4.12 - *2023-09-04*
