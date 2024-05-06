@@ -8,57 +8,21 @@ name: ci
       - main
 
 jobs:
-  rspec:
-    # This needs to run on a Windows host due to expecting windows paths in tests
-    runs-on: windows-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-      - name: Install Chef
-        uses: actionshub/chef-install@3.0.0
-      - name: Run RSpec
-        run: chef exec rspec -f j -o tmp/rspec_results.json -f p
-        env:
-          CHEF_LICENSE: accept-no-persist
-      - name: RSpec Report
-        uses: SonicGarden/rspec-report-action@v3.0.0
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          json-path: tmp/rspec_results.json
-        if: always()
-
-  cookstyle:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-      - name: Install Chef
-        uses: actionshub/chef-install@3.0.0
-      - name: Run Cookstyle
-        run: chef exec cookstyle --display-cop-names --extra-details
-        env:
-          CHEF_LICENSE: accept-no-persist
-
-  yamllint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-      - name: Run yaml Lint
-        uses: actionshub/yamllint@main
-
-  mdl:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-      - name: Run Markdown Lint
-        uses: actionshub/markdownlint@v3.1.4
+  lint-unit:
+    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@3.1.1
+    with:
+      platform: windows-latest
+    permissions:
+      actions: write
+      checks: write
+      pull-requests: write
+      statuses: write
+      issues: write
 
   # This needs to run on vagrant due to the fact these nodes reboot during their
   # runs
   integration:
-    needs: [mdl, yamllint, cookstyle, rspec]
+    needs: lint-unit
     runs-on: macos-latest
     strategy:
       fail-fast: false
