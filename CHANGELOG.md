@@ -4,6 +4,8 @@ This file is used to list changes made in each version of the powershell cookboo
 
 ## Unreleased
 
+## 6.4.15 - *2024-05-06*
+
 ## 6.4.14 - *2023-11-06*
 
 ## 6.4.13 - *2023-11-06*
