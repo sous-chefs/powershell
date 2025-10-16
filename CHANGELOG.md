@@ -5,6 +5,13 @@ This file is used to list changes made in each version of the powershell cookboo
 Standardise files with files in sous-chefs/repo-management
 Standardise files with files in sous-chefs/repo-management
 
+## [6.4.20](https://github.com/sous-chefs/powershell/compare/6.4.19...v6.4.20) (2025-10-15)
+
+
+### Bug Fixes
+
+* **ci:** Update workflows to use release pipeline ([#188](https://github.com/sous-chefs/powershell/issues/188)) ([f9c0dad](https://github.com/sous-chefs/powershell/commit/f9c0dad0e2a2fb6ed42ebcc8114943db9f571940))
+
 ## 6.4.18 - *2024-11-18*
 
 Standardise files with files in sous-chefs/repo-management
