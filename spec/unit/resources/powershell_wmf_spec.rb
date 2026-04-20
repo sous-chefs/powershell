@@ -76,11 +76,11 @@ describe 'powershell_wmf' do
       )
     end
     it do
-      is_expected.to install_msu_package('Windows Management Framework Core 5.1').with(
-        source: "#{Chef::Config[:file_cache_path]}\\wmf51\\Win7AndW2K8R2-KB3191566-x64.msu",
-        timeout: 2700,
-        ignore_failure: true
-      )
+      package = chef_run.msu_package('Windows Management Framework Core 5.1')
+
+      expect(package.source.tr('\\', '/').downcase).to end_with('/wmf51/win7andw2k8r2-kb3191566-x64.msu')
+      expect(package.timeout).to eq(2700)
+      expect(package.ignore_failure).to be(true)
     end
   end
 
