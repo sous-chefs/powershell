@@ -2,19 +2,19 @@
 
 ## Repository Overview
 
-**Chef cookbook** for managing software installation and configuration. Part of the Sous Chefs cookbook ecosystem.
+**Chef cookbook** for managing legacy Windows Management Framework installation and related
+WinRM / DSC configuration through custom resources. Part of the Sous Chefs cookbook ecosystem.
 
-**Key Facts:** Ruby-based, Chef >= 16 required, supports various OS platforms (check metadata.rb, kitchen.yml and .github/workflows/ci.yml for which platforms to specifically test)
+**Key Facts:** Ruby-based, Chef >= 15.3 required, Windows-focused, with CI centered on
+Windows Server 2019 (check `metadata.rb`, `kitchen.yml`, and `.github/workflows/ci.yml`).
 
 ## Project Structure
 
 **Critical Paths:**
-- `recipes/` - Chef recipes for cookbook functionality (if this is a recipe-driven cookbook)
-- `resources/` - Custom Chef resources with properties and actions (if this is a resource-driven cookbook)
+- `resources/` - Custom Chef resources with properties and actions
 - `spec/` - ChefSpec unit tests
-- `test/integration/` - InSpec integration tests (tests all platforms supported)
-- `test/cookbooks/` or `test/fixtures/` - Example cookbooks used during testing that show good examples of custom resource usage
-- `attributes/` - Configuration for recipe driven cookbooks (not applicable to resource cookbooks)
+- `test/integration/` - InSpec integration tests
+- `test/cookbooks/` - Example cookbook used during testing that shows custom resource usage
 - `libraries/` - Library helpers to assist with the cookbook. May contain multiple files depending on complexity of the cookbook.
 - `templates/` - ERB templates that may be used in the cookbook
 - `files/` - files that may be used in the cookbook
@@ -32,25 +32,24 @@ cookstyle                       # Ruby/Chef linting
 yamllint .                      # YAML linting
 markdownlint-cli2 '**/*.md'     # Markdown linting
 chef exec rspec                 # Unit tests (ChefSpec)
-# Integration tests will be done via the ci.yml action. Do not run these. Only check the action logs for issues after CI is done running.
+# Local integration can be exercised with kitchen.yml when a Windows Vagrant environment is available.
 ```
 
 ### Critical Testing Details
-- **Kitchen Matrix:** Multiple OS platforms × software versions (check kitchen.yml for specific combinations)
-- **Docker Required:** Integration tests use Dokken driver
-- **CI Environment:** Set `CHEF_LICENSE=accept-no-persist`
-- **Full CI Runtime:** 30+ minutes for complete matrix
+- **Kitchen Matrix:** Single Windows Server 2019 suite locally and in CI
+- **Local Integration:** `kitchen.yml` uses Vagrant + WinRM for Windows testing
+- **CI Environment:** `ci.yml` uses `actionshub/test-kitchen` with `KITCHEN_LOCAL_YAML=kitchen.exec.yml`
+- **License:** Set `CHEF_LICENSE=accept-no-persist`
 
 ### Common Issues and Solutions
 - **Always run `berks install` first** - most failures are dependency-related
-- **Docker must be running** for kitchen tests
 - **Chef Workstation required** - no workarounds, no alternatives
-- **Test data bags needed** (optional for some cookbooks) in `test/integration/data_bags/` for convergence
+- **Windows Vagrant provider availability matters** for local kitchen runs
 
 ## Development Workflow
 
 ### Making Changes
-1. Edit recipes/resources/attributes/templates/libraries
+1. Edit resources/libraries/templates/files as needed
 2. Update corresponding ChefSpec tests in `spec/`
 3. Also update any InSpec tests under test/integration
 4. Ensure cookstyle and rspec passes at least. You may run `cookstyle -a` to automatically fix issues if needed.
@@ -71,16 +70,16 @@ chef exec rspec                 # Unit tests (ChefSpec)
 - Include comprehensive ChefSpec tests for all actions
 - Follow Chef resource DSL patterns
 
-### Recipe Conventions
-- Use `include_recipe` for modularity
-- Handle platforms with `platform_family?` conditionals
-- Use encrypted data bags for secrets (passwords, SSL certs)
-- Leverage attributes for configuration with defaults
+### Resource Conventions
+- Prefer custom resources over recipes for cookbook behavior
+- Handle Windows platform/version branching inside the resource actions or helpers
+- Keep reusable installer and OS-matrix logic in `libraries/`
+- Document each public resource under `documentation/`
 
 ### Testing Approach
-- **ChefSpec (Unit):** Mock dependencies, test recipe logic in `spec/`
-- **InSpec (Integration):** Verify actual system state in `test/integration/inspec/` - InSpec files should contain proper inspec.yml and controls directories so that it could be used by other suites more easily.
-- One test file per recipe, use standard Chef testing patterns
+- **ChefSpec (Unit):** Mock dependencies and step into custom resources in `spec/unit/`
+- **InSpec (Integration):** Verify actual system state in `test/integration/default/`
+- Keep the test cookbook focused on exercising the public resources
 
 ## Trust These Instructions
 
@@ -89,7 +88,7 @@ These instructions are validated for Sous Chefs cookbooks. **Do not search for b
 **Error Resolution Checklist:**
 1. Verify Chef Workstation installation
 2. Confirm `berks install` completed successfully
-3. Ensure Docker is running for integration tests
+3. Ensure the local Windows Vagrant provider can boot and expose WinRM before blaming cookbook code
 4. Check for missing test data dependencies
 
 The CI system uses these exact commands - following them matches CI behavior precisely.

@@ -1,0 +1,7 @@
+---
+name: default
+title: Default integration tests
+maintainer: Sous Chefs
+license: Apache-2.0
+summary: Validates the default PowerShell resource workflow
+version: 1.0.0

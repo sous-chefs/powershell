@@ -1,3 +1,4 @@
+---
 driver:
   name: vagrant
   gui: false
@@ -8,26 +9,38 @@ driver:
 transport:
   name: winrm
   elevated: true
+  max_wait_until_ready: 600
+  connection_retries: 10
+  connection_retry_sleep: 10
 
 provisioner:
-  name: chef_zero
-  product_name: chef
+  name: chef_infra
+  product_name: cinc
+  product_version: latest
+  channel: stable
+  chef_license: accept
   enforce_idempotency: true
   multiple_converge: 2
   deprecations_as_errors: true
 
+verifier:
+  name: inspec
+
 platforms:
-  - name: windows-2012r2
-    driver:
-      box: tas50/windows_2012r2
-  - name: windows-2016
-    driver:
-      box: tas50/windows_2016
   - name: windows-2019
     driver:
       box: tas50/windows_2019
 
+x-run_lists:
+  default: &default_run_list
+    - recipe[test::default]
+
+x-verifiers:
+  default: &default_verifier
+    inspec_tests:
+      - path: test/integration/default
+
 suites:
-  - name: powershell5
-    run_list:
-      - recipe[powershell::powershell5]
+  - name: default
+    run_list: *default_run_list
+    verifier: *default_verifier

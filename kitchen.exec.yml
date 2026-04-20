@@ -1,7 +1,37 @@
 ---
-driver: { name: exec }
-transport: { name: exec }
+driver:
+  name: exec
+  chef_omnibus_install: false
+
+transport:
+  name: exec
+
+provisioner:
+  name: chef_infra
+  product_name: cinc
+  product_version: latest
+  channel: stable
+  chef_license: accept
+  deprecations_as_errors: true
+  enforce_idempotency: true
+  multiple_converge: 2
+
+verifier:
+  name: inspec
 
 platforms:
-  - name: macos-latest
-  - name: windows-latest
+  - name: windows-2019
+
+x-run_lists:
+  default: &default_run_list
+    - recipe[test::default]
+
+x-verifiers:
+  default: &default_verifier
+    inspec_tests:
+      - path: test/integration/default
+
+suites:
+  - name: default
+    run_list: *default_run_list
+    verifier: *default_verifier

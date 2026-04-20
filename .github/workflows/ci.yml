@@ -19,30 +19,27 @@ jobs:
       statuses: write
       issues: write
 
-  # This needs to run on vagrant due to the fact these nodes reboot during their
-  # runs
-  integration:
+  integration-windows:
     needs: lint-unit
-    runs-on: macos-latest
+    runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
         os:
-          - "windows-2012r2"
-          - "windows-2016"
           - "windows-2019"
         suite:
-          - "powershell5"
+          - "default"
 
     steps:
       - name: Check out code
         uses: actions/checkout@v6
-      - name: Install Chef
-        uses: actionshub/chef-install@6.0.0
+      - name: Install Cinc Workstation
+        uses: sous-chefs/.github/.github/actions/install-workstation@main
       - name: test-kitchen
-        uses: actionshub/test-kitchen@3.0.0
+        uses: actionshub/test-kitchen@main
         env:
           CHEF_LICENSE: accept-no-persist
+          KITCHEN_LOCAL_YAML: kitchen.exec.yml
         with:
           suite: ${{ matrix.suite }}
           os: ${{ matrix.os }}

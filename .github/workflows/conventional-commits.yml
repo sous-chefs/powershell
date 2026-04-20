@@ -1,14 +1,13 @@
 ---
-name: conventional-commits
+name: 'Validate PR'
 
 "on":
-  pull_request:
-    types:
-      - opened
-      - reopened
-      - edited
-      - synchronize
+  pull_request_target:
+    types: [opened, edited, reopened]
 
 jobs:
   conventional-commits:
     uses: sous-chefs/.github/.github/workflows/conventional-commits.yml@5.0.8
+    permissions:
+      pull-requests: read
+    secrets: inherit
