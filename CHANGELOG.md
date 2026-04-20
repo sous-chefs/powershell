@@ -9,6 +9,17 @@ Standardise files with files in sous-chefs/repo-management
 
 * Migrate the cookbook to custom resources and modernize Windows CI/test coverage
 
+## [7.0.0](https://github.com/sous-chefs/powershell/compare/v6.4.21...v7.0.0) (2026-04-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate to custom resources ([#196](https://github.com/sous-chefs/powershell/issues/196))
+
+### Features
+
+* migrate to custom resources ([#196](https://github.com/sous-chefs/powershell/issues/196)) ([5332a96](https://github.com/sous-chefs/powershell/commit/5332a9666c153b612b05f3e5a14c31c3161ab005))
+
 ## [6.4.21](https://github.com/sous-chefs/powershell/compare/v6.4.20...v6.4.21) (2025-10-16)
 
 
