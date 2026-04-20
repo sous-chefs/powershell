@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'chef/dsl/registry_helper'
 
 module Powershell
@@ -9,6 +11,8 @@ module Powershell
     end
 
     def powershell_version?(versionstring)
+      return false if versionstring.nil? || powershell_version.nil?
+
       Gem::Version.new(powershell_version) >= Gem::Version.new(versionstring)
     end
 

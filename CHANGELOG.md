@@ -5,6 +5,10 @@ This file is used to list changes made in each version of the powershell cookboo
 Standardise files with files in sous-chefs/repo-management
 Standardise files with files in sous-chefs/repo-management
 
+## Unreleased
+
+* Migrate the cookbook to custom resources and modernize Windows CI/test coverage
+
 ## [6.4.21](https://github.com/sous-chefs/powershell/compare/v6.4.20...v6.4.21) (2025-10-16)
 
 
