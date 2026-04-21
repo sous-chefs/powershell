@@ -84,6 +84,38 @@ describe 'powershell_wmf' do
     end
   end
 
+  context 'when requesting a delayed reboot with an explicit delay' do
+    platform 'windows', '2012'
+
+    recipe do
+      node.automatic['platform_version'] = '6.1'
+      powershell_wmf '5.1' do
+        reboot_mode 'delayed_reboot'
+        reboot_delay_mins 5
+      end
+    end
+
+    it do
+      expect(chef_run.reboot('powershell reboot').delay_mins).to eq(5)
+    end
+  end
+
+  context 'when using the legacy reboot timeout override' do
+    platform 'windows', '2012'
+
+    recipe do
+      node.automatic['platform_version'] = '6.1'
+      powershell_wmf '5.1' do
+        reboot_mode 'delayed_reboot'
+        reboot_timeout_seconds 120
+      end
+    end
+
+    it do
+      expect(chef_run.reboot('powershell reboot').delay_mins).to eq(2)
+    end
+  end
+
   context 'when PowerShell 5.1 is already bundled with the platform' do
     platform 'windows', '2019'
 

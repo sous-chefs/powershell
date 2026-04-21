@@ -10,6 +10,7 @@ property :package, String
 property :timeout, Integer
 property :dotnet_version, String
 property :reboot_mode, String, default: 'no_reboot', equal_to: %w(no_reboot immediate_reboot delayed_reboot)
+property :reboot_delay_mins, Integer, default: 0
 property :reboot_timeout_seconds, Integer, default: 10
 
 default_action :install
@@ -58,7 +59,7 @@ action_class do
 
     reboot 'powershell reboot' do
       reason "PowerShell #{new_resource.version} installation requires a reboot"
-      delay_mins [(new_resource.reboot_timeout_seconds / 60.0).ceil, 1].max
+      delay_mins effective_reboot_delay_mins
       action :nothing
     end
   end
@@ -71,6 +72,13 @@ action_class do
 
   def unsupported_message
     "PowerShell #{new_resource.version} is not supported or already bundled on Windows #{node['platform_version']}"
+  end
+
+  def effective_reboot_delay_mins
+    return new_resource.reboot_delay_mins if new_resource.property_is_set?(:reboot_delay_mins)
+    return 0 if new_resource.reboot_timeout_seconds.to_i <= 0
+
+    [(new_resource.reboot_timeout_seconds / 60.0).ceil, 1].max
   end
 end
 
