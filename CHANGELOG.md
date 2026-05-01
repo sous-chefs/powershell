@@ -10,6 +10,13 @@ Standardise files with files in sous-chefs/repo-management
 * Migrate the cookbook to custom resources and modernize Windows CI/test coverage
 * Reimplement reboot-delay support on the `powershell_wmf` resource
 
+## [7.0.1](https://github.com/sous-chefs/powershell/compare/v7.0.0...v7.0.1) (2026-05-01)
+
+
+### Bug Fixes
+
+* restore powershell_wmf reboot delay ([#199](https://github.com/sous-chefs/powershell/issues/199)) ([1b5a3db](https://github.com/sous-chefs/powershell/commit/1b5a3db7264e66fc018be31f17972e01433cc0d7))
+
 ## [7.0.0](https://github.com/sous-chefs/powershell/compare/v6.4.21...v7.0.0) (2026-04-20)
 
 
