@@ -19,6 +19,7 @@ Installs a legacy Windows Management Framework release when the target platform 
 | `timeout` | Integer | computed | Override the installer timeout |
 | `dotnet_version` | String | computed | .NET Framework version requested from `ms_dotnet` |
 | `reboot_mode` | String | `'no_reboot'` | Reboot strategy after installation |
+| `reboot_delay_mins` | Integer | `0` | Delay, in minutes, for `delayed_reboot` requests |
 | `reboot_timeout_seconds` | Integer | `10` | Delay used for delayed reboot requests |
 
 ## Examples
@@ -30,5 +31,6 @@ powershell_wmf '5.1'
 ```ruby
 powershell_wmf '4.0' do
   reboot_mode 'delayed_reboot'
+  reboot_delay_mins 5
 end
 ```

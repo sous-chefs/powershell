@@ -37,6 +37,15 @@ Install WMF 5.1 when the target platform needs it:
 powershell_wmf '5.1'
 ```
 
+Request a delayed reboot after installation:
+
+```ruby
+powershell_wmf '4.0' do
+  reboot_mode 'delayed_reboot'
+  reboot_delay_mins 5
+end
+```
+
 Prepare WinRM for DSC with an HTTPS listener:
 
 ```ruby
