@@ -9,7 +9,7 @@ name: ci
 
 jobs:
   lint-unit:
-    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@5.0.8
+    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@8.0.0
     with:
       platform: windows-latest
     permissions:
