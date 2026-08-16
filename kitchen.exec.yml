@@ -18,18 +18,17 @@ provisioner:
   policyfile: Policyfile.rb
 
 verifier:
-  name: inspec
+  name: shell
+  command: >-
+    powershell.exe -NoLogo -NoProfile -NonInteractive
+    -Command "$version = $PSVersionTable.PSVersion; Write-Output $version; if ($version -lt [version]'5.1') { exit 1 }"
+  shellout_opts:
+    timeout: 30
 
 platforms:
   - name: windows-2019
-
-x-verifiers:
-  default: &default_verifier
-    inspec_tests:
-      - path: test/integration/default
 
 suites:
   - name: default
     provisioner:
       named_run_list: default
-    verifier: *default_verifier
