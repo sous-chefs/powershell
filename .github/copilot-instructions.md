@@ -18,16 +18,16 @@ Windows Server 2019 (check `metadata.rb`, `kitchen.yml`, and `.github/workflows/
 - `libraries/` - Library helpers to assist with the cookbook. May contain multiple files depending on complexity of the cookbook.
 - `templates/` - ERB templates that may be used in the cookbook
 - `files/` - files that may be used in the cookbook
-- `metadata.rb`, `Berksfile` - Cookbook metadata and dependencies
+- `metadata.rb`, `Policyfile.rb` - Cookbook metadata and test dependencies
 
 ## Build and Test System
 
 ### Environment Setup
-**MANDATORY:** Install Chef Workstation first - provides chef, berks, cookstyle, kitchen tools.
+**MANDATORY:** Install Chef Workstation first - provides chef, cookstyle, and kitchen tools.
 
 ### Essential Commands (strict order)
 ```bash
-berks install                   # Install dependencies (always first)
+chef install Policyfile.rb      # Install dependencies (always first)
 cookstyle                       # Ruby/Chef linting
 yamllint .                      # YAML linting
 markdownlint-cli2 '**/*.md'     # Markdown linting
@@ -42,7 +42,7 @@ chef exec rspec                 # Unit tests (ChefSpec)
 - **License:** Set `CHEF_LICENSE=accept-no-persist`
 
 ### Common Issues and Solutions
-- **Always run `berks install` first** - most failures are dependency-related
+- **Always run `chef install Policyfile.rb` first** - most failures are dependency-related
 - **Chef Workstation required** - no workarounds, no alternatives
 - **Windows Vagrant provider availability matters** for local kitchen runs
 
@@ -87,7 +87,7 @@ These instructions are validated for Sous Chefs cookbooks. **Do not search for b
 
 **Error Resolution Checklist:**
 1. Verify Chef Workstation installation
-2. Confirm `berks install` completed successfully
+2. Confirm `chef install Policyfile.rb` completed successfully
 3. Ensure the local Windows Vagrant provider can boot and expose WinRM before blaming cookbook code
 4. Check for missing test data dependencies
 

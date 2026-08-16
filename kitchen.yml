@@ -22,6 +22,7 @@ provisioner:
   enforce_idempotency: true
   multiple_converge: 2
   deprecations_as_errors: true
+  policyfile: Policyfile.rb
 
 verifier:
   name: inspec
@@ -31,10 +32,6 @@ platforms:
     driver:
       box: tas50/windows_2019
 
-x-run_lists:
-  default: &default_run_list
-    - recipe[test::default]
-
 x-verifiers:
   default: &default_verifier
     inspec_tests:
@@ -42,5 +39,6 @@ x-verifiers:
 
 suites:
   - name: default
-    run_list: *default_run_list
+    provisioner:
+      named_run_list: default
     verifier: *default_verifier

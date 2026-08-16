@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'chefspec'
-require 'chefspec/berkshelf'
+require 'chefspec/policyfile'
 
 Dir[File.join(__dir__, '..', 'libraries', '*.rb')].sort.each { |f| require File.expand_path(f) }
 
