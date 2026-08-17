@@ -5,14 +5,14 @@ Configures the Windows Local Configuration Manager for Desired State Configurati
 ## Actions
 
 | Action | Description |
-|--------|-------------|
+| -------- | ------------- |
 | `:enable` | Generates and applies an LCM configuration (default) |
 | `:disable` | Disables LCM refresh mode |
 
 ## Properties
 
 | Property | Type | Default | Description |
-|----------|------|---------|-------------|
+| ---------- | ------ | --------- | ------------- |
 | `name` | String | name property | Resource name |
 | `temp_dir` | String | cached path | Temporary directory used for generated MOF files |
 | `config_mode` | String | `'ApplyOnly'` | LCM configuration mode |

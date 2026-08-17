@@ -71,7 +71,7 @@ end
 Local Vagrant runs use `kitchen.yml`. CI uses the exec driver with `kitchen.exec.yml`.
 
 ```shell
-berks install
+chef install Policyfile.rb
 cookstyle
 chef exec rspec --format documentation
 kitchen test default-windows-2019 --destroy=always

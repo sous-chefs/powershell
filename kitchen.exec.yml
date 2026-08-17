@@ -15,23 +15,20 @@ provisioner:
   deprecations_as_errors: true
   enforce_idempotency: true
   multiple_converge: 2
+  policyfile: Policyfile.rb
 
 verifier:
-  name: inspec
+  name: shell
+  command: >-
+    powershell.exe -NoLogo -NoProfile -NonInteractive
+    -Command "$version = $PSVersionTable.PSVersion; Write-Output $version; if ($version -lt [version]'5.1') { exit 1 }"
+  shellout_opts:
+    timeout: 30
 
 platforms:
   - name: windows-2019
 
-x-run_lists:
-  default: &default_run_list
-    - recipe[test::default]
-
-x-verifiers:
-  default: &default_verifier
-    inspec_tests:
-      - path: test/integration/default
-
 suites:
   - name: default
-    run_list: *default_run_list
-    verifier: *default_verifier
+    provisioner:
+      named_run_list: default

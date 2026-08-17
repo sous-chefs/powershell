@@ -5,13 +5,13 @@ Installs a legacy Windows Management Framework release when the target platform 
 ## Actions
 
 | Action | Description |
-|--------|-------------|
+| -------- | ------------- |
 | `:install` | Installs the requested WMF release (default) |
 
 ## Properties
 
 | Property | Type | Default | Description |
-|----------|------|---------|-------------|
+| ---------- | ------ | --------- | ------------- |
 | `version` | String | name property | WMF version to install (`2.0`, `3.0`, `4.0`, `5.1`) |
 | `download_url` | String | computed | Override the Microsoft package URL |
 | `checksum` | String | computed | Override the Microsoft package checksum |
