@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   lint-unit:
-    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@9.0.1
+    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@9.0.2
     with:
       platform: windows-latest
       gems: rake
@@ -39,7 +39,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v7
       - name: Install Cinc Workstation
-        uses: sous-chefs/.github/.github/actions/install-workstation@9.0.1
+        uses: sous-chefs/.github/.github/actions/install-workstation@9.0.2
       - name: test-kitchen
         uses: actionshub/test-kitchen@main
         env:
